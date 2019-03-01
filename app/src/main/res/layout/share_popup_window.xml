@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#66000000">
+
+    <LinearLayout
+        android:id="@+id/ll_pop_share"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:orientation="vertical"
+        android:gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:background="@color/color_CACACA">
+
+        <LinearLayout
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/color_CACACA"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2px"
+                android:layout_weight="1"
+                android:background="@color/color_4A4A4A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textSize="15sp"
+                android:textColor="@color/color_4A4A4A"
+                android:text="SHARE IT WITH MY FRIENDS" />
+            <View
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2px"
+                android:layout_weight="1"
+                android:background="@color/color_4A4A4A" />
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@color/color_CACACA"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_wexin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_wechat" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/color_5F5F5F"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_circle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_pengyou" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/color_5F5F5F"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btn_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/icon_facebook" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/color_5F5F5F"
+                    android:text="Facebook" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <View
+                android:visibility="invisible"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2px"
+                android:layout_weight="1"
+                android:layout_marginBottom="30dp"
+                android:background="@color/color_4A4A4A" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:textSize="15sp"
+                android:textColor="@color/color_4A4A4A"
+                android:text="CANCEL" />
+            <View
+                android:visibility="invisible"
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="2px"
+                android:layout_weight="1"
+                android:background="@color/color_4A4A4A" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

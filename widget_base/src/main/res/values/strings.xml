@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">widget_base</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="pull_to_refresh_pull_label">pull…</string>
+    <string name="pull_to_refresh_release_label">pull to refresh…</string>
+    <string name="pull_to_refresh_refreshing_label">loading…</string>
+    <string name="pull_to_more_pull_label">push…</string>
+    <string name="pull_to_more_release_label">push to refresh…</string>
+</resources>

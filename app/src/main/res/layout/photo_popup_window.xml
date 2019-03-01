@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#66000000">
+
+    <LinearLayout
+        android:id="@+id/ll_pop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/icon_btn_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_btn_top"
+            android:textColor="@color/red"
+            android:textAllCaps="false"
+            android:text="C a m e r a"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_F2F2F2"/>
+        <Button
+            android:id="@+id/icon_btn_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/white_btn_bottom"
+            android:textColor="@color/color_0099FF"
+            android:textAllCaps="false"
+            android:text="Choose from Album"/>
+        <Button
+            android:id="@+id/icon_btn_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/white_btn"
+            android:textColor="@color/color_0099FF"
+            android:textAllCaps="false"
+            android:text="C a n c e l"/>
+    </LinearLayout>
+
+</RelativeLayout>

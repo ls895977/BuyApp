@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="transparent">#00000000</color>
+    <color name="common_dialog_text">#494949</color>
+    <color name="common_dialog_line">#d0d0d0</color>
+    <color name="btn_common_dialog_down">#d9d9d9</color>
+    <color name="gray_black">#7a7a7a</color>
+    <color name="grid_line_color">#cccccc</color>
+    <color name="list_item_pressed">#1A000000</color>
+    <color name="wheel_selected_line">#dae0e6</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="light_gray">#fff5f5f5</color>
+
+</resources>

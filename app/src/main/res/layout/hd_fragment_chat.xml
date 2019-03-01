@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:easemob="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white">
+
+            <RelativeLayout
+                android:id="@+id/my_chat_back_rl"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/back_icon"
+                    android:layout_marginLeft="20dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/mine_title_name_size"
+                    android:textColor="@color/color_4A4A4A"
+                    android:textStyle="bold"
+                    android:text="Online Customer Service" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.hyphenate.helpdesk.easeui.widget.TitleBar
+        android:visibility="gone"
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/title_height"
+        android:background="@color/white"
+        easemob:titleBarLeftImage="@drawable/back_icon" />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:textSize="@dimen/mine_title_name_size"
+        android:textColor="@color/color_4A4A4A"
+        android:textStyle="bold"
+        />
+
+    <RelativeLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/input_menu"
+        android:layout_below="@id/title_bar" >
+
+        <com.hyphenate.helpdesk.easeui.widget.MessageList
+            android:id="@+id/message_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <com.enuos.jimat.activity.common.EaseChatInputMenu
+        android:id="@+id/input_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+    <TextView
+        android:id="@+id/tv_tip_waitcount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:layout_above="@id/input_menu"
+        android:background="@android:color/darker_gray"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

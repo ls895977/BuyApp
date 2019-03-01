@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="install_apk_dialog_tips">Please authorize the installation for this App in your settings.</string>
+    <string name="install_apk_failed">Install Failed</string>
+    <string name="download_apk_begin">App download begin, you can see progress at notification bar</string>
+    <string name="download_apk_complete">Download Complete.</string>
+    <string name="download_apk_failed">Download failed</string>
+    <string name="download_apk_failed_msg">Download failed, please check network or storage space.</string>
+    <string name="download_apk_start">Start Downloading</string>
+    <string name="downloading_apk">Downloading</string>
+
+    <dimen name="install_apk_dialog_width">140dp</dimen>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">comm_httpclient</string>
+    <string name="request_timeout">Sorry, request timed out, please retry.</string>
+    <string name="request_no_internet">No internet access, please check your network and retry.</string>
+    <string name="request_service_interrupted">Sorry, service request was interrupted, please retry.</string>
+    <string name="request_data_exception">Internal server error, please try again later</string>
+    <string name="crash_exception">Sorry, this app unexpectedly quits. Please restart it.</string>
+</resources>

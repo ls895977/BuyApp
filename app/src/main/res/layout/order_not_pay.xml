@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/color_F1F1F1"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/item_order_pay_empty"/>
+
+    <RelativeLayout
+        android:id="@+id/order_not_pay_result_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_F1F1F1"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <com.vedeng.widget.base.view.pulltorefresh.PullToRefreshRecyclerView
+            android:id="@+id/order_not_pay_rv"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

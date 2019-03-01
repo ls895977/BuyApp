@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/item_address_name"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="62dp"
+            android:layout_marginRight="16dp"
+            android:textSize="15sp"
+            android:textColor="@color/color_4A4A4A"/>
+        <TextView
+            android:id="@+id/item_address_phone"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/color_9A9A9A"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/item_address_flag"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:background="@drawable/address_circle" />
+
+        <TextView
+            android:id="@+id/item_address_default_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="  Default  "
+            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:background="@color/mainRed" />
+
+        <TextView
+            android:id="@+id/item_address_area"
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:maxLines="3"
+            android:textSize="14sp"
+            android:textColor="@color/color_4A4A4A"/>
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="40dp"
+            android:background="@color/color_ABAAAA"/>
+
+        <TextView
+            android:id="@+id/item_address_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/color_ABAAAA"
+            android:layout_marginRight="20dp"
+            android:text="Edit"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@drawable/bg_divider"/>
+
+</LinearLayout>

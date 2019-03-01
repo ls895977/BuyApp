@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mine_new_swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_F1F1F1">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@color/white">
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/mine_head_icon_new"
+                    android:visibility="invisible"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/default_icon"
+                    app:riv_border_color="#FFFFFF"
+                    app:riv_border_width="1dp"
+                    app:riv_oval="true"/>
+
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:id="@+id/mine_new_head_icon_pic"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/default_icon"
+                    app:riv_border_color="#FFFFFF"
+                    app:riv_border_width="1dp"
+                    app:riv_oval="true"/>
+
+                <TextView
+                    android:id="@+id/mine_new_user_go_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon_new"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/color_4A4A4A"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="14dp"
+                    android:textSize="25sp"
+                    android:text="Login" />
+
+                <View
+                    android:id="@+id/mine_new_user_go_view"
+                    android:layout_width="2dp"
+                    android:layout_height="25dp"
+                    android:layout_toRightOf="@+id/mine_head_icon_new"
+                    android:layout_centerInParent="true"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="90dp"
+                    android:background="@color/color_4A4A4A"/>
+
+                <TextView
+                    android:id="@+id/mine_new_user_go_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon_new"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/color_4A4A4A"
+                    android:textStyle="bold"
+                    android:layout_marginLeft="100dp"
+                    android:textSize="25sp"
+                    android:text="Sign Up" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/mine_new_user_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon_new"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="25sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_4A4A4A"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:layout_marginTop="8dp"
+                android:padding="12dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/mine_new_linear_order"
+                    style="@style/mine_order_linear">
+                    <ImageView
+                        style="@style/mine_order_image"
+                        android:src="@drawable/new_order"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/mine_order_text"
+                        android:text="My Order"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/mine_new_linear_money"
+                    style="@style/mine_order_linear">
+                    <ImageView
+                        style="@style/mine_order_image"
+                        android:src="@drawable/new_money"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/mine_order_text"
+                        android:text="My Wallet"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/mine_new_linear_address"
+                    style="@style/mine_order_linear">
+                    <ImageView
+                        style="@style/mine_order_image"
+                        android:src="@drawable/new_address"/>
+                    <TextView
+                        android:layout_marginTop="10dp"
+                        style="@style/mine_order_text"
+                        android:text="My Address"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_new_linear_info"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/ll_click_selector"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    style="@style/mine_selection_text"
+                    android:text="Profile"/>
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@drawable/bg_divider"/>
+            <LinearLayout
+                android:id="@+id/mine_new_linear_msg"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/ll_click_selector">
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/color_4A4A4A"
+                    android:textSize="15sp"
+                    android:text="My Notification" />
+
+                <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/mine_new_img_msg"
+                    android:layout_height="7dp"
+                    android:layout_width="7dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/red_hot" />
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    style="@style/mine_selection_text"
+                    android:text=""/>
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@drawable/bg_divider"/>
+
+            <LinearLayout
+                android:id="@+id/mine_new_linear_history"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/ll_click_selector">
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    style="@style/mine_selection_text"
+                    android:text="Product History"/>
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@drawable/bg_divider"/>
+            <LinearLayout
+                android:id="@+id/mine_new_linear_phone"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/ll_click_selector">
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    style="@style/mine_selection_text"
+                    android:text="Customer Service"/>
+
+                <TextView
+                    android:id="@+id/mine_new_text_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cs.jimat@outlook.com"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@color/color_9B9B9B"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <View
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@drawable/bg_divider"/>
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/mine_new_linear_protocl"
+                style="@style/mine_selection_linear">
+
+                <TextView
+                    android:layout_marginLeft="15dp"
+                    style="@style/mine_selection_text"
+                    android:text="协议与声明"/>
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@drawable/bg_divider"/>
+
+            <LinearLayout
+                android:id="@+id/mine_new_linear_set"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="@drawable/ll_click_selector">
+
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:layout_marginLeft="15dp"
+                    android:text="Setting" />
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

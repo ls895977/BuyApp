@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="shadow_height">2.5dp</dimen>
+    <dimen name="home_toolbar_height">50dp</dimen>
+    <dimen name="home_toolbar_icon_size">20sp</dimen>
+    <dimen name="home_toolbar_text_size">12sp</dimen>
+    <dimen name="mine_toolbar_icon_size">20sp</dimen>
+    <dimen name="mine_order_icon_size">24sp</dimen>
+    <dimen name="mine_linear_icon_size">19sp</dimen>
+    <dimen name="mine_right_next_icon_size">17sp</dimen>
+    <dimen name="divider_height">0.5dp</dimen>
+    <dimen name="mine_left_back_icon_size">22sp</dimen>
+    <dimen name="mine_title_name_size">18sp</dimen>
+    <dimen name="mine_right_name_size">14sp</dimen>
+</resources>

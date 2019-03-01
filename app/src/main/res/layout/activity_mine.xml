@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+    android:id="@+id/mine_swipe_refresh"
+    android:saveEnabled="false"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.enuos.jimat.activity.home.MineActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_F2F2F2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@color/mainBlue">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/mine_title_name_size"
+                            android:textColor="@color/white"
+                            android:text="个人中心" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="100dp">
+                <ImageView
+                    android:id="@+id/mine_head_icon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_marginLeft="20dp"
+                    android:src="@drawable/default_icon"
+                    android:layout_centerVertical="true" />
+
+                <TextView
+                    android:id="@+id/mine_user_go_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="38dp"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="17sp"
+                    android:text="登录"
+                    android:textColor="@color/black"/>
+
+                <View
+                    android:id="@+id/mine_user_go_view"
+                    android:layout_width="1dp"
+                    android:layout_height="20dp"
+                    android:layout_toRightOf="@+id/mine_head_icon"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="39dp"
+                    android:layout_marginLeft="57dp"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/mine_user_go_register"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="38dp"
+                    android:layout_marginLeft="64dp"
+                    android:textSize="17sp"
+                    android:text="注册"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/mine_user_account"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/mine_head_icon"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="52dp"
+                    android:layout_marginLeft="28dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/mine_user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@+id/mine_head_icon"
+                    android:layout_marginLeft="28dp"
+                    android:layout_marginBottom="25dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/black"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/mine_linear_money"
+                style="@style/mine_selection_linear">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_money"/>
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="余额"/>
+                <TextView
+                    android:id="@+id/mine_text_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/color_848484"
+                    android:textSize="13sp"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/mine_linear_info"
+                style="@style/mine_selection_linear">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_info"/>
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="个人资料"/>
+
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/right_icon" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_address"
+                style="@style/mine_selection_linear">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_address"/>
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="收货地址"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_order"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_order" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="我的订单"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_msg"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_msg" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="我的消息"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_history"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_history" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="历史产品"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_service"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_service" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="我的客服"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mine_linear_phone"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_phone" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="客服电话"/>
+                <TextView
+                    android:id="@+id/mine_text_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="025-81231231"
+                    android:layout_marginRight="15dp"
+                    android:textColor="@color/color_848484"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/mine_linear_set"
+                style="@style/mine_selection_linear">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/mine_set" />
+                <TextView
+                    style="@style/mine_selection_text"
+                    android:text="设置"/>
+                <ImageView
+                    style="@style/mine_selection_image"
+                    android:src="@drawable/right_icon"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>
