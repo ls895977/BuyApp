@@ -29,7 +29,7 @@ class WXEntryActivity : Activity(), IWXAPIEventHandler {
         if (resp?.errCode == BaseResp.ErrCode.ERR_OK) {
             finish()
         } else {
-
+            finish()
         }
     }
 

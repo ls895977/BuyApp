@@ -69,6 +69,7 @@ public class SharePopupWindow extends PopupWindow {
 
         // 设置可触
         this.setFocusable(true);
+        this.setTouchable(true);
         ColorDrawable dw = new ColorDrawable(0x0000000);
         this.setBackgroundDrawable(dw);
 
