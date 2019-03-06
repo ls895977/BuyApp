@@ -33,19 +33,28 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.enuos.jimat.R;
 import com.enuos.jimat.activity.common.EaseChatInputMenu.ChatInputMenuListener;
 import com.enuos.jimat.activity.common.ExtendMenu.EaseChatExtendMenuItemClickListener;
 import com.enuos.jimat.activity.home.MainActivity;
+import com.enuos.jimat.model.User;
+import com.enuos.jimat.utils.PrefUtils;
+import com.enuos.jimat.utils.toast.ToastUtils;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.ChatManager;
 import com.hyphenate.chat.Conversation;
 import com.hyphenate.chat.Message;
+import com.hyphenate.helpdesk.callback.ValueCallBack;
 import com.hyphenate.helpdesk.easeui.UIProvider;
 import com.hyphenate.helpdesk.easeui.provider.CustomChatRowProvider;
 import com.hyphenate.helpdesk.easeui.recorder.MediaManager;
@@ -54,10 +63,10 @@ import com.hyphenate.helpdesk.easeui.runtimepermission.PermissionsResultAction;
 import com.hyphenate.helpdesk.easeui.ui.BaseFragment;
 import com.hyphenate.helpdesk.easeui.ui.ImageGridActivity;
 import com.hyphenate.helpdesk.easeui.util.CommonUtils;
+import com.hyphenate.helpdesk.easeui.util.UserUtil;
 import com.hyphenate.helpdesk.easeui.widget.AlertDialog;
 import com.hyphenate.helpdesk.easeui.widget.AlertDialog.AlertDialogUser;
 import com.hyphenate.helpdesk.easeui.widget.MessageList;
-import com.hyphenate.helpdesk.easeui.widget.MessageList.MessageListItemClickListener;
 import com.hyphenate.helpdesk.emojicon.Emojicon;
 import com.hyphenate.helpdesk.manager.EmojiconManager;
 import com.hyphenate.helpdesk.model.AgentIdentityInfo;
@@ -73,6 +82,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import xiaofei.library.datastorage.DataStorageFactory;
+import xiaofei.library.datastorage.IDataStorage;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，
@@ -86,57 +97,61 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
     RelativeLayout mMyChatBackRl;
     Unbinder unbinder;
 
-    protected static final String TAG = MyChatFragment.class.getSimpleName();
-    private static final String STATE_SAVE_IS_HIDDEN = "STATE_SAVE_IS_HIDDEN";
-    protected static final int REQUEST_CODE_CAMERA = 1;
-    protected static final int REQUEST_CODE_LOCAL = 2;
-    private static final int REQUEST_CODE_SELECT_VIDEO = 3;
+    protected static final String TAG                       = MyChatFragment.class.getSimpleName();
+    private static final   String STATE_SAVE_IS_HIDDEN      = "STATE_SAVE_IS_HIDDEN";
+    protected static final int    REQUEST_CODE_CAMERA       = 1;
+    protected static final int    REQUEST_CODE_LOCAL        = 2;
+    private static final   int    REQUEST_CODE_SELECT_VIDEO = 3;
 
-    public static final int REQUEST_CODE_EVAL = 5;
-    public static final int REQUEST_CODE_SELECT_FILE = 6;
+    public static final int               REQUEST_CODE_EVAL        = 5;
+    public static final int               REQUEST_CODE_SELECT_FILE = 6;
     /**
      * 传入fragment的参数
      */
-    protected Bundle fragmentArgs;
-    protected String toChatUsername;
-    protected boolean showUserNick;
-    protected MessageList messageList;
-    protected EaseChatInputMenu inputMenu;
+    protected           Bundle            fragmentArgs;
+    protected           String            toChatUsername;
+    protected           boolean           showUserNick;
+    protected           MessageList       messageList;
+    protected           EaseChatInputMenu inputMenu;
 
-    protected Conversation conversation;
+    protected Conversation       conversation;
     protected InputMethodManager inputManager;
-    protected ClipboardManager clipboard;
-    protected String cameraFilePath = null;
+    protected ClipboardManager   clipboard;
+    protected String             cameraFilePath = null;
     protected SwipeRefreshLayout swipeRefreshLayout;
-    protected ListView listView;
+    protected ListView           listView;
 
     protected boolean isloading;
     protected boolean haveMoreData = true;
-    protected int pagesize = 20;
+    protected int     pagesize     = 20;
     protected Message contextMenuMessage;
 
-    protected static final int ITEM_TAKE_PICTURE = 1;
-    protected static final int ITEM_PICTURE = 2;
-    protected static final int ITEM_VIDEO = 3;
-    protected static final int ITEM_FILE = 4;
+    protected static final int   ITEM_TAKE_PICTURE = 1;
+    protected static final int   ITEM_PICTURE      = 2;
+    protected static final int   ITEM_Address      = 3;
+    protected static final int   ITEM_Title        = 4;
+    protected static final int   ITEM_Eval         = 5;
+    // R.string.my_attach_address,R.string.my_attach_title, R.string.my_attach_evaluation
+    protected              int[] itemStrings       = {R.string.my_attach_picture, R.string.my_attach_take_pic,
+    };
+    //    R.drawable.hd_chat_file_selector, R.drawable.hd_chat_file_selector, R.drawable.hd_chat_file_selector
+    protected              int[] itemdrawables     = {R.drawable.hd_chat_image_selector, R.drawable.hd_chat_takepic_selector,
+    };
+    // , ITEM_Address, ITEM_Title, ITEM_Eval
+    protected              int[] itemIds           = {ITEM_PICTURE, ITEM_TAKE_PICTURE};
+    // ,
+    //            R.id.my_chat_menu_file,
+    //            R.id.my_chat_menu_title, R.id.my_chat_menu_enal
+    protected              int[] itemResIds        = {R.id.my_chat_menu_pic, R.id.my_chat_menu_take_pic};
 
-    protected int[] itemStrings = {R.string.my_attach_take_pic, R.string.my_attach_picture,
-            R.string.my_attach_video, R.string.my_attach_file};
-    protected int[] itemdrawables = {R.drawable.hd_chat_takepic_selector, R.drawable.hd_chat_image_selector,
-            R.drawable.hd_chat_video_selector, R.drawable.hd_chat_file_selector};
-
-    protected int[] itemIds = {ITEM_TAKE_PICTURE, ITEM_PICTURE, ITEM_VIDEO, ITEM_FILE};
-    protected int[] itemResIds = {R.id.my_chat_menu_take_pic, R.id.my_chat_menu_pic,
-            R.id.my_chat_menu_video, R.id.my_chat_menu_file};
-
-    private boolean isMessageListInited;
+    private   boolean                 isMessageListInited;
     protected MyMenuItemClickListener extendMenuItemClickListener;
-    private VisitorInfo visitorInfo;
-    private AgentIdentityInfo agentIdentityInfo;
-    private QueueIdentityInfo queueIdentityInfo;
-    private String titleName;
-    protected TextView tvTipWaitCount;
-    private String intentType;
+    private   VisitorInfo             visitorInfo;
+    private   AgentIdentityInfo       agentIdentityInfo;
+    private   QueueIdentityInfo       queueIdentityInfo;
+    private   String                  titleName;
+    protected TextView                tvTipWaitCount;
+    private   String                  intentType;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,7 +185,7 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
             // 返回
             case R.id.my_chat_back_rl:
                 Log.e("OkHttp", "666666: " + intentType);
-                if (intentType.equals("details")) {
+                if (intentType == null || intentType.equals("details")) {
                     getActivity().finish();
                 } else {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -189,36 +204,9 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
 
         fragmentArgs = getArguments();
         // IM服务号 http://47.254.192.108:18080/jimat/upload/image/201901/1548570038678.jpg
-//        toChatUsername = fragmentArgs.getString(Config.EXTRA_SERVICE_IM_NUMBER);
+        //        toChatUsername = fragmentArgs.getString(Config.EXTRA_SERVICE_IM_NUMBER);
         toChatUsername = "kefuchannelimid_505678";
-        showUserNick = false;
-
-//        tvName.setText("157");
-//        Glide.with(this)
-//                .load("http://47.254.192.108:18080/jimat/upload/image/201901/1548570038678.jpg")
-//                .into(imageView);
-//
-//        intentType = fragmentArgs.getString(Config.EXTRA_TITLE_NAME);
-//        UIProvider.UserProfileProvider userInfoProvider = UIProvider.getInstance().getUserProfileProvider();
-//        userInfoProvider.setNickAndAvatar(getContext(), contextMenuMessage, imageView, tvName);
-//        UIProvider.getInstance().setUserProfileProvider(userInfoProvider);
-
-
-        // APP 本身的账号
-//        IDataStorage dataStorage = DataStorageFactory.getInstance(
-//                getActivity().getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
-//        String mUserAccount = dataStorage.load(User.class, "User").userAccount;
-//        showUserNick = fragmentArgs.getBoolean(mUserAccount, true);
-        // 是否显示用户昵称
-//        showUserNick = fragmentArgs.getBoolean(Config.EXTRA_SHOW_NICK, false);
-        //指定技能组
-//        queueIdentityInfo = fragmentArgs.getParcelable(Config.EXTRA_QUEUE_INFO);
-        //指定客服
-//        agentIdentityInfo = fragmentArgs.getParcelable(Config.EXTRA_AGENT_INFO);
-//        visitorInfo = fragmentArgs.getParcelable(Config.EXTRA_VISITOR_INFO);
-//
-//        titleName = fragmentArgs.getString(Config.EXTRA_TITLE_NAME);
-        // 在父类中调用了initView和setUpView两个方法
+        showUserNick = true;
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             cameraFilePath = savedInstanceState.getString("cameraFilePath");
@@ -241,14 +229,14 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         setUserNameView();
 
         // 取出userAccount
-//        IDataStorage dataStorage = DataStorageFactory.getInstance(
-//                getActivity().getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
-//        User user = dataStorage.load(User.class, "User");
-//        if (user == null || user.userAccount.equals("")) {
-//            MediaManager.release();
-//            ChatClient.getInstance().chatManager().clearConversation(toChatUsername);
-//            messageList.refresh();
-//        }
+        //        IDataStorage dataStorage = DataStorageFactory.getInstance(
+        //                getActivity().getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
+        //        User user = dataStorage.load(User.class, "User");
+        //        if (user == null || user.userAccount.equals("")) {
+        //            MediaManager.release();
+        //            ChatClient.getInstance().chatManager().clearConversation(toChatUsername);
+        //            messageList.refresh();
+        //        }
 
     }
 
@@ -273,6 +261,7 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         messageList = (MessageList) getView().findViewById(R.id.message_list);
         messageList.setShowUserNick(showUserNick);
         listView = messageList.getListView();
+
         tvTipWaitCount = (TextView) getView().findViewById(R.id.tv_tip_waitcount);
         extendMenuItemClickListener = new MyMenuItemClickListener();
         inputMenu = (EaseChatInputMenu) getView().findViewById(R.id.input_menu);
@@ -316,7 +305,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ChatClient.getInstance().chatManager().addVisitorWaitListener(visitorWaitListener);
-
     }
 
     ChatManager.VisitorWaitListener visitorWaitListener = new ChatManager.VisitorWaitListener() {
@@ -461,10 +449,43 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         });
 
         isMessageListInited = true;
+
+        //设置头像和昵称 某些控件可能没有头像和昵称，需要注意
+        UIProvider.getInstance().setUserProfileProvider(new UIProvider.UserProfileProvider() {
+            @Override
+            public void setNickAndAvatar(Context context, Message message, ImageView userAvatarView, TextView usernickView) {
+                if (message.direct() == Message.Direct.RECEIVE) {
+                    //设置接收方的昵称和头像
+                    UserUtil.setAgentNickAndAvatar(context, message, userAvatarView, usernickView);
+                } else {
+                    //                    //此处设置当前登录用户的头像，
+                    IDataStorage dataStorage = DataStorageFactory.getInstance(
+                            getActivity(), DataStorageFactory.TYPE_DATABASE);
+                    //设置图片圆角角度
+                    RoundedCorners roundedCorners = new RoundedCorners(30);
+                    //通过RequestOptions扩展功能
+                    RequestOptions options = RequestOptions.bitmapTransform(roundedCorners).override(300, 300)
+                            //圆形
+                            .circleCrop().placeholder(R.drawable.default_icon).diskCacheStrategy(DiskCacheStrategy.ALL);
+                    if (userAvatarView != null) {
+                        if (PrefUtils.getString(getActivity(), "UserPic", "").isEmpty())
+                            Glide.with(getActivity()).load(R.drawable.default_icon).apply(options).into(userAvatarView);
+                        else
+                            Glide.with(getActivity()).load(
+                                    PrefUtils.getString(getActivity(), "UserPic", "")
+                            ).apply(options).into(userAvatarView);
+                    }
+                    if (usernickView != null) {
+                        usernickView.setText(dataStorage.load(User.class, "User").userAccount);
+                    }
+                }
+            }
+        });
+
     }
 
     protected void setListItemClickListener() {
-        messageList.setItemClickListener(new MessageListItemClickListener() {
+        messageList.setItemClickListener(new MessageList.MessageListItemClickListener() {
 
             @Override
             public void onUserAvatarClick(String username) {
@@ -674,30 +695,23 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
                 case ITEM_PICTURE:
                     selectPicFromLocal(); // 图库选择图片
                     break;
-                case ITEM_VIDEO:
-                    PermissionsManager.getInstance().requestPermissionsIfNecessaryForResult(MyChatFragment.this, new String[]{Manifest.permission.CAMERA}, new PermissionsResultAction() {
-                        @Override
-                        public void onGranted() {
-                            selectVideoFromLocal();
-                        }
+                case ITEM_Title://留言
 
-                        @Override
-                        public void onDenied(String permission) {
-
-                        }
-                    });
 
                     break;
-                case ITEM_FILE:
+                case ITEM_Address:    //发送位置
                     //一般文件
                     //demo这里是通过系统api选择文件，实际app中最好是做成qq那种选择发送文件
-                    selectFileFromLocal();
+                    //                    sendLocationMessage();
+                    break;
+
+                case ITEM_Eval:  //评价
+
                     break;
                 default:
                     break;
             }
         }
-
     }
 
     private void selectVideoFromLocal() {
@@ -724,7 +738,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
 
     /**
      * 根据图库图片uri发送图片
-     *
      * @param selectedImage
      */
     protected void sendPicByUri(Uri selectedImage) {
@@ -760,7 +773,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
 
     /**
      * 根据uri发送文件
-     *
      * @param uri
      */
     protected void sendFileByUri(Uri uri) {
@@ -889,7 +901,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
     public interface EaseChatFragmentListener {
         /**
          * 用户头像点击事件
-         *
          * @param username
          */
         void onAvatarClick(String username);
@@ -906,7 +917,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
 
         /**
          * 扩展输入栏item点击事件,如果要覆盖EaseChatFragment已有的点击事件，return true
-         *
          * @param view
          * @param itemId
          * @return
@@ -915,7 +925,6 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
 
         /**
          * 设置自定义chatrow提供者
-         *
          * @return
          */
         CustomChatRowProvider onSetCustomChatRowProvider();
@@ -964,8 +973,8 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
             return;
         }
         Message message = Message.createTxtSendMessage(content, toChatUsername);
-//        message.setAttribute("nickname", "157");
-//        message.setAttribute("avatar", "http://47.254.192.108:18080/jimat/upload/image/201901/1548570038678.jpg");
+        //        message.setAttribute("nickname", "157");
+        //        message.setAttribute("avatar", "http://47.254.192.108:18080/jimat/upload/image/201901/1548570038678.jpg");
         attachMessageAttrs(message);
         ChatClient.getInstance().chatManager().sendMessage(message);
         messageList.refreshSelectLast();
@@ -1015,7 +1024,7 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         messageList.refreshSelectLastDelay(MessageList.defaultDelay);
     }
 
-    protected void sendLocationMessage(double latitude, double longitude, String locationAddress, String toChatUsername) {
+    protected void sendLocationMessage(double latitude, double longitude, String locationAddress) {
         Message message = Message.createLocationSendMessage(latitude, longitude, locationAddress, toChatUsername);
         attachMessageAttrs(message);
         ChatClient.getInstance().chatManager().sendMessage(message);
@@ -1027,6 +1036,27 @@ public class MyChatFragment extends BaseFragment implements ChatManager.MessageL
         attachMessageAttrs(message);
         ChatClient.getInstance().chatManager().sendMessage(message);
         messageList.refreshSelectLastDelay(MessageList.defaultDelay);
+    }
+
+    /**
+     * 创建一个新的留言
+     * @param postContent
+     * @param projectId
+     *         留言ProjectId  进入“管理员模式 → 留言”，可以看到这个Project ID
+     */
+    protected void sendLeaveMessage(String postContent, String projectId) {
+
+        ChatClient.getInstance().leaveMsgManager().createLeaveMsg(postContent, projectId, toChatUsername, new ValueCallBack() {
+            @Override
+            public void onSuccess(Object value) {
+                ToastUtils.show(getActivity(), "Successful");
+            }
+
+            @Override
+            public void onError(int error, String errorMsg) {
+                ToastUtils.show(getActivity(), "Failure");
+            }
+        });
     }
 
 

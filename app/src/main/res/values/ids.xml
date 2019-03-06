@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<item type="id" name="my_chat_menu_take_pic"/>
-	<item type="id" name="my_chat_menu_pic"/>
-	<item type="id" name="my_chat_menu_video"/>
-	<item type="id" name="my_chat_menu_file"/>
+    <item name="my_chat_menu_take_pic" type="id"/>
+    <item name="my_chat_menu_pic" type="id"/>
+    <item name="my_chat_menu_video" type="id"/>
+    <item name="my_chat_menu_file" type="id"/>
+    <item name="my_chat_menu_title" type="id"/>
+    <item name="my_chat_menu_enal" type="id"/>
 </resources>

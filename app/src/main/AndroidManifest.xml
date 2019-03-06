@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION"></uses-permission>
     <application
         android:name=".app.MyApplication"
         android:allowBackup="false"
@@ -95,6 +95,8 @@
         </activity>
         <activity
             android:name=".activity.home.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="landscape"
             android:launchMode="singleTop" />
         <activity android:name=".activity.account.LoginActivity" />
         <activity android:name=".activity.account.RegisterActivity" />
@@ -138,7 +140,9 @@
         <activity android:name=".activity.mine.EditNameActivity" />
         <activity android:name=".activity.goods.PaySuccessActivity" />
         <activity android:name=".activity.goods.PayFailActivity" />
-        <activity android:name=".activity.home.newInfo.HomeNewActivity"/>
+        <activity android:name=".activity.home.newInfo.HomeNewActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:screenOrientation="landscape"/>
         <activity android:name=".activity.goods.WebPayActivity" />
         <activity android:name=".activity.order.OrderBuyActivity" />
         <activity android:name=".activity.common.ShowBannerActivity" />

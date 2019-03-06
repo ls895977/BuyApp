@@ -22,6 +22,7 @@ import com.enuos.jimat.activity.home.MainActivity;
 import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
 import com.enuos.jimat.model.bean.UserInfo;
+import com.enuos.jimat.utils.PrefUtils;
 import com.enuos.jimat.utils.event.EventConfig;
 import com.enuos.jimat.utils.http.HttpUtils;
 import com.enuos.jimat.utils.http.UrlConfig;
@@ -46,43 +47,43 @@ import xiaofei.library.datastorage.IDataStorage;
 public class LoginNewActivity extends BaseActivity {
 
     @BindView(R.id.login_new_back)
-    ImageView mBack;
+    ImageView    mBack;
     @BindView(R.id.login_new_go_register)
-    TextView mLoginNewGoRegister;
+    TextView     mLoginNewGoRegister;
     @BindView(R.id.login_new_account)
-    EditText mLoginNewAccount;
+    EditText     mLoginNewAccount;
     @BindView(R.id.login_new_password_linear_top)
     LinearLayout mLoginNewPasswordLinearTop;
     @BindView(R.id.login_new_password)
-    EditText mLoginNewPassword;
+    EditText     mLoginNewPassword;
     @BindView(R.id.login_new_password_is_hide)
-    ImageView mLoginNewPasswordIsHide;
+    ImageView    mLoginNewPasswordIsHide;
     @BindView(R.id.login_new_password_linear_bottom)
     LinearLayout mLoginNewPasswordLinearBottom;
     @BindView(R.id.login_new_sms_linear_top)
     LinearLayout mLoginNewSmsLinearTop;
     @BindView(R.id.login_new_sms)
-    EditText mLoginNewSms;
+    EditText     mLoginNewSms;
     @BindView(R.id.login_new_sms_btn_get)
-    Button mLoginNewSmsBtnGet;
+    Button       mLoginNewSmsBtnGet;
     @BindView(R.id.login_new_sms_linear_bottom)
     LinearLayout mLoginNewSmsLinearBottom;
     @BindView(R.id.login_new_type_change)
-    TextView mLoginNewTypeChange;
+    TextView     mLoginNewTypeChange;
     @BindView(R.id.login_new_forget_password)
-    TextView mLoginNewForgetPassword;
+    TextView     mLoginNewForgetPassword;
     @BindView(R.id.login_new_go_login)
-    Button mLoginNewGoLogin;
+    Button       mLoginNewGoLogin;
 
-    private LoginPswTask mLoginPswTask;
-    private LoginSmsTask mLoginSmsTask;
-    private SendCodeTask mSendCodeTask;
+    private LoginPswTask     mLoginPswTask;
+    private LoginSmsTask     mLoginSmsTask;
+    private SendCodeTask     mSendCodeTask;
     private SweetAlertDialog mProgressDialog;
-    private boolean isHideDisplay = true;
-    private boolean isLoginPsw = true;
-    private String hxCommonAccountHead = "jimataccounts";
-    private String hxCommonPswHead = "jimatpassword";
-    private String from, goodsId, goodsType, homeTime;
+    private boolean          isHideDisplay       = true;
+    private boolean          isLoginPsw          = true;
+    private String           hxCommonAccountHead = "jimataccounts";
+    private String           hxCommonPswHead     = "jimatpassword";
+    private String           from, goodsId, goodsType, homeTime;
 
     /**
      * 60秒倒计时
@@ -128,14 +129,14 @@ public class LoginNewActivity extends BaseActivity {
                         Intent intent = new Intent(mBaseActivity, MainActivity.class);
                         intent.putExtra("item", "0");
                         intent.putExtra("goodsType", "0");
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     } else {
                         Intent intent = new Intent(mBaseActivity, MainActivity.class);
                         intent.putExtra("item", "2");
                         intent.putExtra("goodsType", "0");
-//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     }
@@ -411,7 +412,8 @@ public class LoginNewActivity extends BaseActivity {
 
         // onProgressUpdate方法用于更新进度信息
         @Override
-        protected void onProgressUpdate(Integer... progresses) { }
+        protected void onProgressUpdate(Integer... progresses) {
+        }
 
         // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
         @Override
@@ -428,8 +430,10 @@ public class LoginNewActivity extends BaseActivity {
                     // 保存用户的基本数据
                     User user = new User();
                     String userAccount = mLoginNewAccount.getText().toString();
-                    final String ID =  jsonObject.getString("ID");
-                    final String TOKEN =  jsonObject.getString("TOKEN");
+                    final String ID = jsonObject.getString("ID");
+                    final String TOKEN = jsonObject.getString("TOKEN");
+                    PrefUtils.setString(getApplication(), "UserPic",
+                            (jsonObject.getString("MEMBER_AVATAR") == null) ? "" : jsonObject.getString("MEMBER_AVATAR"));
                     user.userID = ID;
                     user.userAccount = userAccount;
                     user.isLogin = "true";
@@ -442,32 +446,33 @@ public class LoginNewActivity extends BaseActivity {
                     Log.e("789", "环信登陆22" + hxCommonPswHead + ID);
                     ChatClient.getInstance().login(hxCommonAccountHead + ID, hxCommonPswHead + ID,
                             new Callback() {
-                        @Override
-                        public void onSuccess() {
-                            // 处理模型层数据
-                            Model.getInstance().loginSuccess(new UserInfo(hxCommonAccountHead + ID));
-                            // 保存到本地数据库
-                            Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + ID));
+                                @Override
+                                public void onSuccess() {
+                                    // 处理模型层数据
+                                    Model.getInstance().loginSuccess(new UserInfo(hxCommonAccountHead + ID));
+                                    // 保存到本地数据库
+                                    Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + ID));
 
-                            EMClient.getInstance().groupManager().loadAllGroups();
-                            EMClient.getInstance().chatManager().loadAllConversations();
+                                    EMClient.getInstance().groupManager().loadAllGroups();
+                                    EMClient.getInstance().chatManager().loadAllConversations();
 
-                            Log.e("789", "环信登陆成功");
+                                    Log.e("789", "环信登陆成功");
 
-                        }
+                                }
 
-                        @Override
-                        public void onError(int code, String error) {
-                            Log.e("789", "环信登陆失败" + String.valueOf(code));
-                            Log.e("789", "环信登陆失败" + error);
-                        }
+                                @Override
+                                public void onError(int code, String error) {
+                                    Log.e("789", "环信登陆失败" + String.valueOf(code));
+                                    Log.e("789", "环信登陆失败" + error);
+                                }
 
-                        @Override
-                        public void onProgress(int progress, String status) { }
-                    });
+                                @Override
+                                public void onProgress(int progress, String status) {
+                                }
+                            });
                     EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
                     ToastUtils.show(mBaseActivity, "Login Successful");
-//                    startActivity(new Intent(mBaseActivity, MainActivity.class));
+                    //                    startActivity(new Intent(mBaseActivity, MainActivity.class));
 
                     Log.e("OkHttp", "111: " + from);
                     if (from.equals("home")) {
@@ -505,7 +510,7 @@ public class LoginNewActivity extends BaseActivity {
                 }
             } else {
                 ToastUtils.show(mBaseActivity, result[1].toString());
-                startActivity(new Intent(mBaseActivity, RegisterNewActivity.class));
+//                startActivity(new Intent(mBaseActivity, RegisterNewActivity.class));
             }
 
         }
@@ -562,7 +567,8 @@ public class LoginNewActivity extends BaseActivity {
 
         // onProgressUpdate方法用于更新进度信息
         @Override
-        protected void onProgressUpdate(Integer... progresses) { }
+        protected void onProgressUpdate(Integer... progresses) {
+        }
 
         // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
         @Override
@@ -579,8 +585,8 @@ public class LoginNewActivity extends BaseActivity {
                     // 保存用户的基本数据
                     User user = new User();
                     String userAccount = mLoginNewAccount.getText().toString();
-                    final String ID =  jsonObject.getString("ID");
-                    final String TOKEN =  jsonObject.getString("TOKEN");
+                    final String ID = jsonObject.getString("ID");
+                    final String TOKEN = jsonObject.getString("TOKEN");
                     user.userID = ID;
                     user.userAccount = userAccount;
                     user.isLogin = "true";
@@ -614,11 +620,12 @@ public class LoginNewActivity extends BaseActivity {
                                 }
 
                                 @Override
-                                public void onProgress(int progress, String status) { }
+                                public void onProgress(int progress, String status) {
+                                }
                             });
                     EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
                     ToastUtils.show(mBaseActivity, "Login Successful");
-//                    startActivity(new Intent(mBaseActivity, MainActivity.class));
+                    //                    startActivity(new Intent(mBaseActivity, MainActivity.class));
 
                     if (from.equals("home")) {
                         Intent intent = new Intent(mBaseActivity, MainActivity.class);

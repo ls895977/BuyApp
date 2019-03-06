@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.enuos.jimat.R;
-import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.fragment.BaseFragment;
-import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
 import com.enuos.jimat.module.OrderListItem;
 import com.enuos.jimat.utils.event.EventConfig;
@@ -25,8 +23,6 @@ import com.enuos.jimat.utils.http.UrlConfig;
 import com.enuos.jimat.utils.toast.ToastUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshBase;
 import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshRecyclerView;
 
@@ -247,48 +243,48 @@ public class OrderNotPayFragment extends BaseFragment {
                 // 同一账户多个终端登录
                 String msgError = result[1].toString();
                 ToastUtils.show(mContext, msgError);
-                if (msgError.contains("Your account is being logged") || msgError.contains("account")) {
-                    // 退出 APP 本身的账号
-                    IDataStorage dataStorage = DataStorageFactory.getInstance(
-                            getActivity().getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
-                    User user = new User();
-                    user.userAccount = "";
-                    user.isLogin = "false";
-                    user.token = "";
-                    dataStorage.storeOrUpdate(user, "User");
-                    EventBus.getDefault().post(EventConfig.EVENT_EXIT);
-                    // 退出环信账号
-                    Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            // 登录环信服务器退出登录
-                            EMClient.getInstance().logout(false, new EMCallBack() {
-                                @Override
-                                public void onSuccess() {
-                                    // 关闭 DBHelper
-                                    // Model.getInstance().getDbManager().close();
-                                    Log.e("789", "环信账号退出成功");
-                                }
-
-                                @Override
-                                public void onError(int i, final String s) {
-                                }
-
-                                @Override
-                                public void onProgress(int i, String s) {
-                                }
-                            });
-                        }
-                    });
-                    ToastUtils.show( getActivity(), "Please Login");
-                    Intent intentG = new Intent( getActivity(), LoginNewActivity.class);
-                    intentG.putExtra("from", "mine");
-                    intentG.putExtra("goodsId", "");
-                    intentG.putExtra("goodsType", "");
-                    intentG.putExtra("homeTime", "0");
-                    startActivity(intentG);
-                    getActivity().finish();
-                }
+//                if (msgError.contains("Your account is being logged") || msgError.contains("account")) {
+//                    // 退出 APP 本身的账号
+//                    IDataStorage dataStorage = DataStorageFactory.getInstance(
+//                            getActivity(), DataStorageFactory.TYPE_DATABASE);
+//                    User user = new User();
+//                    user.userAccount = "";
+//                    user.isLogin = "false";
+//                    user.token = "";
+//                    dataStorage.storeOrUpdate(user, "User");
+//                    EventBus.getDefault().post(EventConfig.EVENT_EXIT);
+//                    // 退出环信账号
+//                    Model.getInstance().getGlobalThreadPool().execute(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // 登录环信服务器退出登录
+//                            EMClient.getInstance().logout(false, new EMCallBack() {
+//                                @Override
+//                                public void onSuccess() {
+//                                    // 关闭 DBHelper
+//                                    // Model.getInstance().getDbManager().close();
+//                                    Log.e("789", "环信账号退出成功");
+//                                }
+//
+//                                @Override
+//                                public void onError(int i, final String s) {
+//                                }
+//
+//                                @Override
+//                                public void onProgress(int i, String s) {
+//                                }
+//                            });
+//                        }
+//                    });
+//                    ToastUtils.show( getActivity(), "Please Login");
+//                    Intent intentG = new Intent( getActivity(), LoginNewActivity.class);
+//                    intentG.putExtra("from", "mine");
+//                    intentG.putExtra("goodsId", "");
+//                    intentG.putExtra("goodsType", "");
+//                    intentG.putExtra("homeTime", "0");
+//                    startActivity(intentG);
+//                    getActivity().finish();
+//                }
                 // 同一账户多个终端登录
             }
 

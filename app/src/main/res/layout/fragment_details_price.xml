@@ -1,65 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/color_F1F1F1"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/color_F1F1F1">
 
-    <include layout="@layout/item_details_price_empty"/>
-
-    <RelativeLayout
-        android:id="@+id/details_price_result_layout"
+    <LinearLayout
+        android:id="@+id/details_history_price_rv_top"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_F1F1F1"
-        android:layout_marginTop="40dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:id="@+id/details_history_price_rv_top"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:textColor="@color/color_4A4A4A"
+            android:text="Time"
+            android:textSize="13sp"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp">
 
-                <TextView
-                    style="@style/orders_text"
-                    android:textSize="13sp"
-                    android:text="Time" />
-            </LinearLayout>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Price"
+            android:textColor="@color/color_4A4A4A"
+            android:textSize="13sp"/>
 
-            <View
-                android:visibility="gone"
-                android:layout_width="0.1dp"
-                android:layout_height="match_parent"
-                android:background="@color/color_ABAAAA"/>
+    </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dp">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/details_price_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/details_history_price_rv_top"
+        />
 
-                <TextView
-                    style="@style/orders_text"
-                    android:textSize="13sp"
-                    android:text="Price" />
-            </LinearLayout>
+    <include
+        layout="@layout/item_details_price_empty"
+        />
 
-        </LinearLayout>
-
-        <com.vedeng.widget.base.view.pulltorefresh.PullToRefreshRecyclerView
-            android:id="@+id/details_price_rv"
-            android:layout_marginTop="40dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

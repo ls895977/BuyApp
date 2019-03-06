@@ -7,13 +7,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,7 +35,6 @@ import com.enuos.jimat.R;
 import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
 import com.enuos.jimat.activity.common.ChatActivity;
-import com.enuos.jimat.activity.common.ShowBannerActivity;
 import com.enuos.jimat.adapter.PagerSlideAdapter;
 import com.enuos.jimat.app.MyApplication;
 import com.enuos.jimat.fragment.BaseFragment;
@@ -47,8 +50,10 @@ import com.enuos.jimat.utils.http.UrlConfig;
 import com.enuos.jimat.utils.toast.ToastUtils;
 import com.enuos.jimat.view.BannerModel;
 import com.enuos.jimat.view.BannerViewAdapter;
-import com.enuos.jimat.view.MyViewPager;
 import com.enuos.jimat.view.SharePopupWindow;
+import com.enuos.jimat.view.WrapContentHeightViewPager;
+import com.example.myvideoplayer.JCVideoPlayer;
+import com.example.myvideoplayer.JCVideoPlayerStandard;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.chat.EMClient;
@@ -57,8 +62,6 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
 import com.youth.banner.Banner;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,6 +72,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -79,8 +83,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import xiaofei.library.datastorage.DataStorageFactory;
 import xiaofei.library.datastorage.IDataStorage;
 
@@ -91,93 +93,93 @@ import static com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimelin
 public class GoodsDetailsActivity extends BaseActivity {
 
     @BindView(R.id.goods_details_back)
-    ImageView mBack;
+    ImageView   mBack;
     @BindView(R.id.goods_details_banner)
-    Banner mGoodsDetailsBanner;
+    Banner      mGoodsDetailsBanner;
     @BindView(R.id.goods_details_new_price)
-    TextView mGoodsDetailsNewPrice;
+    TextView    mGoodsDetailsNewPrice;
     @BindView(R.id.goods_details_old_price)
-    TextView mGoodsDetailsOldPrice;
+    TextView    mGoodsDetailsOldPrice;
     @BindView(R.id.goods_details_progess_text)
-    TextView mGoodsDetailsProgessText;
+    TextView    mGoodsDetailsProgessText;
     @BindView(R.id.goods_details_progess)
     ProgressBar mGoodsDetailsProgess;
     @BindView(R.id.goods_details_name)
-    TextView mGoodsDetailsName;
+    TextView    mGoodsDetailsName;
     @BindView(R.id.goods_details_shop_name)
-    TextView mGoodsDetailsShopName;
+    TextView    mGoodsDetailsShopName;
     @BindView(R.id.goods_details_btn_buy)
-    Button mGoodsDetailsBtnBuy;
+    Button      mGoodsDetailsBtnBuy;
     @BindView(R.id.goods_details_go_msg)
-    ImageView mGoodsDetailsGoMsg;
-    @BindView(R.id.goods_details_text_details)
-    TextView mGoodsDetailsTextDetails;
-    @BindView(R.id.goods_details_linear_details)
-    LinearLayout mGoodsDetailsLinearDetails;
-    @BindView(R.id.goods_details_text_price_record)
-    TextView mGoodsDetailsTextPriceRecord;
-    @BindView(R.id.goods_details_linear_price_record)
-    LinearLayout mGoodsDetailsLinearPriceRecord;
-    @BindView(R.id.goods_details_text_buy_record)
-    TextView mGoodsDetailsTextBuyRecord;
-    @BindView(R.id.goods_details_linear_buy_record)
-    LinearLayout mGoodsDetailsLinearBuyRecord;
-    @BindView(R.id.goods_details_tab_line)
-    ImageView mTabLine;
+    ImageView   mGoodsDetailsGoMsg;
+
+
     @BindView(R.id.goods_details_view_pager)
-    ViewPager mViewPager;
+    WrapContentHeightViewPager mViewPager;
     @BindView(R.id.goods_details_details_default)
-    TextView mGoodsDetailsDetailsDefault;
+    TextView                   mGoodsDetailsDetailsDefault;
     @BindView(R.id.goods_details_goods_id)
-    TextView mGoodsDetailsGoodsId;
+    TextView                   mGoodsDetailsGoodsId;
     @BindView(R.id.good_time_hour)
-    TextView mGoodTimeHour;
+    TextView                   mGoodTimeHour;
     @BindView(R.id.good_time_minute)
-    TextView mGoodTimeMinute;
+    TextView                   mGoodTimeMinute;
     @BindView(R.id.good_time_second)
-    TextView mGoodTimeSecond;
+    TextView                   mGoodTimeSecond;
     @BindView(R.id.goods_details_buy_linear)
-    LinearLayout mGoodsDetailsBuyLinear;
+    LinearLayout               mGoodsDetailsBuyLinear;
     @BindView(R.id.goods_details_goods_type)
-    TextView mGoodsDetailsGoodsType;
+    TextView                   mGoodsDetailsGoodsType;
     @BindView(R.id.jc_video)
-    JCVideoPlayerStandard jcVideo;
+    JCVideoPlayerStandard      jcVideo;
     @BindView(R.id.goods_details_share)
-    ImageView mGoodsDetailsShare;
+    ImageView                  mGoodsDetailsShare;
     @BindView(R.id.imgchange)
-    ImageView imgchange;
+    ImageView                  imgchange;
     @BindView(R.id.viewPager)
-    MyViewPager viewPager;
+    ViewPager                  viewPager;
     @BindView(R.id.banner_rl)
-    RelativeLayout mBannerRl;
+    RelativeLayout             mBannerRl;
     @BindView(R.id.goods_details_transparent)
-    ImageView mGoodsDetailsTransparent;
+    ImageView                  mGoodsDetailsTransparent;
+    @BindView(R.id.toolbar_tab)
+    TabLayout                  mTablayout;
+    @BindView(R.id.toolbar)
+    Toolbar                    mToolBar;
+    @BindView(R.id.goods_details_nested_scroll)
+    NestedScrollView           mJudgeNested;
+    @BindView(R.id.app_bar_layout)
+    AppBarLayout               mAppBarLayout;
+    @BindView(R.id.lin1)
+    LinearLayout               mLin;
+    @BindView(R.id.goods_details_btn_intop)
+    ImageView                  mInTop;
 
     private SweetAlertDialog mProgressDialog;
-    private String goodsId, goodsType, type, value, homeTime, videoUrl, img;
+    private String           goodsId, goodsType, type, value, homeTime, videoUrl, img;
     private String shopName, goodsPic, goodsName, goodsPrice, clientTime, isDelete, weight;
-    private User mUser;
+    private User   mUser;
     private String nowPriceServer;
 
     private long timerTotal;
 
-    private int page = 0;
-    private int screenWidth;
+    private int                page          = 0;
+    private int                screenWidth;
     private List<BaseFragment> mFragmentList = new ArrayList<>();
 
     private SharePopupWindow mSharePopupWindow;
 
-    String intentImage[];
+    List<String> intentImage;
 
 
-    private static final int UPTATE_VIEWPAGER = 0;
-    private List<BannerModel> list;
-    private BannerViewAdapter mAdapter;
-    private int autoCurrIndex = 0;//设置当前 第几个图片 被选中
-    private Timer timer;
-    private TimerTask timerTask;
-    private long period = 5000;//轮播图展示时长,默认5秒
-    private int bannerPosition;
+    private static final int               UPTATE_VIEWPAGER = 0;
+    private              List<BannerModel> list;
+    private              BannerViewAdapter mAdapter;
+    private              int               autoCurrIndex    = 0;//设置当前 第几个图片 被选中
+    private              Timer             timer;
+    private              TimerTask         timerTask;
+    private              long              period           = 5000;//轮播图展示时长,默认5秒
+    private              int               bannerPosition;
 
     // 定时轮播图片，需要在主线程里面修改 UI
     @SuppressLint("HandlerLeak")
@@ -185,11 +187,15 @@ public class GoodsDetailsActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPTATE_VIEWPAGER:
-                    if (msg.arg1 != 0) {
-                        viewPager.setCurrentItem(msg.arg1);
-                    } else {
-                        //false 当从末页调到首页时，不显示翻页动画效果，
-                        viewPager.setCurrentItem(msg.arg1, false);
+                    if (JCVideoPlayer.isOnPlaying)
+                        break;
+                    else {
+                        if (msg.arg1 != 0) {
+                            viewPager.setCurrentItem(msg.arg1);
+                        } else {
+                            //false 当从末页调到首页时，不显示翻页动画效果，
+                            viewPager.setCurrentItem(msg.arg1, false);
+                        }
                     }
                     break;
             }
@@ -197,15 +203,20 @@ public class GoodsDetailsActivity extends BaseActivity {
     };
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_new_details);
         ButterKnife.bind(this);
-
+        setSupportActionBar(mToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        list = new ArrayList<>();
         // 获取 User 信息
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
+        intentImage = new ArrayList<>();
         mUser = dataStorage.load(User.class, "User");
 
         goodsId = getIntent().getStringExtra("goodsId");
@@ -237,41 +248,48 @@ public class GoodsDetailsActivity extends BaseActivity {
             decorView.setSystemUiVisibility(option);
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }*/
-
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset <= -mLin.getHeight() / 2) {
+                    mInTop.setVisibility(View.VISIBLE);
+                } else {
+                    mInTop.setVisibility(View.GONE);
+                }
+            }
+        });
         doRefresh();
-
     }
 
     /**
      * 广告轮播图测试数据
      */
     public void initDataA() {
-        list = new ArrayList<>();
-        if (videoUrl == null || videoUrl.equals("null")) { // 无视频
-            for (int i = 0; i < intentImage.length; i++) {
+        if (videoUrl == null || videoUrl.equals("null") || videoUrl.isEmpty()) { // 无视频
+            for (int i = 0; i < intentImage.size(); i++) {
                 BannerModel listBean = new BannerModel();
                 listBean.setBannerName("");
-                listBean.setBannerUrl(intentImage[i]);
+                listBean.setBannerUrl(intentImage.get(i));
                 listBean.setVideoPic("");
                 listBean.setPlayTime(3000);
                 listBean.setUrlType(0); //图片类型 图片
                 list.add(listBean);
             }
         } else { // 有视频
-            for (int i = 0; i < intentImage.length; i++) {
+            for (int i = 0; i < intentImage.size(); i++) {
                 BannerModel listBean = new BannerModel();
                 if (i == 0) {
                     listBean.setBannerName("");
                     listBean.setBannerUrl(videoUrl);
                     listBean.setVideoPic(img);
-                    listBean.setPlayTime(60000);
+                    listBean.setPlayTime(3000);
                     listBean.setUrlType(1);//图片类型 视频
                     list.add(listBean);
                 } else {
                     listBean.setBannerName("");
-                    listBean.setBannerUrl(intentImage[i]);
+                    listBean.setBannerUrl(intentImage.get(i));
                     listBean.setVideoPic("");
-                    listBean.setPlayTime(3000);
+                    listBean.setPlayTime(5000);
                     listBean.setUrlType(0); //图片类型 图片
                     list.add(listBean);
                 }
@@ -288,10 +306,11 @@ public class GoodsDetailsActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(0);
         mAdapter = new BannerViewAdapter(this, list);
         viewPager.setAdapter(mAdapter);
-        viewPager.setOnPageChangeListener(new MyViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            public void onPageScrolled(int position, float v, int i1) {
                 bannerPosition = position;
+                JCVideoPlayer.releaseAllVideos();
             }
 
             @Override
@@ -306,7 +325,17 @@ public class GoodsDetailsActivity extends BaseActivity {
                         timerTask.cancel();
                         timerTask = null;
                         createTimerTask();
-                    }
+                    } else
+                        createTimerTask();
+                    timer.schedule(timerTask, period, period);
+                } else {
+                    timer = new Timer();
+                    if (timerTask != null) {
+                        timerTask.cancel();
+                        timerTask = null;
+                        createTimerTask();
+                    } else
+                        createTimerTask();
                     timer.schedule(timerTask, period, period);
                 }
 
@@ -318,7 +347,6 @@ public class GoodsDetailsActivity extends BaseActivity {
             }
         });
 
-
         createTimerTask();//创建定时器
 
         timer = new Timer();
@@ -326,14 +354,13 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     }
 
-
     public void createTimerTask() {
         timerTask = new TimerTask() {
             @Override
             public void run() {
                 Message message = new Message();
                 message.what = UPTATE_VIEWPAGER;
-                if (autoCurrIndex == list.size() - 1) {
+                if (list == null || list.isEmpty() || autoCurrIndex == list.size() - 1) {
                     autoCurrIndex = -1;
                 }
                 message.arg1 = autoCurrIndex + 1;
@@ -345,6 +372,27 @@ public class GoodsDetailsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (timer != null) {//每次改变都需要重新创建定时器
+            timer.cancel();
+            timer = null;
+            timer = new Timer();
+            if (timerTask != null) {
+                timerTask.cancel();
+                timerTask = null;
+                createTimerTask();
+            } else
+                createTimerTask();
+            timer.schedule(timerTask, period, period);
+        } else {
+            timer = new Timer();
+            if (timerTask != null) {
+                timerTask.cancel();
+                timerTask = null;
+                createTimerTask();
+            } else
+                createTimerTask();
+            timer.schedule(timerTask, period, period);
+        }
     }
 
 
@@ -390,7 +438,9 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
         if (timerTask != null) {
             timerTask.cancel();
             timerTask = null;
@@ -399,6 +449,7 @@ public class GoodsDetailsActivity extends BaseActivity {
             timer.cancel();
             timer = null;
         }
+        super.onBackPressed();
     }
 
 
@@ -429,84 +480,44 @@ public class GoodsDetailsActivity extends BaseActivity {
         PagerSlideAdapter adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(page);
-        switch (page) {
-            case 0:
-                mGoodsDetailsTextDetails.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
-            case 1:
-                mGoodsDetailsTextPriceRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
-            case 2:
-                mGoodsDetailsTextBuyRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
-        }
+        mViewPager.setOffscreenPageLimit(3);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener
+                (mTablayout));
+        mTablayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
 
     /**
      * 设置滑动监听器
      */
     private void setListener() {
-
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            /**
-             * This method will be invoked when the current page is scrolled, either as part
-             * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-             *
-             * @param position Position index of the first page currently being displayed.
-             *                 Page position+1 will be visible if positionOffset is nonzero.
-             * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
-             * @param positionOffsetPixels Value in pixels indicating the offset from position.
-             *                             这个参数的使用是为了在滑动页面时有文字下方横条的滑动效果
-             */
+        //一键返回顶部
+        mInTop.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLine.getLayoutParams();
-                lp.leftMargin = screenWidth / 3 * position + positionOffsetPixels / 3;
-                mTabLine.setLayoutParams(lp);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                // 在每次切换页面时重置 TextView 的颜色
-                resetTextView();
-                switch (position) {
-                    case 0:
-                        mGoodsDetailsTextDetails.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                        break;
-                    case 1:
-                        mGoodsDetailsTextPriceRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                        break;
-                    case 2:
-                        mGoodsDetailsTextBuyRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                        break;
+            public void onClick(View v) {
+                if (mFragmentList != null && mFragmentList.size() == 3) {
+                    ((DetailsDetailsFragment) mFragmentList.get(0)).moveFirst();
+                    ((DetailsPriceFragment) mFragmentList.get(1)).moveFirst();
+                    ((DetailsBuyFragment) mFragmentList.get(2)).moveFirst();
                 }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                mAppBarLayout.setExpanded(true);
             }
         });
-    }
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                mViewPager.resetHeight(i);
+            }
 
-    /**
-     * 重置 Text 颜色
-     */
-    private void resetTextView() {
-        mGoodsDetailsTextDetails.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_4A4A4A));
-        mGoodsDetailsTextPriceRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_4A4A4A));
-        mGoodsDetailsTextBuyRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_4A4A4A));
-    }
+            @Override
+            public void onPageSelected(int i) {
 
-    /**
-     * 初始化滑动横条的宽度
-     */
-    private void initWidth() {
-        DisplayMetrics dpMetrics = new DisplayMetrics();
-        getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
-        screenWidth = dpMetrics.widthPixels;
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLine.getLayoutParams();
-        lp.width = screenWidth / 3;
-        mTabLine.setLayoutParams(lp);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     /**
@@ -560,7 +571,10 @@ public class GoodsDetailsActivity extends BaseActivity {
 
             img = getJsonObject.getString("IMAGE_URL");
             videoUrl = getJsonObject.getString("VIDEO_URL");
-
+            if (img == null || img.equals("null"))
+                img = "";
+            if (videoUrl == null || videoUrl.equals("null"))
+                videoUrl = "";
             String imgStringList = getJsonObject.getString("goodsImgList");
             JSONArray imgJsonArray = new JSONArray(imgStringList);
             int maxImage = imgJsonArray.length();
@@ -587,37 +601,45 @@ public class GoodsDetailsActivity extends BaseActivity {
                     intentImageArray[i] = imgJsonArray.getJSONObject(i).getString(postStr[i]);
                 }
             }
-            intentImage = intentImageArray;
-            mGoodsDetailsBanner.setImages(images);
-            mGoodsDetailsBanner.setImageLoader(new GlideImageLoader());
-            mGoodsDetailsBanner.setBannerAnimation(Transformer.Accordion);
-            mGoodsDetailsBanner.setOnBannerClickListener(new OnBannerClickListener() {
-                @Override
-                public void OnBannerClick(int position) {
-                    if (position == 1) { // 第一张图片
-                        if (videoUrl == null || videoUrl.equals("null")) { // 无视频
-                            Intent intent = new Intent(mBaseActivity, ShowBannerActivity.class);
-                            intent.putExtra("intentImageArray", intentImageArray);
-                            startActivity(intent);
-                        } else { // 有视频
-                            jcVideo.setVisibility(View.VISIBLE);
-                            mGoodsDetailsBanner.setVisibility(View.GONE);
-                            if (!videoUrl.equals("") || videoUrl != null) {
-                                if (!img.equals("") || img != null) {
-                                    Glide.with(mBaseActivity).load(img).into(jcVideo.thumbImageView);
-                                }
-                                jcVideo.setUp(videoUrl, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
-                            }
-                        }
-                    } else {
-                        Intent intent = new Intent(mBaseActivity, ShowBannerActivity.class);
-                        intent.putExtra("intentImageArray", intentImageArray);
-                        startActivity(intent);
-                    }
-                }
-            });
-
-            mGoodsDetailsBanner.start();
+            if (!img.isEmpty() && !videoUrl.isEmpty()) {
+                images.add(0, img);
+                String imgarray[] = new String[intentImageArray.length + 1];
+                imgarray[0] = img;
+                System.arraycopy(intentImageArray, 0, imgarray, 1, intentImageArray.length);
+                intentImage.addAll(Arrays.asList(imgarray));
+            } else {
+                intentImage.addAll(Arrays.asList(intentImageArray));
+            }
+            //            mGoodsDetailsBanner.setImages(images);
+            //            mGoodsDetailsBanner.setImageLoader(new GlideImageLoader());
+            //            mGoodsDetailsBanner.setBannerAnimation(Transformer.Accordion);
+            //            mGoodsDetailsBanner.setOnBannerClickListener(new OnBannerClickListener() {
+            //                @Override
+            //                public void OnBannerClick(int position) {
+            //                    if (position == 1) { // 第一张图片
+            //                        if (videoUrl == null || videoUrl.equals("null")) { // 无视频
+            //                            Intent intent = new Intent(mBaseActivity, ShowBannerActivity.class);
+            //                            intent.putExtra("intentImageArray", intentImageArray);
+            //                            startActivity(intent);
+            //                        } else { // 有视频
+            //                            jcVideo.setVisibility(View.VISIBLE);
+            //                            mGoodsDetailsBanner.setVisibility(View.GONE);
+            //                            if (!videoUrl.equals("") || videoUrl != null) {
+            //                                if (!img.equals("") || img != null) {
+            //                                    Glide.with(mBaseActivity).load(img).into(jcVideo.thumbImageView);
+            //                                }
+            //                                jcVideo.setUp(videoUrl, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
+            //                            }
+            //                        }
+            //                    } else {
+            //                        Intent intent = new Intent(mBaseActivity, ShowBannerActivity.class);
+            //                        intent.putExtra("intentImageArray", intentImageArray);
+            //                        startActivity(intent);
+            //                    }
+            //                }
+            //            });
+            //
+            //            mGoodsDetailsBanner.start();
 
             String startSalePrice = getJsonObject.getString("GOODS_START_PRICE"); // 原价
             mGoodsDetailsOldPrice.setText("RM " + startSalePrice);
@@ -626,8 +648,8 @@ public class GoodsDetailsActivity extends BaseActivity {
             mGoodsDetailsNewPrice.setText(getJsonObject.getString("GOODS_START_PRICE"));
 
             // 获取当前时间戳
-//            long timeStampSec = System.currentTimeMillis() / 1000; // 单位毫秒
-//            long systemTime = Long.parseLong(String.format("%010d", timeStampSec));
+            //            long timeStampSec = System.currentTimeMillis() / 1000; // 单位毫秒
+            //            long systemTime = Long.parseLong(String.format("%010d", timeStampSec));
 
             String systemTime = getJsonObject.getString("SYS_TIME"); // 系统时间
             String startTime = getJsonObject.getString("MARKET_START_TIME"); // 起售时间 单位秒
@@ -668,13 +690,13 @@ public class GoodsDetailsActivity extends BaseActivity {
                     Log.e("789", "现在的价格: " + String.valueOf(nowPrice));
 
                     // 得到降价后的具体金额A 开始价格 - 单位降价金额 降价周期到了才降价
-//                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
+                    //                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
 
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
-//                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
                         homeTime = "0";
                         mGoodTimeHour.setText(" " + "00" + " ");
                         mGoodTimeMinute.setText(" " + "00" + " ");
@@ -685,16 +707,16 @@ public class GoodsDetailsActivity extends BaseActivity {
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
-//                        mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
+                        //                        mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
 
                         mGoodsDetailsNewPrice.setText(String.format("%.2f", Double.valueOf(startSalePrice) - descPriceComplete)); // 四舍五入 保留2位
 
-//                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
                         // 代售商品无倒计时 首页和正在降价有倒计时
                         if (goodsType.equals("base")) {
                             // 倒计时
                             // 取降价周期的小数点后两位
-//                            String timesString = descTimesReal + "";
+                            //                            String timesString = descTimesReal + "";
                             String timesString = descTimes + "";
                             String timeCounterString = timesString.substring(timesString.indexOf("."), timesString.length());
                             if (timeCounterString.equals("00")) { // 数值达到降价时间区间的首尾极限
@@ -722,7 +744,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                                 mGoodTimeMinute.setText(" " + "00" + " ");
                                 mGoodTimeSecond.setText(" " + "00" + " ");
                             } else {*/
-//                                Log.e("OkHttp", "4444: " + timeStartTime);
+                            //                                Log.e("OkHttp", "4444: " + timeStartTime);
                             CountDownTimer mTimer = new CountDownTimer(timerTotal, 1000) {
                                 @Override
                                 public void onTick(long millisUntilFinished) {
@@ -739,12 +761,12 @@ public class GoodsDetailsActivity extends BaseActivity {
                                     mGoodTimeHour.setText(" " + "00" + " ");
                                     mGoodTimeMinute.setText(" " + "00" + " ");
                                     mGoodTimeSecond.setText(" " + "00" + " ");
-//                                doRefresh();
+                                    //                                doRefresh();
                                     mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
                                 }
                             };
                             mTimer.start();
-//                            }
+                            //                            }
 
                         } else {
                             homeTime = "0";
@@ -780,13 +802,13 @@ public class GoodsDetailsActivity extends BaseActivity {
                     Log.e("789", "现在的价格: " + String.valueOf(nowPrice));
 
                     // 得到降价后的具体金额A 开始价格 - 单位降价金额 降价周期到了才降价
-//                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
+                    //                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
 
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
-//                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
 
                         homeTime = "0";
                         mGoodTimeHour.setText(" " + "00" + " ");
@@ -797,8 +819,8 @@ public class GoodsDetailsActivity extends BaseActivity {
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
-//                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
-//                        mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
+                        //                        mGoodsDetailsNewPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
 
 
                         mGoodsDetailsNewPrice.setText(String.format("%.2f", Double.valueOf(startSalePrice) - descPriceComplete)); // 四舍五入 保留2位
@@ -854,7 +876,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                                         mGoodTimeHour.setText(" " + "00" + " ");
                                         mGoodTimeMinute.setText(" " + "00" + " ");
                                         mGoodTimeSecond.setText(" " + "00" + " ");
-//                                doRefresh();
+                                        //                                doRefresh();
                                         mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
                                     }
                                 };
@@ -919,16 +941,15 @@ public class GoodsDetailsActivity extends BaseActivity {
                 mGoodTimeSecond.setText(" " + "00" + " ");
             }
             mGoodsDetailsDetailsDefault.setText(getJsonObject.getString("GOODS_DETAIL"));
-//            Log.e("789", "loadPage: " + getJsonObject.getString("GOODS_DETAIL"));
-//            mGoodsDetailsDetailsDefault.setText("123");
+            //            Log.e("789", "loadPage: " + getJsonObject.getString("GOODS_DETAIL"));
+            //            mGoodsDetailsDetailsDefault.setText("123");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        list.clear();
         initDataA();
 
         initData(); // 初始化数据
-        initWidth(); // 初始化滑动横条的宽度
         setListener(); // 设置监听器
     }
 
@@ -964,7 +985,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                 try {
                     JSONObject data = (JSONObject) result[2];
                     Log.e("TAG", "获取产品详情的返回结果：" + data.toString());
-//                    String infoString = data.getString("data").replaceAll("\'", "\"");
+                    //                    String infoString = data.getString("data").replaceAll("\'", "\"");
                     String infoString = data.getString("data");
                     JSONObject jsonObject = new JSONObject(infoString);
                     loadPage(jsonObject);
@@ -1043,8 +1064,7 @@ public class GoodsDetailsActivity extends BaseActivity {
      * 点击事件
      */
     @OnClick({R.id.goods_details_back, R.id.goods_details_go_msg, R.id.goods_details_btn_buy,
-            R.id.goods_details_linear_details, R.id.goods_details_linear_price_record,
-            R.id.goods_details_linear_buy_record, R.id.goods_details_share, R.id.banner_rl,
+            R.id.goods_details_share, R.id.banner_rl,
             R.id.goods_details_transparent})
     public void onViewClick(View view) {
         switch (view.getId()) {
@@ -1077,21 +1097,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                     startActivity(intent);
                 }*/
                 break;
-            case R.id.goods_details_linear_details:
-                mViewPager.setCurrentItem(0);
-                resetTextView();
-                mGoodsDetailsTextDetails.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
-            case R.id.goods_details_linear_price_record:
-                mViewPager.setCurrentItem(1);
-                resetTextView();
-                mGoodsDetailsTextPriceRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
-            case R.id.goods_details_linear_buy_record:
-                mViewPager.setCurrentItem(2);
-                resetTextView();
-                mGoodsDetailsTextBuyRecord.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.mainRed));
-                break;
             // 联系客服
             case R.id.goods_details_go_msg:
                 ChatClient.getInstance().addConnectionListener(new MyConnectionListener(mBaseActivity));
@@ -1121,13 +1126,13 @@ public class GoodsDetailsActivity extends BaseActivity {
                 if (!ClickUtils.INSTANCE.isFastDoubleClick()) {
                     mGoodsDetailsBtnBuy.setClickable(true);
                     if (isLogin()) {
-//                    if (isDelete.equals("1")) {
-//                        ToastUtils.show(mBaseActivity, "该商品已下架，请重新选择");
-//                        finish();
-//                    } else {
+                        //                    if (isDelete.equals("1")) {
+                        //                        ToastUtils.show(mBaseActivity, "该商品已下架，请重新选择");
+                        //                        finish();
+                        //                    } else {
 
                         // 先刷新
-//                    doRefresh();
+                        //                    doRefresh();
                         mGoodsDetailsBtnBuy.setClickable(false);
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
                         // 获取当前时间 2018-12-25 12:12:12
@@ -1156,7 +1161,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                         params.put("clientPrice", payPrice);
                         OrderTask mOrderTask = new OrderTask();
                         mOrderTask.execute(params);
-//                    }
+                        //                    }
                     } else {
                         ToastUtils.show(mBaseActivity, "Please Login");
                         Intent intentA = new Intent(mBaseActivity, LoginNewActivity.class);
@@ -1278,7 +1283,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                     intent.putExtra("shopName", shopName);
                     intent.putExtra("goodsPic", goodsPic);
                     intent.putExtra("goodsName", goodsName);
-//                    intent.putExtra("goodsPrice", nowPriceServer);
+                    //                    intent.putExtra("goodsPrice", nowPriceServer);
                     intent.putExtra("goodsPrice", goodsPrice);
                     intent.putExtra("orderId", orderId);
                     intent.putExtra("orderNo", orderNo);

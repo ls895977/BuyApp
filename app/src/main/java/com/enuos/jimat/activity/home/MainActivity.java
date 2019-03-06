@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.enuos.jimat.model.User;
 import com.enuos.jimat.utils.PrefUtils;
 import com.enuos.jimat.utils.easeui.MyConnectionListener;
 import com.enuos.jimat.utils.toast.ToastUtils;
+import com.example.myvideoplayer.JCVideoPlayer;
+import com.example.myvideoplayer.JCVideoPlayerStandard;
 import com.hyphenate.chat.ChatClient;
 import com.hyphenate.helpdesk.easeui.util.IntentBuilder;
 
@@ -48,11 +51,12 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.main_tab)
     PageNavigationView mTabLayout;
     @BindView(R.id.main_pager)
-    NoScrollViewPager mViewPager;
+    NoScrollViewPager  mViewPager;
 
-    public static final int PAGE_HOME = 0;
+    public static final int PAGE_HOME    = 0;
     public static final int PAGE_Message = 1;
-    public static final int PAGE_MINE = 2;
+    public static final int PAGE_MINE    = 2;
+    public              int Last_Choose  = 0;
 
     private NavigationController mController;
 
@@ -86,29 +90,29 @@ public class MainActivity extends BaseActivity {
 
         setListener();
         addActivities();
-//        mViewPager.setCurrentItem(0);
+        //        mViewPager.setCurrentItem(0);
         itemIntent = getIntent().getStringExtra("item");
         goodsType = getIntent().getStringExtra("goodsType");
         Log.e("OkHttp", "goodsType111111: " + goodsType);
         Log.e("OkHttp", "itemIntent22222: " + itemIntent);
-//        mViewPager.setCurrentItem(Integer.parseInt(itemIntent));
+        //        mViewPager.setCurrentItem(Integer.parseInt(itemIntent));
         if (itemIntent.equals("0")) {
             mViewPager.setCurrentItem(PAGE_HOME);
             mController.setSelect(PAGE_HOME);
         } else if (itemIntent.equals("1")) {
-//            mViewPager.setCurrentItem(PAGE_Message);
-//            mController.setSelect(PAGE_Message);
-//            Log.e("OkHttp", "itemIntent333: " + itemIntent);
-//            Log.e("OkHttp", "goodsType2222222: " + goodsType);
+            //            mViewPager.setCurrentItem(PAGE_Message);
+            //            mController.setSelect(PAGE_Message);
+            //            Log.e("OkHttp", "itemIntent333: " + itemIntent);
+            //            Log.e("OkHttp", "goodsType2222222: " + goodsType);
 
 
-//            Intent intent = new IntentBuilder(mBaseActivity)
-//                    .setTargetClass(ChatActivity.class)
-//                    .setTitleName(goodsType)
-//                    .setServiceIMNumber("kefuchannelimid_505678")
-//                    .build();
-//            startActivity(intent);
-//            finish();
+            //            Intent intent = new IntentBuilder(mBaseActivity)
+            //                    .setTargetClass(ChatActivity.class)
+            //                    .setTitleName(goodsType)
+            //                    .setServiceIMNumber("kefuchannelimid_505678")
+            //                    .build();
+            //            startActivity(intent);
+            //            finish();
         } else {
             mViewPager.setCurrentItem(PAGE_MINE);
             mController.setSelect(PAGE_MINE);
@@ -163,48 +167,48 @@ public class MainActivity extends BaseActivity {
      * 权限申请
      */
     private void permissionRequest() {
-        if(Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= 23) {
             List<String> permissionsList = new ArrayList<>();
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
-//            if (ContextCompat.checkSelfPermission(mBaseActivity,
-//                    Manifest.permission.ACCESS_FINE_LOCATION)
-//                    != PackageManager.PERMISSION_GRANTED){
-//                permissionsList.add(Manifest.permission.ACCESS_FINE_LOCATION);
-//            }
+            //            if (ContextCompat.checkSelfPermission(mBaseActivity,
+            //                    Manifest.permission.ACCESS_FINE_LOCATION)
+            //                    != PackageManager.PERMISSION_GRANTED){
+            //                permissionsList.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            //            }
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.READ_LOGS)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.READ_LOGS);
             }
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.ACCESS_NETWORK_STATE)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.READ_PHONE_STATE);
             }
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.WAKE_LOCK)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.WAKE_LOCK);
             }
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.RECORD_AUDIO)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.RECORD_AUDIO);
             }
             if (ContextCompat.checkSelfPermission(mBaseActivity,
                     Manifest.permission.CAMERA)
-                    != PackageManager.PERMISSION_GRANTED){
+                    != PackageManager.PERMISSION_GRANTED) {
                 permissionsList.add(Manifest.permission.CAMERA);
             }
-//            if (ContextCompat.checkSelfPermission(mBaseActivity,
-//                    Manifest.permission.CALL_PHONE)
-//                    != PackageManager.PERMISSION_GRANTED){
-//                permissionsList.add(Manifest.permission.CALL_PHONE);
-//            }
+            //            if (ContextCompat.checkSelfPermission(mBaseActivity,
+            //                    Manifest.permission.CALL_PHONE)
+            //                    != PackageManager.PERMISSION_GRANTED){
+            //                permissionsList.add(Manifest.permission.CALL_PHONE);
+            //            }
             ActivityCompat.requestPermissions(mBaseActivity,
                     permissionsList.toArray(new String[permissionsList.size()]), 123);
         }
@@ -222,51 +226,52 @@ public class MainActivity extends BaseActivity {
                     case PAGE_HOME:
                         mViewPager.setCurrentItem(PAGE_HOME);
                         mController.setSelect(PAGE_HOME);
+                        Last_Choose = 0;
                         break;
                     case PAGE_Message:
+                        mViewPager.setCurrentItem(Last_Choose);
+                        mController.setSelect(Last_Choose);
                         ChatClient.getInstance().addConnectionListener(new MyConnectionListener(mBaseActivity));
                         if (isLogin()) {
                             // 点击“在线客服”按钮的时候，判断是否已登录环信
                             if (ChatClient.getInstance().isLoggedInBefore() || goodsType.equals("1")) {
                                 Log.e("OkHttp", "goodsType333333: " + goodsType);
-//                                mViewPager.setCurrentItem(PAGE_Message);
-//                                mController.setSelect(PAGE_Message);
                                 Intent intent = new IntentBuilder(mBaseActivity)
                                         .setTargetClass(ChatActivity.class)
                                         .setTitleName(String.valueOf(mViewPager.getCurrentItem()))
                                         .setServiceIMNumber("kefuchannelimid_505678")
                                         .build();
                                 startActivity(intent);
-                                finish();
                             } else {
                                 Log.e("OkHttp", "goodsType444444: " + goodsType);
                                 ToastUtils.show(mBaseActivity, "The account is logged in on other devices OR User does not exist");
                             }
                         } else {
-//                            String currentItem;
-//                            if (mViewPager.getCurrentItem() == 1) {
-//                                currentItem = itemIntent;
-//                            } else {
-//                                currentItem = String.valueOf(mViewPager.getCurrentItem());
-//                            }
+                            //                            String currentItem;
+                            //                            if (mViewPager.getCurrentItem() == 1) {
+                            //                                currentItem = itemIntent;
+                            //                            } else {
+                            //                                currentItem = String.valueOf(mViewPager.getCurrentItem());
+                            //                            }
                             Log.e("OkHttp", "444444: " + String.valueOf(mViewPager.getCurrentItem()));
                             Intent intentA = new Intent(mBaseActivity, LoginNewActivity.class);
                             intentA.putExtra("from", "message");
                             intentA.putExtra("goodsId", "");
                             intentA.putExtra("goodsType", String.valueOf(mViewPager.getCurrentItem()));
                             startActivity(intentA);
-                            finish();
                         }
                         break;
                     case PAGE_MINE:
                         mViewPager.setCurrentItem(PAGE_MINE);
                         mController.setSelect(PAGE_MINE);
+                        Last_Choose = 2;
                         break;
                 }
             }
 
             @Override
-            public void onRepeat(int index) { }
+            public void onRepeat(int index) {
+            }
         });
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -298,8 +303,8 @@ public class MainActivity extends BaseActivity {
         intent.setClass(mBaseActivity, MessageActivity.class);
         views.add(getView("activity_message", intent));
 
-//        intent.setClass(mBaseActivity, ChatActivity.class);
-//        views.add(getView("activity_chat", intent));
+        //        intent.setClass(mBaseActivity, ChatActivity.class);
+        //        views.add(getView("activity_chat", intent));
 
         intent.setClass(mBaseActivity, MineNewActivity.class);
         views.add(getView("activity_mine_new", intent));
@@ -320,6 +325,9 @@ public class MainActivity extends BaseActivity {
      */
     @Override
     public void onBackPressed() {
+        if (JCVideoPlayerStandard.backPress()) {
+            return;
+        }
         long mNowTime = System.currentTimeMillis(); // 获取第一次按键时间
         if ((mNowTime - mPressedTime) > 2000) { // 比较两次按键时间差
             ToastUtils.show(mBaseActivity, "Press again to exit the program");
@@ -339,10 +347,15 @@ public class MainActivity extends BaseActivity {
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
         User user = dataStorage.load(User.class, "User");
-        if (user != null && !user.userAccount.equals("") ) {
+        if (user != null && !user.userAccount.equals("")) {
             return true;
         }
         return false;
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mTabLayout.setVisibility(JCVideoPlayer.isOnFullScreen ? View.GONE : View.VISIBLE);
+    }
 }

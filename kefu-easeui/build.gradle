@@ -1,0 +1,42 @@
+apply plugin: 'com.android.library'
+
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "26.0.2"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 9
+        versionName "1.1.8"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    sourceSets{
+        main(){
+            jniLibs.srcDirs=['libs']
+        }
+    }
+
+    useLibrary 'org.apache.http.legacy'
+
+}
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:support-v4:26.1.0'
+//    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.github.bumptech.glide:glide:4.7.1'
+//    compile project(':kefu-sdk')
+    compile 'com.easemob:kefu-sdk:1.1.8'
+}
+//apply from: 'jcenter.gradle'

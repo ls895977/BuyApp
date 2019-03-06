@@ -32,6 +32,7 @@ import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
 import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
+import com.enuos.jimat.utils.PrefUtils;
 import com.enuos.jimat.utils.event.EventConfig;
 import com.enuos.jimat.utils.http.HttpUtils;
 import com.enuos.jimat.utils.http.UrlConfig;
@@ -240,7 +241,8 @@ public class MineInfoActivity extends BaseActivity {
         try {
             name = getJsonObject.getString("TRUE_NAME");
             headImage = getJsonObject.getString("MEMBER_AVATAR");
-
+            PrefUtils.setString(getApplication(), "UserPic",
+                    (getJsonObject.getString("MEMBER_AVATAR") == null) ? "" : getJsonObject.getString("MEMBER_AVATAR"));
             mMineInfoTextAccount.setText(mUserAccount);
             mMineInfoTextName.setText(name);
             if (headImage.equals("null") || headImage.equals("")) {

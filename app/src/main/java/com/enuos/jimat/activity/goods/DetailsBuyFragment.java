@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enuos.jimat.R;
@@ -28,8 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
-import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshBase;
-import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -53,17 +51,17 @@ import xiaofei.library.datastorage.IDataStorage;
 public class DetailsBuyFragment extends BaseFragment {
 
     @BindView(R.id.details_buy_rv)
-    PullToRefreshRecyclerView pullToRefreshRecyclerView;
-    @BindView(R.id.details_buy_result_layout)
-    RelativeLayout mDetailsBuyResultLayout;
+    RecyclerView mBuyRv;
+    @BindView(R.id.details_history_price_rv_top)
+    LinearLayout mDetailsBuyResultLayout;
     private Unbinder unbinder;
 
-    private User mUser;
-    protected RecyclerView mBuyRv;
-    private int pageIndex = 1;
-    private boolean isRefresh = false;
-    private BuyNewAdapter adapter;
-    private String goodsId;
+    private User                mUser;
+    private int                 pageIndex = 1;
+    private boolean             isRefresh = false;
+    public  BuyNewAdapter       adapter;
+    private String              goodsId;
+    private LinearLayoutManager mManager;
 
     @Override
     public View initView() {
@@ -80,12 +78,8 @@ public class DetailsBuyFragment extends BaseFragment {
         TextView stringDetails = getActivity().findViewById(R.id.goods_details_goods_id);
         TextView stringType = getActivity().findViewById(R.id.goods_details_goods_type);
         goodsId = stringDetails.getText().toString();
-
-        pullToRefreshRecyclerView.setMode(PullToRefreshBase.Mode.BOTH);
-        pullToRefreshRecyclerView.setOnRefreshListener(refreshListener);
-        mBuyRv = pullToRefreshRecyclerView.getRefreshableView();
-        mBuyRv.setLayoutManager(new LinearLayoutManager(
-                mContext, LinearLayoutManager.VERTICAL, false));
+        mManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        mBuyRv.setLayoutManager(mManager);
 
         // 代售商品无购买记录和价格变动记录 首页和正在降价有
         if (stringType.getText().toString().equals("base")) {
@@ -96,31 +90,14 @@ public class DetailsBuyFragment extends BaseFragment {
         } else {
             setEmptyView(true);
             isRefresh = false;
-            refreshComplete();
         }
 
         super.initData();
     }
 
-    private PullToRefreshBase.OnRefreshListener2 refreshListener = new PullToRefreshBase.OnRefreshListener2() {
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-            pageIndex = 1;
-            isRefresh = true;
-            refresh();
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            pageIndex++;
-            refresh();
-        }
-    };
-
-    private void refreshComplete() {
-        if (pullToRefreshRecyclerView != null) {
-            pullToRefreshRecyclerView.onRefreshComplete();
-        }
+    public void moveFirst() {
+        if (mManager != null)
+            mManager.scrollToPositionWithOffset(mManager.findFirstVisibleItemPosition(), 0);
     }
 
     /**
@@ -131,9 +108,11 @@ public class DetailsBuyFragment extends BaseFragment {
         if (isEmpty) {
             empty.setVisibility(View.VISIBLE);
             mDetailsBuyResultLayout.setVisibility(View.GONE);
+            mBuyRv.setVisibility(View.GONE);
         } else {
             empty.setVisibility(View.GONE);
             mDetailsBuyResultLayout.setVisibility(View.VISIBLE);
+            mBuyRv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -142,6 +121,7 @@ public class DetailsBuyFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        ((GoodsDetailsActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 3);
         return rootView;
     }
 
@@ -164,7 +144,6 @@ public class DetailsBuyFragment extends BaseFragment {
         if (user != null && !user.userAccount.equals("")) {
             userToken = user.token;
         }
-
 
         HashMap<String, String> params = new HashMap<>();
         params.put("goodsId", goodsId);
@@ -230,7 +209,6 @@ public class DetailsBuyFragment extends BaseFragment {
                     ArrayList<BuyListItem> buyList = gson.fromJson(jsonArrayString,
                             new TypeToken<List<BuyListItem>>() {
                             }.getType());
-                    refreshComplete();
                     if (stringData != null) {
                         if (adapter == null || isRefresh) {
                             if (maxCount == 0) {
@@ -250,7 +228,6 @@ public class DetailsBuyFragment extends BaseFragment {
                 }
             } else {
                 isRefresh = false;
-                refreshComplete();
 
                 // 同一账户多个终端登录
                 String msgError = result[1].toString();

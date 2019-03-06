@@ -22,12 +22,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation project(':comm_base')
     implementation project(':comm_httpclient')
     implementation project(':comm_push')
-
     implementation "com.android.support:appcompat-v7:$SUPPORT_SDK_VERSION"
     implementation "com.android.support:recyclerview-v7:$SUPPORT_SDK_VERSION"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

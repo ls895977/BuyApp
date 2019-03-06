@@ -41,13 +41,11 @@ import com.enuos.jimat.utils.http.UrlConfig;
 import com.enuos.jimat.utils.toast.ToastUtils;
 import com.enuos.jimat.view.BannerModel;
 import com.enuos.jimat.view.BannerViewAdapter;
-import com.enuos.jimat.view.MyViewPager;
 import com.enuos.jimat.view.VerticalSwipeRefreshLayout;
+import com.example.myvideoplayer.JCVideoPlayer;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 import com.youth.banner.Banner;
-import com.youth.banner.Transformer;
-import com.youth.banner.listener.OnBannerClickListener;
 import com.youth.banner.loader.ImageLoader;
 
 import org.greenrobot.eventbus.EventBus;
@@ -60,6 +58,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +68,6 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import xiaofei.library.datastorage.DataStorageFactory;
 import xiaofei.library.datastorage.IDataStorage;
 
@@ -78,78 +76,78 @@ import static com.enuos.jimat.utils.MyUtils.secondsToTime;
 public class HomeNewActivity extends BaseActivity {
 
     @BindView(R.id.home_new_banner)
-    Banner mBanner;
+    Banner    mBanner;
     @BindView(R.id.home_new_banner_goods_name)
-    TextView mHomeNewBannerGoodsName;
+    TextView  mHomeNewBannerGoodsName;
     @BindView(R.id.home_new_banner_goods_price)
-    TextView mHomeNewBannerGoodsPrice;
+    TextView  mHomeNewBannerGoodsPrice;
     @BindView(R.id.home_new_banner_goods_price_old)
-    TextView mHomeNewBannerGoodsPriceOld;
+    TextView  mHomeNewBannerGoodsPriceOld;
     @BindView(R.id.home_new_banner_goods_number)
-    TextView mHomeNewBannerGoodsNumber;
+    TextView  mHomeNewBannerGoodsNumber;
     @BindView(R.id.home_new_banner_goods_btn_buy)
-    Button mHomeNewBannerGoodsBtnBuy;
+    Button    mHomeNewBannerGoodsBtnBuy;
     @BindView(R.id.home_new_view_pager)
     ViewPager mViewPager;
 
     @BindView(R.id.home_new_text_desc)
-    TextView mHomeNewTextDesc;
+    TextView                   mHomeNewTextDesc;
     @BindView(R.id.home_new_linear_desc)
-    LinearLayout mHomeNewLinearDesc;
+    LinearLayout               mHomeNewLinearDesc;
     @BindView(R.id.home_new_text_sale)
-    TextView mHomeNewTextSale;
+    TextView                   mHomeNewTextSale;
     @BindView(R.id.home_new_linear_sale)
-    LinearLayout mHomeNewLinearSale;
+    LinearLayout               mHomeNewLinearSale;
     @BindView(R.id.home_new_tab_line)
-    ImageView mTabLine;
+    ImageView                  mTabLine;
     @BindView(R.id.home_time_hour)
-    TextView mHomeTimeHour;
+    TextView                   mHomeTimeHour;
     @BindView(R.id.home_time_minute)
-    TextView mHomeTimeMinute;
+    TextView                   mHomeTimeMinute;
     @BindView(R.id.home_time_second)
-    TextView mHomeTimeSecond;
+    TextView                   mHomeTimeSecond;
     @BindView(R.id.home_new_text_sal)
-    TextView mHomeNewTextSal;
+    TextView                   mHomeNewTextSal;
     @BindView(R.id.home_new_linear_sal)
-    LinearLayout mHomeNewLinearSal;
+    LinearLayout               mHomeNewLinearSal;
     @BindView(R.id.home_viewPager)
-    MyViewPager viewPager;
+    ViewPager                  viewPager;
     @BindView(R.id.home_banner_rl)
-    RelativeLayout mHomeBannerRl;
+    RelativeLayout             mHomeBannerRl;
     @BindView(R.id.home_banner_ll)
-    LinearLayout mHomeBannerLl;
+    LinearLayout               mHomeBannerLl;
     @BindView(R.id.goods_details_transparent_home)
-    ImageView mGoodsDetailsTransparentHome;
+    ImageView                  mGoodsDetailsTransparentHome;
     @BindView(R.id.home_nestedScrollView)
-    NestedScrollView mHomeNestedScrollView;
+    NestedScrollView           mHomeNestedScrollView;
     @BindView(R.id.home_new_swipe_refresh)
     VerticalSwipeRefreshLayout mSwipe;
 
-    private User mUser;
+    private User   mUser;
     private String goodsId, shopName, goodsPic, goodsName, videoUrl, img,
             goodsPrice, clientTime, startPrice, downType, downValue, isDelete, weight;
-    private long timerTotal;
+    private long   timerTotal;
     private String nowPriceServer;
 
-    private int page = 0;
-    private int screenWidth;
+    private int                page          = 0;
+    private int                screenWidth;
     private List<BaseFragment> mFragmentList = new ArrayList<>();
 
     private CountDownTimer mTimerOne, mTimerTwo;
-    private int countTimes = 0;
-    private String homeTime = "0";
+    private int    countTimes = 0;
+    private String homeTime   = "0";
 
-    String intentImage[];
+    List<String> intentImage;
 
 
-    private static final int UPTATE_VIEWPAGER = 0;
-    private List<BannerModel> list;
-    private BannerViewAdapter mAdapter;
-    private int autoCurrIndex = 0;//设置当前 第几个图片 被选中
-    private Timer timer;
-    private TimerTask timerTask;
-    private long period = 5000;//轮播图展示时长,默认5秒
-    private int bannerPosition;
+    private static final int               UPTATE_VIEWPAGER = 0;
+    private              List<BannerModel> list;
+    private              BannerViewAdapter mAdapter;
+    private              int               autoCurrIndex    = 0;//设置当前 第几个图片 被选中
+    private              Timer             timer;
+    private              TimerTask         timerTask;
+    private              long              period           = 5000;//轮播图展示时长,默认5秒
+    private              int               bannerPosition;
 
     // 定时轮播图片，需要在主线程里面修改 UI
     @SuppressLint("HandlerLeak")
@@ -157,11 +155,15 @@ public class HomeNewActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPTATE_VIEWPAGER:
-                    if (msg.arg1 != 0) {
-                        viewPager.setCurrentItem(msg.arg1);
-                    } else {
-                        //false 当从末页调到首页时，不显示翻页动画效果，
-                        viewPager.setCurrentItem(msg.arg1, false);
+                    if (JCVideoPlayer.isOnPlaying)
+                        break;
+                    else {
+                        if (msg.arg1 != 0) {
+                            viewPager.setCurrentItem(msg.arg1);
+                        } else {
+                            //false 当从末页调到首页时，不显示翻页动画效果，
+                            viewPager.setCurrentItem(msg.arg1, false);
+                        }
                     }
                     break;
             }
@@ -180,48 +182,48 @@ public class HomeNewActivity extends BaseActivity {
         // 进入界面之后先获取信息
         setSwipe();
         refresh();
-
+        list = new ArrayList<>();
+        intentImage = new ArrayList<>();
         // 沉浸式
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            View decorView = getWindow().getDecorView();
-//            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-//                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-//            decorView.setSystemUiVisibility(option);
-//            getWindow().setStatusBarColor(Color.TRANSPARENT);
-//        }
+        //        if (Build.VERSION.SDK_INT >= 21) {
+        //            View decorView = getWindow().getDecorView();
+        //            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        //                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+        //            decorView.setSystemUiVisibility(option);
+        //            getWindow().setStatusBarColor(Color.TRANSPARENT);
+        //        }
 
         mHomeNestedScrollView.setFillViewport(true);
-
+        autoBanner();
     }
 
     /**
      * 广告轮播图测试数据
      */
     public void initDataA() {
-        list = new ArrayList<>();
-        if (videoUrl == null || videoUrl.equals("null")) { // 无视频
-            for (int i = 0; i < intentImage.length; i++) {
+        if (videoUrl == null || videoUrl.equals("null") ||videoUrl.isEmpty()) { // 无视频
+            for (int i = 0; i < intentImage.size(); i++) {
                 BannerModel listBean = new BannerModel();
                 listBean.setBannerName("");
-                listBean.setBannerUrl(intentImage[i]);
+                listBean.setBannerUrl(intentImage.get(i));
                 listBean.setVideoPic("");
                 listBean.setPlayTime(3000);
                 listBean.setUrlType(0); //图片类型 图片
                 list.add(listBean);
             }
         } else { // 有视频
-            for (int i = 0; i < intentImage.length; i++) {
+            for (int i = 0; i < intentImage.size(); i++) {
                 BannerModel listBean = new BannerModel();
                 if (i == 0) {
                     listBean.setBannerName("");
                     listBean.setBannerUrl(videoUrl);
                     listBean.setVideoPic(img);
-                    listBean.setPlayTime(60000);
+                    listBean.setPlayTime(3000);
                     listBean.setUrlType(1);//图片类型 视频
                     list.add(listBean);
                 } else {
                     listBean.setBannerName("");
-                    listBean.setBannerUrl(intentImage[i]);
+                    listBean.setBannerUrl(intentImage.get(i));
                     listBean.setVideoPic("");
                     listBean.setPlayTime(3000);
                     listBean.setUrlType(0); //图片类型 图片
@@ -229,28 +231,28 @@ public class HomeNewActivity extends BaseActivity {
                 }
             }
         }
-
-
         period = list.get(0).getPlayTime();
-        autoBanner();
-
+        viewPager.setOffscreenPageLimit(0);
+        //        mAdapter.setListBean(list);
+        mAdapter = new BannerViewAdapter(this, list, goodsId, homeTime);
+        viewPager.setAdapter(mAdapter);
     }
 
     private void autoBanner() {
-        viewPager.setOffscreenPageLimit(0);
-        mAdapter = new BannerViewAdapter(this, list);
+        mAdapter = new BannerViewAdapter(this, list, goodsId, homeTime);
         viewPager.setAdapter(mAdapter);
-        viewPager.setOnPageChangeListener(new MyViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 bannerPosition = position;
+                JCVideoPlayer.releaseAllVideos();
             }
 
             @Override
             public void onPageSelected(int position) {
                 autoCurrIndex = position;//动态设定轮播图每一页的停留时间
                 period = list.get(position).getPlayTime();
-                if (timer != null) {//每次改变都需要重新创建定时器
+                if (timer != null) { //每次改变都需要重新创建定时器
                     timer.cancel();
                     timer = null;
                     timer = new Timer();
@@ -258,7 +260,17 @@ public class HomeNewActivity extends BaseActivity {
                         timerTask.cancel();
                         timerTask = null;
                         createTimerTask();
-                    }
+                    } else
+                        createTimerTask();
+                    timer.schedule(timerTask, period, period);
+                } else {
+                    timer = new Timer();
+                    if (timerTask != null) {
+                        timerTask.cancel();
+                        timerTask = null;
+                        createTimerTask();
+                    } else
+                        createTimerTask();
                     timer.schedule(timerTask, period, period);
                 }
 
@@ -270,12 +282,21 @@ public class HomeNewActivity extends BaseActivity {
             }
         });
 
-
         createTimerTask();//创建定时器
+        mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
+            @Override
+            public void click(View v) {
+                Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+                intentInfo.putExtra("goodsId", goodsId);
+                intentInfo.putExtra("goodsType", "base");
+                intentInfo.putExtra("type", "home");
+                intentInfo.putExtra("value", homeTime);
+                startActivity(intentInfo);
+            }
+        });
 
         timer = new Timer();
         timer.schedule(timerTask, 5000, period);
-
     }
 
 
@@ -337,6 +358,9 @@ public class HomeNewActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (mAdapter.onBack()) {
+            return;
+        }
         super.onBackPressed();
         if (timerTask != null) {
             timerTask.cancel();
@@ -348,14 +372,13 @@ public class HomeNewActivity extends BaseActivity {
         }
     }
 
-
     /**
      * 初始化 Fragment 数据以及设置颜色
      */
     private void initData() {
         mFragmentList.add(new HomeDescFragment());
         mFragmentList.add(new HomeSaleFragment());
-//        mFragmentList.add(new HomeSaleFragment());
+        //        mFragmentList.add(new HomeSaleFragment());
         PagerSlideAdapter adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(page);
@@ -510,29 +533,29 @@ public class HomeNewActivity extends BaseActivity {
             R.id.home_new_linear_desc, R.id.home_new_linear_sale, R.id.home_viewPager})
     public void onViewClick(View view) {
         switch (view.getId()) {
-//            // 进入详情
-//            case R.id.home_banner_rl:
-//            case R.id.home_viewPager:
-//                if (bannerPosition == 0 || bannerPosition == intentImage.length) { // 第一张图片
-//                    if (videoUrl == null || videoUrl.equals("null")) { // 无视频
-//                        Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
-//                        intentInfo.putExtra("goodsId", goodsId);
-//                        intentInfo.putExtra("goodsType", "base");
-//                        intentInfo.putExtra("type", "home");
-//                        intentInfo.putExtra("value", homeTime);
-//                        startActivity(intentInfo);
-//                    } else { // 有视频
-//
-//                    }
-//                } else {
-//                    Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
-//                    intentInfo.putExtra("goodsId", goodsId);
-//                    intentInfo.putExtra("goodsType", "base");
-//                    intentInfo.putExtra("type", "home");
-//                    intentInfo.putExtra("value", homeTime);
-//                    startActivity(intentInfo);
-//                }
-//                break;
+            //            // 进入详情
+            case R.id.home_banner_rl:
+            case R.id.home_viewPager:
+                if (bannerPosition == 0 || bannerPosition == intentImage.size()) { // 第一张图片
+                    if (videoUrl == null || videoUrl.equals("null")) { // 无视频
+                        Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+                        intentInfo.putExtra("goodsId", goodsId);
+                        intentInfo.putExtra("goodsType", "base");
+                        intentInfo.putExtra("type", "home");
+                        intentInfo.putExtra("value", homeTime);
+                        startActivity(intentInfo);
+                    } else { // 有视频
+
+                    }
+                } else {
+                    Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+                    intentInfo.putExtra("goodsId", goodsId);
+                    intentInfo.putExtra("goodsType", "base");
+                    intentInfo.putExtra("type", "home");
+                    intentInfo.putExtra("value", homeTime);
+                    startActivity(intentInfo);
+                }
+                break;
             // 进入详情
             case R.id.home_new_banner_goods_name:
                 Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
@@ -623,74 +646,45 @@ public class HomeNewActivity extends BaseActivity {
 
             img = jsonObjectFirst.getString("IMAGE_URL");
             videoUrl = jsonObjectFirst.getString("VIDEO_URL");
-
+            goodsId = jsonObjectFirst.getString("ID");
+            if(img==null || img.equals("null"))
+                img = "";
+            if(videoUrl==null || videoUrl.equals("null"))
+                videoUrl = "";
             /**
              * 设置轮播图 goodsImgList
              */
             JSONArray imgJsonArray = new JSONArray(jsonObjectFirst.getString("goodsImgList"));
             int maxImage = imgJsonArray.length();
-
-            List<String> images = new ArrayList<>();
             String postStr[] = new String[maxImage];
             for (int i = 0; i < maxImage; i++) {
-                postStr[i] = "IMG_URL";
+                postStr[i] = imgJsonArray.getJSONObject(i).getString("IMG_URL");
             }
 
             int imageSize = 0;
 
             for (int i = 0; i < maxImage; i++) {
-                if (!imgJsonArray.getJSONObject(i).getString(postStr[i]).equals("null")) {
+                if (!imgJsonArray.getJSONObject(i).getString("IMG_URL").equals("null")) {
                     imageSize++;
                 }
             }
             final String intentImageArray[] = new String[imageSize];
 
             for (int i = 0; i < maxImage; i++) {
-                if (!imgJsonArray.getJSONObject(i).getString(postStr[i]).equals("null")) {
-                    images.add(imgJsonArray.getJSONObject(i).getString(postStr[i]));
-                    intentImageArray[i] = imgJsonArray.getJSONObject(i).getString(postStr[i]);
-                }
+                intentImageArray[i] = imgJsonArray.getJSONObject(i).getString("IMG_URL");
             }
-
-            intentImage = intentImageArray;
-            mBanner.setImages(images);
-            mBanner.setImageLoader(new GlideImageLoader());
-            mBanner.setBannerAnimation(Transformer.Accordion);
-            // 设置轮播间隔时间 5秒
-            mBanner.setDelayTime(5000);
-            mBanner.setOnBannerClickListener(new OnBannerClickListener() {
-                @Override
-                public void OnBannerClick(int position) {
-                    try {
-                        if (!isDelete.equals("1")) {
-                            ToastUtils.show(mBaseActivity, "Item has expired. Please choose again.");
-                        } else {
-                            if (position == 1) { // 第一张图片
-                                if (videoUrl == null || videoUrl.equals("null")) { // 无视频
-                                    Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
-                                    intentInfo.putExtra("goodsId", jsonObjectFirst.getString("ID"));
-                                    intentInfo.putExtra("goodsType", "base");
-                                    intentInfo.putExtra("type", "home");
-                                    intentInfo.putExtra("value", homeTime);
-                                    startActivity(intentInfo);
-                                } else { // 有视频
-
-                                }
-                            } else {
-                                Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
-                                intentInfo.putExtra("goodsId", jsonObjectFirst.getString("ID"));
-                                intentInfo.putExtra("goodsType", "base");
-                                intentInfo.putExtra("type", "home");
-                                intentInfo.putExtra("value", homeTime);
-                                startActivity(intentInfo);
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mBanner.start();
+            if (!img.isEmpty() && !videoUrl.isEmpty()) {
+                String imgarray[] = new String[intentImageArray.length + 1];
+                imgarray[0] = img;
+                System.arraycopy(intentImageArray, 0, imgarray, 1, intentImageArray.length);
+                intentImage.clear();
+                intentImage.addAll(Arrays.asList(imgarray));
+            } else {
+                intentImage.clear();
+                intentImage.addAll(Arrays.asList(intentImageArray));
+            }
+            list.clear();
+            initDataA();
 
             String startSalePrice = jsonObjectFirst.getString("GOODS_START_PRICE"); // 原价
             mHomeNewBannerGoodsName.setText(jsonObjectFirst.getString("GOODS_NAME"));
@@ -701,8 +695,8 @@ public class HomeNewActivity extends BaseActivity {
             mHomeNewBannerGoodsPrice.setText(jsonObjectFirst.getString("GOODS_START_PRICE"));
 
             // 获取当前时间戳
-//            long timeStampSec = System.currentTimeMillis() / 1000; // 单位毫秒
-//            long systemTime = Long.parseLong(String.format("%010d", timeStampSec));
+            //            long timeStampSec = System.currentTimeMillis() / 1000; // 单位毫秒
+            //            long systemTime = Long.parseLong(String.format("%010d", timeStampSec));
             String systemTime = jsonObjectFirst.getString("SYS_TIME"); // 系统时间
             String startTime = jsonObjectFirst.getString("MARKET_START_TIME"); // 起售时间 单位秒
             String descTime = jsonObjectFirst.getString("GOODS_DOWN_TIME"); // 降价时间
@@ -730,7 +724,7 @@ public class HomeNewActivity extends BaseActivity {
                     Log.e("789", "descPrice: " + String.valueOf(descPrice));
 
                     int descTimesRealComplete = (int) descTimesReal; // 降价周期取整 表示降了多少次
-//                    int descTimesRealComplete = (int) descTimes; // 降价周期取整 表示降了多少次
+                    //                    int descTimesRealComplete = (int) descTimes; // 降价周期取整 表示降了多少次
                     Log.e("789", "descTimesRealComplete: " + String.valueOf(descTimesRealComplete));
                     double descPriceComplete = descTimesRealComplete * Double.valueOf(descValue);
                     // 得到降价后的具体金额A 开始价格 - 降价周期*(降价比例*原价)
@@ -744,7 +738,7 @@ public class HomeNewActivity extends BaseActivity {
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
-//                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
 
                         mHomeTimeHour.setText(" " + "00" + " ");
                         mHomeTimeMinute.setText(" " + "00" + " ");
@@ -755,14 +749,14 @@ public class HomeNewActivity extends BaseActivity {
                     } else { // 如果大于最低价 现在的价就是最低价
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
 
                         mHomeNewBannerGoodsPrice.setText(String.format("%.2f", Double.valueOf(startSalePrice) - descPriceComplete)); // 四舍五入 保留2位
 
                         // 倒计时
                         // 取降价周期的小数点后两位
-//                        String timesString = descTimesReal + "";
+                        //                        String timesString = descTimesReal + "";
                         String timesString = descTimes + "";
                         Log.e("789", "timesString: " + timesString);
                         String timeCounterString = timesString.substring(timesString.indexOf("."), timesString.length());
@@ -807,7 +801,7 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeHour.setText(" " + "00" + " ");
                                             mHomeTimeMinute.setText(" " + "00" + " ");
                                             mHomeTimeSecond.setText(" " + "00" + " ");
-//                            refresh();
+                                            //                            refresh();
                                             mHomeNewBannerGoodsPrice.setText(nowPriceServer); // 现价
                                         }
                                     };
@@ -837,7 +831,7 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeHour.setText(" " + "00" + " ");
                                             mHomeTimeMinute.setText(" " + "00" + " ");
                                             mHomeTimeSecond.setText(" " + "00" + " ");
-//                            refresh();
+                                            //                            refresh();
                                             mHomeNewBannerGoodsPrice.setText(nowPriceServer); // 现价
                                         }
                                     };
@@ -877,7 +871,7 @@ public class HomeNewActivity extends BaseActivity {
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
                         homeTime = "0";
                         mHomeTimeHour.setText(" " + "00" + " ");
@@ -888,7 +882,7 @@ public class HomeNewActivity extends BaseActivity {
                     } else { // 如果大于最低价 现在的价就是最低价
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-//                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
+                        //                        mHomeNewBannerGoodsPrice.setText(String.valueOf(payPriceReal)); // 四舍五入 保留2位
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
 
                         mHomeNewBannerGoodsPrice.setText(String.format("%.2f", Double.valueOf(startSalePrice) - descPriceComplete)); // 四舍五入 保留2位
@@ -934,7 +928,7 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeHour.setText(" " + "00" + " ");
                                             mHomeTimeMinute.setText(" " + "00" + " ");
                                             mHomeTimeSecond.setText(" " + "00" + " ");
-//                            refresh();
+                                            //                            refresh();
                                             mHomeNewBannerGoodsPrice.setText(nowPriceServer); // 现价
                                         }
                                     };
@@ -962,7 +956,7 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeHour.setText(" " + "00" + " ");
                                             mHomeTimeMinute.setText(" " + "00" + " ");
                                             mHomeTimeSecond.setText(" " + "00" + " ");
-//                            refresh();
+                                            //                            refresh();
                                             mHomeNewBannerGoodsPrice.setText(nowPriceServer); // 现价
                                         }
                                     };
@@ -1016,7 +1010,6 @@ public class HomeNewActivity extends BaseActivity {
                 mHomeTimeSecond.setText(" " + "00" + " ");
             }
 
-            goodsId = jsonObjectFirst.getString("ID");
             shopName = jsonObjectFirst.getString("COMPANY_NAME");
             goodsPic = jsonObjectFirst.getString("IMAGE_URL");
             goodsName = jsonObjectFirst.getString("GOODS_NAME");
@@ -1027,14 +1020,12 @@ public class HomeNewActivity extends BaseActivity {
 
             weight = jsonObjectFirst.getString("GOODS_WEIGHT");
 
-//            int second = Integer.parseInt(jsonObjectFirst.getString("GOODS_DOWN_TIME"));
-//            mHomeNewBannerGoodsDescTime.setText(secondsToTime(second));
+            //            int second = Integer.parseInt(jsonObjectFirst.getString("GOODS_DOWN_TIME"));
+            //            mHomeNewBannerGoodsDescTime.setText(secondsToTime(second));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        initDataA();
 
         initData(); // 初始化数据
         initWidth(); // 初始化滑动横条的宽度
@@ -1173,7 +1164,7 @@ public class HomeNewActivity extends BaseActivity {
                     intent.putExtra("shopName", shopName);
                     intent.putExtra("goodsPic", goodsPic);
                     intent.putExtra("goodsName", goodsName);
-//                    intent.putExtra("goodsPrice", nowPriceServer);
+                    //                    intent.putExtra("goodsPrice", nowPriceServer);
                     intent.putExtra("goodsPrice", goodsPrice);
                     intent.putExtra("orderId", orderId);
                     intent.putExtra("orderNo", orderNo);

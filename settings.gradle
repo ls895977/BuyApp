@@ -1,1 +1,1 @@
-include ':app', ':library', ':comm_httpclient', ':comm_base', ':widget_base', ':comm_push'
+include ':app', ':library', ':comm_httpclient', ':comm_base', ':widget_base', ':comm_push', ':kefu-easeui', ':myvideoplayer'

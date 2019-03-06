@@ -27,6 +27,7 @@ import com.enuos.jimat.activity.msg.MineMsgActivity;
 import com.enuos.jimat.activity.order.MineOrderActivity;
 import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
+import com.enuos.jimat.utils.ClickUtils;
 import com.enuos.jimat.utils.event.EventConfig;
 import com.enuos.jimat.utils.http.HttpUtils;
 import com.enuos.jimat.utils.http.UrlConfig;
@@ -53,44 +54,44 @@ import xiaofei.library.datastorage.IDataStorage;
 public class MineNewActivity extends BaseActivity {
 
     @BindView(R.id.mine_head_icon_new)
-    RoundedImageView mMineHeadIconNew;
+    RoundedImageView   mMineHeadIconNew;
     @BindView(R.id.mine_new_head_icon_pic)
-    RoundedImageView mMineNewHeadIconPic;
+    RoundedImageView   mMineNewHeadIconPic;
     @BindView(R.id.mine_new_user_go_login)
-    TextView mMineNewUserGoLogin;
+    TextView           mMineNewUserGoLogin;
     @BindView(R.id.mine_new_user_go_view)
-    View mMineNewUserGoView;
+    View               mMineNewUserGoView;
     @BindView(R.id.mine_new_user_go_register)
-    TextView mMineNewUserGoRegister;
+    TextView           mMineNewUserGoRegister;
     @BindView(R.id.mine_new_user_account)
-    TextView mMineNewUserAccount;
+    TextView           mMineNewUserAccount;
     @BindView(R.id.mine_new_linear_order)
-    LinearLayout mMineNewLinearOrder;
+    LinearLayout       mMineNewLinearOrder;
     @BindView(R.id.mine_new_linear_money)
-    LinearLayout mMineNewLinearMoney;
+    LinearLayout       mMineNewLinearMoney;
     @BindView(R.id.mine_new_linear_address)
-    LinearLayout mMineNewLinearAddress;
+    LinearLayout       mMineNewLinearAddress;
     @BindView(R.id.mine_new_linear_info)
-    LinearLayout mMineNewLinearInfo;
+    LinearLayout       mMineNewLinearInfo;
     @BindView(R.id.mine_new_linear_msg)
-    LinearLayout mMineNewLinearMsg;
+    LinearLayout       mMineNewLinearMsg;
     @BindView(R.id.mine_new_linear_history)
-    LinearLayout mMineNewLinearHistory;
+    LinearLayout       mMineNewLinearHistory;
     @BindView(R.id.mine_new_text_phone)
-    TextView mMineNewTextPhone;
+    TextView           mMineNewTextPhone;
     @BindView(R.id.mine_new_linear_phone)
-    LinearLayout mMineNewLinearPhone;
+    LinearLayout       mMineNewLinearPhone;
     @BindView(R.id.mine_new_linear_protocl)
-    LinearLayout mMineNewLinearProtocl;
+    LinearLayout       mMineNewLinearProtocl;
     @BindView(R.id.mine_new_linear_set)
-    LinearLayout mMineNewLinearSet;
+    LinearLayout       mMineNewLinearSet;
     @BindView(R.id.mine_new_swipe_refresh)
     SwipeRefreshLayout mSwipe;
     @BindView(R.id.mine_new_img_msg)
-    ImageView mMineNewImgMsg;
+    ImageView          mMineNewImgMsg;
 
     private SweetAlertDialog mProgressDialog;
-    private String account, headImage, name;
+    private String           account, headImage, name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -352,6 +353,8 @@ public class MineNewActivity extends BaseActivity {
         switch (view.getId()) {
             // 去登录
             case R.id.mine_new_user_go_login:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 Intent intentM = new Intent(mBaseActivity, LoginNewActivity.class);
                 intentM.putExtra("from", "mine");
                 intentM.putExtra("goodsId", "");
@@ -361,10 +364,14 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 去注册
             case R.id.mine_new_user_go_register:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 startActivity(new Intent(mBaseActivity, RegisterNewActivity.class));
                 break;
             // 我的订单
             case R.id.mine_new_linear_order:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineOrderActivity.class));
                 } else {
@@ -379,6 +386,8 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 我的钱包
             case R.id.mine_new_linear_money:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineMoneyActivity.class));
                 } else {
@@ -393,6 +402,8 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 收货地址
             case R.id.mine_new_linear_address:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineAddressActivity.class));
                 } else {
@@ -408,6 +419,8 @@ public class MineNewActivity extends BaseActivity {
             // 个人资料
             case R.id.mine_new_head_icon_pic:
             case R.id.mine_new_linear_info:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineInfoActivity.class));
                 } else {
@@ -422,6 +435,8 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 我的通知
             case R.id.mine_new_linear_msg:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineMsgActivity.class));
                 } else {
@@ -436,6 +451,8 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 历史产品
             case R.id.mine_new_linear_history:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 startActivity(new Intent(mBaseActivity, MineHistoryActivity.class));
                 break;
             // 客服电话
@@ -456,8 +473,8 @@ public class MineNewActivity extends BaseActivity {
                 phoneDialog.setTitleText("Are you sure you want to call?");
                 phoneDialog.setContentText("consumer hotline：" + phone);
                 phoneDialog.show();*/
-                Uri uri = Uri.parse ("mailto: cs.jimat@outlook.com");
-                Intent intentEmail = new Intent (Intent.ACTION_SENDTO, uri);
+                Uri uri = Uri.parse("mailto: cs.jimat@outlook.com");
+                Intent intentEmail = new Intent(Intent.ACTION_SENDTO, uri);
                 this.startActivity(intentEmail);
                 break;
             // 协议与声明
@@ -477,6 +494,8 @@ public class MineNewActivity extends BaseActivity {
                 break;
             // 设置
             case R.id.mine_new_linear_set:
+                if (ClickUtils.INSTANCE.isFastDoubleClick())
+                    return;
                 if (isLogin()) {
                     startActivity(new Intent(mBaseActivity, MineSetActivity.class));
                 } else {

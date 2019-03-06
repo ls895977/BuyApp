@@ -11,6 +11,9 @@
     <string name="my_attach_video">Video</string>
     <string name="my_attach_location">Location</string>
     <string name="my_attach_file">File</string>
+    <string name="my_attach_address">location</string>
+    <string name="my_attach_title">leave_title</string>
+    <string name="my_attach_evaluation">envaluation</string>
     <string name="my_move_up_to_cancel">Finger up to cancel sending</string>
     <string name="my_release_to_cancel">Finger release to cancel sending</string>
     <string name="my_str_recorder_recording">release to end</string>
@@ -348,6 +351,6 @@
     <string name="tips_pay_success_end"> has been successfully paid! Let us chill while waiting for the package to be delivered!</string>
     <string name="tips_pay_fail_start">Ouch! Payment for Order </string>
     <string name="tips_pay_fail_end"> has failed! Let us try again?</string>
-
+    <string name="noti_text_expression">[Expression]</string>
 </resources>
 

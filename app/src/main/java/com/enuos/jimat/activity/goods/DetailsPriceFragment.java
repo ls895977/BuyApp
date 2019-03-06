@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.enuos.jimat.R;
@@ -28,8 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
-import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshBase;
-import com.vedeng.widget.base.view.pulltorefresh.PullToRefreshRecyclerView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.json.JSONObject;
@@ -53,17 +51,17 @@ import xiaofei.library.datastorage.IDataStorage;
 public class DetailsPriceFragment extends BaseFragment {
 
     @BindView(R.id.details_price_rv)
-    PullToRefreshRecyclerView pullToRefreshRecyclerView;
-    @BindView(R.id.details_price_result_layout)
-    RelativeLayout mDetailsPriceResultLayout;
+    RecyclerView mPriceRv;
+    @BindView(R.id.details_history_price_rv_top)
+    LinearLayout mDetailsPriceResultLayout;
     private Unbinder unbinder;
 
-    private User mUser;
-    protected RecyclerView mPriceRv;
-    private int pageIndex = 1;
-    private boolean isRefresh = false;
-    private PriceNewAdapter adapter;
-    private String goodsId;
+    private User                mUser;
+    private int                 pageIndex = 1;
+    private boolean             isRefresh = false;
+    public  PriceNewAdapter     adapter;
+    private String              goodsId;
+    private LinearLayoutManager mManager;
 
     @Override
     public View initView() {
@@ -80,12 +78,8 @@ public class DetailsPriceFragment extends BaseFragment {
         TextView stringDetails = getActivity().findViewById(R.id.goods_details_goods_id);
         TextView stringType = getActivity().findViewById(R.id.goods_details_goods_type);
         goodsId = stringDetails.getText().toString();
-
-        pullToRefreshRecyclerView.setMode(PullToRefreshBase.Mode.BOTH);
-        pullToRefreshRecyclerView.setOnRefreshListener(refreshListener);
-        mPriceRv = pullToRefreshRecyclerView.getRefreshableView();
-        mPriceRv.setLayoutManager(new LinearLayoutManager(
-                mContext, LinearLayoutManager.VERTICAL, false));
+        mManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        mPriceRv.setLayoutManager(mManager);
 
         // 代售商品无购买记录和价格变动记录 首页和正在降价有
         if (stringType.getText().toString().equals("base")) {
@@ -96,31 +90,13 @@ public class DetailsPriceFragment extends BaseFragment {
         } else {
             setEmptyView(true);
             isRefresh = false;
-            refreshComplete();
         }
-
         super.initData();
     }
 
-    private PullToRefreshBase.OnRefreshListener2 refreshListener = new PullToRefreshBase.OnRefreshListener2() {
-        @Override
-        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
-            pageIndex = 1;
-            isRefresh = true;
-            refresh();
-        }
-
-        @Override
-        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
-            pageIndex++;
-            refresh();
-        }
-    };
-
-    private void refreshComplete() {
-        if (pullToRefreshRecyclerView != null) {
-            pullToRefreshRecyclerView.onRefreshComplete();
-        }
+    public void moveFirst() {
+        if (mManager != null)
+            mManager.scrollToPositionWithOffset(0, 0);
     }
 
     /**
@@ -130,9 +106,11 @@ public class DetailsPriceFragment extends BaseFragment {
         ConstraintLayout empty = getActivity().findViewById(R.id.item_details_price_empty_all);
         if (isEmpty) {
             mDetailsPriceResultLayout.setVisibility(View.GONE);
+            mPriceRv.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
         } else {
             mDetailsPriceResultLayout.setVisibility(View.VISIBLE);
+            mPriceRv.setVisibility(View.VISIBLE);
             empty.setVisibility(View.GONE);
         }
     }
@@ -142,6 +120,7 @@ public class DetailsPriceFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        ((GoodsDetailsActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 1);
         return rootView;
     }
 
@@ -156,6 +135,7 @@ public class DetailsPriceFragment extends BaseFragment {
      * 用于获取网络数据
      */
     private void refresh() {
+        Log.e("yxs", "请求网络数据了");
         // 取出token      params.put("token", userToken);
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 mContext.getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
@@ -230,7 +210,6 @@ public class DetailsPriceFragment extends BaseFragment {
                     ArrayList<PriceListItem> priceList = gson.fromJson(jsonArrayString,
                             new TypeToken<List<PriceListItem>>() {
                             }.getType());
-                    refreshComplete();
                     if (stringData != null) {
                         if (adapter == null || isRefresh) {
                             if (maxCount == 0) {
@@ -250,7 +229,6 @@ public class DetailsPriceFragment extends BaseFragment {
                 }
             } else {
                 isRefresh = false;
-                refreshComplete();
                 // 同一账户多个终端登录
                 String msgError = result[1].toString();
                 ToastUtils.show(mContext, msgError);
