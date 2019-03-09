@@ -1112,7 +1112,6 @@ public class HomeNewActivity extends BaseActivity {
 
         }
     }
-
     /**
      * Glide 图片加载类
      */
@@ -1141,7 +1140,6 @@ public class HomeNewActivity extends BaseActivity {
             }
             return null;
         }
-
         // onProgressUpdate方法用于更新进度信息
         @Override
         protected void onProgressUpdate(Integer... progresses) {

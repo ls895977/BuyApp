@@ -77,17 +77,14 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         mManager = new LocalActivityManager(this, true);
         mManager.dispatchCreate(savedInstanceState);
-
         mTabLayout.setBackgroundColor(Color.argb(100, 246, 246, 246));
         mController = mTabLayout.custom()
                 .addItem(newItem(R.drawable.home_normal, R.drawable.home_selected, ""))
                 .addItem(newItem(R.drawable.message_normal, R.drawable.message_selected, ""))
                 .addItem(newItem(R.drawable.mine_normal, R.drawable.mine_selected, ""))
                 .build();
-
         setListener();
         addActivities();
         //        mViewPager.setCurrentItem(0);
@@ -232,10 +229,10 @@ public class MainActivity extends BaseActivity {
                         mViewPager.setCurrentItem(Last_Choose);
                         mController.setSelect(Last_Choose);
                         ChatClient.getInstance().addConnectionListener(new MyConnectionListener(mBaseActivity));
+                        Log.e("aa",ChatClient.getInstance().isLoggedInBefore()+"---判断是否已登录环信----"+isLogin());
                         if (isLogin()) {
                             // 点击“在线客服”按钮的时候，判断是否已登录环信
                             if (ChatClient.getInstance().isLoggedInBefore() || goodsType.equals("1")) {
-                                Log.e("OkHttp", "goodsType333333: " + goodsType);
                                 Intent intent = new IntentBuilder(mBaseActivity)
                                         .setTargetClass(ChatActivity.class)
                                         .setTitleName(String.valueOf(mViewPager.getCurrentItem()))

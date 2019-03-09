@@ -144,9 +144,11 @@ public class AddressAddActivity extends BaseActivity {
                     } else if (phone.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Receiver Contact");
                         break;
-                    } else if (!MyUtils.isMobileNO(phone)) {
-                        ToastUtils.show(mBaseActivity, "Please enter the correct Mobile Number");
-                    } else if (area.equals("")) {
+                    }
+//                    else if (!MyUtils.isMobileNO(phone)) {
+//                        ToastUtils.show(mBaseActivity, "Please enter the correct Mobile Number");
+//                    }
+                    else if (area.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter State");
                         break;
                     } else if (areaDetails.equals("")) {

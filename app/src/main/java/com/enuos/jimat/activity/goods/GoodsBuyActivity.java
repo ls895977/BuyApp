@@ -138,21 +138,18 @@ public class GoodsBuyActivity extends BaseActivity {
             addressName = event.name;
             addressPhone = event.tel;
             addressArea = event.address;
-
             mGoodsBuyAddressName.setText("Receiver：" + addressName);
             mGoodsBuyAddressPhone.setText("Contact Number：" + addressPhone);
             mGoodsBuyArea.setText("Address：" + addressArea);
-
             if (event.provice == null || event.provice.equals("")) {
-                mGoodsBuyPostPrice.setText("");
+                mGoodsBuyPostPrice.setText("");//邮费
                 mGoodsBuyPayPrice.setText("RM " + goodsPrice);
 //                mGoodsBuyPayPrice.setText("RM " + String.format("%.2f", Double.valueOf(goodsPrice)));
                 payPrice = goodsPrice;
             } else {
                 postPrice = getPostPrice(event.provice, Double.valueOf(weight));
 //                mGoodsBuyPostPrice.setText("RM " + String.format("%.2f", Double.valueOf(postPrice)));
-
-                mGoodsBuyPostPrice.setText("RM " + postPrice);
+                mGoodsBuyPostPrice.setText("RM " + postPrice);//邮费
                 double postDouble = Double.valueOf(postPrice);
                 double goodsDouble = Double.valueOf(goodsPrice);
                 payPrice = String.valueOf(postDouble + goodsDouble);
@@ -772,6 +769,7 @@ public class GoodsBuyActivity extends BaseActivity {
                     }
                     break;
                 case "Sabah":
+                    intWeight--;
                     if (intWeight == 0) {
                         strPrice = "10.00";
                     } else if (intWeight == 1) {
@@ -785,6 +783,7 @@ public class GoodsBuyActivity extends BaseActivity {
                     }
                     break;
                 case "Sarawak":
+                    intWeight--;
                     if (intWeight == 0) {
                         strPrice = "10.00";
                     } else if (intWeight == 1) {

@@ -47,43 +47,43 @@ import xiaofei.library.datastorage.IDataStorage;
 public class LoginNewActivity extends BaseActivity {
 
     @BindView(R.id.login_new_back)
-    ImageView    mBack;
+    ImageView mBack;
     @BindView(R.id.login_new_go_register)
-    TextView     mLoginNewGoRegister;
+    TextView mLoginNewGoRegister;
     @BindView(R.id.login_new_account)
-    EditText     mLoginNewAccount;
+    EditText mLoginNewAccount;
     @BindView(R.id.login_new_password_linear_top)
     LinearLayout mLoginNewPasswordLinearTop;
     @BindView(R.id.login_new_password)
-    EditText     mLoginNewPassword;
+    EditText mLoginNewPassword;
     @BindView(R.id.login_new_password_is_hide)
-    ImageView    mLoginNewPasswordIsHide;
+    ImageView mLoginNewPasswordIsHide;
     @BindView(R.id.login_new_password_linear_bottom)
     LinearLayout mLoginNewPasswordLinearBottom;
     @BindView(R.id.login_new_sms_linear_top)
     LinearLayout mLoginNewSmsLinearTop;
     @BindView(R.id.login_new_sms)
-    EditText     mLoginNewSms;
+    EditText mLoginNewSms;
     @BindView(R.id.login_new_sms_btn_get)
-    Button       mLoginNewSmsBtnGet;
+    Button mLoginNewSmsBtnGet;
     @BindView(R.id.login_new_sms_linear_bottom)
     LinearLayout mLoginNewSmsLinearBottom;
     @BindView(R.id.login_new_type_change)
-    TextView     mLoginNewTypeChange;
+    TextView mLoginNewTypeChange;
     @BindView(R.id.login_new_forget_password)
-    TextView     mLoginNewForgetPassword;
+    TextView mLoginNewForgetPassword;
     @BindView(R.id.login_new_go_login)
-    Button       mLoginNewGoLogin;
+    Button mLoginNewGoLogin;
 
-    private LoginPswTask     mLoginPswTask;
-    private LoginSmsTask     mLoginSmsTask;
-    private SendCodeTask     mSendCodeTask;
+    private LoginPswTask mLoginPswTask;
+    private LoginSmsTask mLoginSmsTask;
+    private SendCodeTask mSendCodeTask;
     private SweetAlertDialog mProgressDialog;
-    private boolean          isHideDisplay       = true;
-    private boolean          isLoginPsw          = true;
-    private String           hxCommonAccountHead = "jimataccounts";
-    private String           hxCommonPswHead     = "jimatpassword";
-    private String           from, goodsId, goodsType, homeTime;
+    private boolean isHideDisplay = true;
+    private boolean isLoginPsw = true;
+    private String hxCommonAccountHead = "jimataccounts";
+    private String hxCommonPswHead = "jimatpassword";
+    private String from, goodsId, goodsType, homeTime;
 
     /**
      * 60秒倒计时
@@ -452,7 +452,6 @@ public class LoginNewActivity extends BaseActivity {
                                     Model.getInstance().loginSuccess(new UserInfo(hxCommonAccountHead + ID));
                                     // 保存到本地数据库
                                     Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + ID));
-
                                     EMClient.getInstance().groupManager().loadAllGroups();
                                     EMClient.getInstance().chatManager().loadAllConversations();
 
@@ -472,8 +471,7 @@ public class LoginNewActivity extends BaseActivity {
                             });
                     EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
                     ToastUtils.show(mBaseActivity, "Login Successful");
-                    //                    startActivity(new Intent(mBaseActivity, MainActivity.class));
-
+                    //  startActivity(new Intent(mBaseActivity, MainActivity.class));
                     Log.e("OkHttp", "111: " + from);
                     if (from.equals("home")) {
                         Intent intent = new Intent(mBaseActivity, MainActivity.class);
@@ -610,6 +608,37 @@ public class LoginNewActivity extends BaseActivity {
                                     EMClient.getInstance().chatManager().loadAllConversations();
 
                                     Log.e("789", "环信登陆成功");
+                                    EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
+                                    ToastUtils.show(mBaseActivity, "Login Successful");
+                                    //                    startActivity(new Intent(mBaseActivity, MainActivity.class));
+                                    //此处逻辑我改的
+                                    if (from.equals("home")) {
+                                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+                                        intent.putExtra("item", "0");
+                                        intent.putExtra("goodsType", "0");
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (from.equals("goods")) {
+                                        Intent intent = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+                                        intent.putExtra("goodsId", goodsId);
+                                        intent.putExtra("goodsType", goodsType);
+                                        intent.putExtra("type", "home");
+                                        intent.putExtra("value", homeTime);
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (from.equals("message")) {
+                                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+                                        intent.putExtra("item", "1");
+                                        intent.putExtra("goodsType", goodsType);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+                                        intent.putExtra("item", "2");
+                                        intent.putExtra("goodsType", "0");
+                                        startActivity(intent);
+                                        finish();
+                                    }
 
                                 }
 
@@ -623,37 +652,34 @@ public class LoginNewActivity extends BaseActivity {
                                 public void onProgress(int progress, String status) {
                                 }
                             });
-                    EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
-                    ToastUtils.show(mBaseActivity, "Login Successful");
-                    //                    startActivity(new Intent(mBaseActivity, MainActivity.class));
-
-                    if (from.equals("home")) {
-                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
-                        intent.putExtra("item", "0");
-                        intent.putExtra("goodsType", "0");
-                        startActivity(intent);
-                        finish();
-                    } else if (from.equals("goods")) {
-                        Intent intent = new Intent(mBaseActivity, GoodsDetailsActivity.class);
-                        intent.putExtra("goodsId", goodsId);
-                        intent.putExtra("goodsType", goodsType);
-                        intent.putExtra("type", "home");
-                        intent.putExtra("value", homeTime);
-                        startActivity(intent);
-                        finish();
-                    } else if (from.equals("message")) {
-                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
-                        intent.putExtra("item", "1");
-                        intent.putExtra("goodsType", goodsType);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
-                        intent.putExtra("item", "2");
-                        intent.putExtra("goodsType", "0");
-                        startActivity(intent);
-                        finish();
-                    }
+                    //以前逻辑
+//                    if (from.equals("home")) {
+//                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+//                        intent.putExtra("item", "0");
+//                        intent.putExtra("goodsType", "0");
+//                        startActivity(intent);
+//                        finish();
+//                    } else if (from.equals("goods")) {
+//                        Intent intent = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+//                        intent.putExtra("goodsId", goodsId);
+//                        intent.putExtra("goodsType", goodsType);
+//                        intent.putExtra("type", "home");
+//                        intent.putExtra("value", homeTime);
+//                        startActivity(intent);
+//                        finish();
+//                    } else if (from.equals("message")) {
+//                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+//                        intent.putExtra("item", "1");
+//                        intent.putExtra("goodsType", goodsType);
+//                        startActivity(intent);
+//                        finish();
+//                    } else {
+//                        Intent intent = new Intent(mBaseActivity, MainActivity.class);
+//                        intent.putExtra("item", "2");
+//                        intent.putExtra("goodsType", "0");
+//                        startActivity(intent);
+//                        finish();
+//                    }
 
                 } catch (Exception e) {
                     // Toast.makeText(CustomerLoginActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
