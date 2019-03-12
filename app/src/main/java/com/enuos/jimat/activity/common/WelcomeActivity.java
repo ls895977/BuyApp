@@ -99,7 +99,6 @@ public class WelcomeActivity extends BaseActivity {
                                 Log.e("789", "环信登陆失败" + String.valueOf(code));
                                 Log.e("789", "环信登陆失败" + error);
                             }
-
                             @Override
                             public void onProgress(int progress, String status) {
                             }
