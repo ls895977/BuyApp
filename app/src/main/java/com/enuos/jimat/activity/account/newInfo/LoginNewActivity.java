@@ -22,6 +22,7 @@ import com.enuos.jimat.activity.home.MainActivity;
 import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
 import com.enuos.jimat.model.bean.UserInfo;
+import com.enuos.jimat.utils.MyUtils;
 import com.enuos.jimat.utils.PrefUtils;
 import com.enuos.jimat.utils.event.EventConfig;
 import com.enuos.jimat.utils.http.HttpUtils;
@@ -223,9 +224,14 @@ public class LoginNewActivity extends BaseActivity {
                     } else if (psw.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Password");
                     } else {
-                        if (userAccount.length() != 11) {
+                        if (userAccount.length() > 11 || userAccount.length() < 10) {
                             ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
                         } else {
+//                            if (MyUtils.isMobileNO(userAccount)) {
+//                                ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
+//                                return;
+//                            }
+                            Log.e("aa", MyUtils.isMobileNO(userAccount)+"----验证通过---");
                             // 登录 APP 服务器
                             HashMap<String, String> params = new HashMap<>();
                             params.put("loginAccount", userAccount);

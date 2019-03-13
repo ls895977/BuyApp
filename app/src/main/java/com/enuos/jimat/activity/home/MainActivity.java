@@ -52,16 +52,12 @@ public class MainActivity extends BaseActivity {
     PageNavigationView mTabLayout;
     @BindView(R.id.main_pager)
     NoScrollViewPager  mViewPager;
-
     public static final int PAGE_HOME    = 0;
     public static final int PAGE_Message = 1;
     public static final int PAGE_MINE    = 2;
     public              int Last_Choose  = 0;
-
     private NavigationController mController;
-
     private long mPressedTime = 0;
-
     /**
      * 在这个案例中，我们需要往 ViewPager 中添加 Activity，但是 ViewPager 加载的是 View 对象
      * 所以在这里我们需要把 Activity 转化为 View 对象，因此需要 LocalActivityManager 类
@@ -250,7 +246,6 @@ public class MainActivity extends BaseActivity {
                             //                            } else {
                             //                                currentItem = String.valueOf(mViewPager.getCurrentItem());
                             //                            }
-                            Log.e("OkHttp", "444444: " + String.valueOf(mViewPager.getCurrentItem()));
                             Intent intentA = new Intent(mBaseActivity, LoginNewActivity.class);
                             intentA.putExtra("from", "message");
                             intentA.putExtra("goodsId", "");

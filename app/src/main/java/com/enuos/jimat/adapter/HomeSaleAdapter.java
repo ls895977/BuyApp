@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.enuos.jimat.R;
 
 import org.json.JSONArray;
@@ -93,11 +94,12 @@ public class HomeSaleAdapter extends RecyclerView.Adapter<HomeSaleAdapter.ViewHo
         void bindData(JSONObject jsonObject) {
             mJSONObject = jsonObject;
             try {
-
                 item_home_sale_title.setText(mJSONObject.getString("GOODS_NAME"));
                 item_home_sale_price.setText("RM " + mJSONObject.getString("GOODS_START_PRICE"));
-                item_home_sale_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG );
-                Glide.with(mContext).load(mJSONObject.getString("IMAGE_URL")).into(item_home_sale_img);
+                item_home_sale_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                RequestOptions options = new RequestOptions();
+                options.placeholder(R.mipmap.tupian);
+                Glide.with(mContext).load(mJSONObject.getString("IMAGE_URL")).apply(options).into(item_home_sale_img);
 
             } catch (JSONException e) {
                 e.printStackTrace();

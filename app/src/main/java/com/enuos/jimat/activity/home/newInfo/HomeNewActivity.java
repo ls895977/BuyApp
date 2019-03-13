@@ -76,78 +76,78 @@ import static com.enuos.jimat.utils.MyUtils.secondsToTime;
 public class HomeNewActivity extends BaseActivity {
 
     @BindView(R.id.home_new_banner)
-    Banner    mBanner;
+    Banner mBanner;
     @BindView(R.id.home_new_banner_goods_name)
-    TextView  mHomeNewBannerGoodsName;
+    TextView mHomeNewBannerGoodsName;
     @BindView(R.id.home_new_banner_goods_price)
-    TextView  mHomeNewBannerGoodsPrice;
+    TextView mHomeNewBannerGoodsPrice;
     @BindView(R.id.home_new_banner_goods_price_old)
-    TextView  mHomeNewBannerGoodsPriceOld;
+    TextView mHomeNewBannerGoodsPriceOld;
     @BindView(R.id.home_new_banner_goods_number)
-    TextView  mHomeNewBannerGoodsNumber;
+    TextView mHomeNewBannerGoodsNumber;
     @BindView(R.id.home_new_banner_goods_btn_buy)
-    Button    mHomeNewBannerGoodsBtnBuy;
+    Button mHomeNewBannerGoodsBtnBuy;
     @BindView(R.id.home_new_view_pager)
     ViewPager mViewPager;
 
     @BindView(R.id.home_new_text_desc)
-    TextView                   mHomeNewTextDesc;
+    TextView mHomeNewTextDesc;
     @BindView(R.id.home_new_linear_desc)
-    LinearLayout               mHomeNewLinearDesc;
+    LinearLayout mHomeNewLinearDesc;
     @BindView(R.id.home_new_text_sale)
-    TextView                   mHomeNewTextSale;
+    TextView mHomeNewTextSale;
     @BindView(R.id.home_new_linear_sale)
-    LinearLayout               mHomeNewLinearSale;
+    LinearLayout mHomeNewLinearSale;
     @BindView(R.id.home_new_tab_line)
-    ImageView                  mTabLine;
+    ImageView mTabLine;
     @BindView(R.id.home_time_hour)
-    TextView                   mHomeTimeHour;
+    TextView mHomeTimeHour;
     @BindView(R.id.home_time_minute)
-    TextView                   mHomeTimeMinute;
+    TextView mHomeTimeMinute;
     @BindView(R.id.home_time_second)
-    TextView                   mHomeTimeSecond;
+    TextView mHomeTimeSecond;
     @BindView(R.id.home_new_text_sal)
-    TextView                   mHomeNewTextSal;
+    TextView mHomeNewTextSal;
     @BindView(R.id.home_new_linear_sal)
-    LinearLayout               mHomeNewLinearSal;
+    LinearLayout mHomeNewLinearSal;
     @BindView(R.id.home_viewPager)
-    ViewPager                  viewPager;
+    ViewPager viewPager;
     @BindView(R.id.home_banner_rl)
-    RelativeLayout             mHomeBannerRl;
+    RelativeLayout mHomeBannerRl;
     @BindView(R.id.home_banner_ll)
-    LinearLayout               mHomeBannerLl;
+    LinearLayout mHomeBannerLl;
     @BindView(R.id.goods_details_transparent_home)
-    ImageView                  mGoodsDetailsTransparentHome;
+    ImageView mGoodsDetailsTransparentHome;
     @BindView(R.id.home_nestedScrollView)
-    NestedScrollView           mHomeNestedScrollView;
+    NestedScrollView mHomeNestedScrollView;
     @BindView(R.id.home_new_swipe_refresh)
     VerticalSwipeRefreshLayout mSwipe;
 
-    private User   mUser;
+    private User mUser;
     private String goodsId, shopName, goodsPic, goodsName, videoUrl, img,
             goodsPrice, clientTime, startPrice, downType, downValue, isDelete, weight;
-    private long   timerTotal;
+    private long timerTotal;
     private String nowPriceServer;
 
-    private int                page          = 0;
-    private int                screenWidth;
+    private int page = 0;
+    private int screenWidth;
     private List<BaseFragment> mFragmentList = new ArrayList<>();
 
     private CountDownTimer mTimerOne, mTimerTwo;
-    private int    countTimes = 0;
-    private String homeTime   = "0";
+    private int countTimes = 0;
+    private String homeTime = "0";
 
     List<String> intentImage;
 
 
-    private static final int               UPTATE_VIEWPAGER = 0;
-    private              List<BannerModel> list;
-    private              BannerViewAdapter mAdapter;
-    private              int               autoCurrIndex    = 0;//设置当前 第几个图片 被选中
-    private              Timer             timer;
-    private              TimerTask         timerTask;
-    private              long              period           = 5000;//轮播图展示时长,默认5秒
-    private              int               bannerPosition;
+    private static final int UPTATE_VIEWPAGER = 0;
+    private List<BannerModel> list;
+    private BannerViewAdapter mAdapter;
+    private int autoCurrIndex = 0;//设置当前 第几个图片 被选中
+    private Timer timer;
+    private TimerTask timerTask;
+    private long period = 5000;//轮播图展示时长,默认5秒
+    private int bannerPosition;
 
     // 定时轮播图片，需要在主线程里面修改 UI
     @SuppressLint("HandlerLeak")
@@ -201,7 +201,7 @@ public class HomeNewActivity extends BaseActivity {
      * 广告轮播图测试数据
      */
     public void initDataA() {
-        if (videoUrl == null || videoUrl.equals("null") ||videoUrl.isEmpty()) { // 无视频
+        if (videoUrl == null || videoUrl.equals("null") || videoUrl.isEmpty()) { // 无视频
             for (int i = 0; i < intentImage.size(); i++) {
                 BannerModel listBean = new BannerModel();
                 listBean.setBannerName("");
@@ -376,6 +376,7 @@ public class HomeNewActivity extends BaseActivity {
      * 初始化 Fragment 数据以及设置颜色
      */
     private void initData() {
+        Log.e("aa", "------加载成工--------");
         mFragmentList.add(new HomeDescFragment());
         mFragmentList.add(new HomeSaleFragment());
         //        mFragmentList.add(new HomeSaleFragment());
@@ -647,9 +648,9 @@ public class HomeNewActivity extends BaseActivity {
             img = jsonObjectFirst.getString("IMAGE_URL");
             videoUrl = jsonObjectFirst.getString("VIDEO_URL");
             goodsId = jsonObjectFirst.getString("ID");
-            if(img==null || img.equals("null"))
+            if (img == null || img.equals("null"))
                 img = "";
-            if(videoUrl==null || videoUrl.equals("null"))
+            if (videoUrl == null || videoUrl.equals("null"))
                 videoUrl = "";
             /**
              * 设置轮播图 goodsImgList
@@ -1112,6 +1113,7 @@ public class HomeNewActivity extends BaseActivity {
 
         }
     }
+
     /**
      * Glide 图片加载类
      */
@@ -1140,6 +1142,7 @@ public class HomeNewActivity extends BaseActivity {
             }
             return null;
         }
+
         // onProgressUpdate方法用于更新进度信息
         @Override
         protected void onProgressUpdate(Integer... progresses) {

@@ -212,7 +212,7 @@ public class ForgetPswNewActivity extends BaseActivity implements TextWatcher {
                 if (mForgetNewTextTopOne.getText().toString().equals("Forgot Password")) { // 输入手机号
                     if (codePhone.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
-                    } else if (codePhone.length() != 11) {
+                    } else if (codePhone.length() != 11 && codePhone.length() != 10) {
                         ToastUtils.show(mBaseActivity, "Please Enter The Correct Mobile Number");
                     } else {
                         // 发送短信验证码

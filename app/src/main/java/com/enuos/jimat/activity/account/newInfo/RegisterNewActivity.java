@@ -245,7 +245,7 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                     isReInput = false;
                     if (codePhone.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
-                    } else if (codePhone.length() != 11) {
+                    } else if (codePhone.length() > 11 || codePhone.length() < 10) {
                         ToastUtils.show(mBaseActivity, "Please Enter The Correct Mobile Number");
                     } else {
                         isReInput = true;

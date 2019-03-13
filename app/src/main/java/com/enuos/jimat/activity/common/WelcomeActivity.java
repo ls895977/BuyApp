@@ -74,43 +74,43 @@ public class WelcomeActivity extends BaseActivity {
         }
         startActivity(intent);
         finish();*/
-        if (isLogin()) {//此处判断是我改的
-            if (ChatClient.getInstance().isLoggedInBefore() == false) {
-                Log.e("aa","----账号---"+hxCommonAccountHead + user.userID+"----psd----"+hxCommonPswHead + user.userID);
-                ChatClient.getInstance().login(hxCommonAccountHead + user.userID, hxCommonPswHead + user.userID,
-                        new Callback() {
-                            @Override
-                            public void onSuccess() {
-                                // 处理模型层数据
-                                Model.getInstance().loginSuccess(new UserInfo(hxCommonAccountHead + user.userID));
-                                // 保存到本地数据库
-                                Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + user.userID));
-                                EMClient.getInstance().groupManager().loadAllGroups();
-                                EMClient.getInstance().chatManager().loadAllConversations();
-                                Log.e("789", "环信登陆成功");
-                                Intent intent = new Intent(mBaseActivity, MainActivity.class);
-                                intent.putExtra("item", "1");
-                                intent.putExtra("goodsType", "1");
-                                startActivity(intent);
-                                finish();
-                            }
-                            @Override
-                            public void onError(int code, String error) {
-                                Log.e("789", "环信登陆失败" + String.valueOf(code));
-                                Log.e("789", "环信登陆失败" + error);
-                            }
-                            @Override
-                            public void onProgress(int progress, String status) {
-                            }
-                        });
-            }
-        } else {
+//        if (isLogin()) {//此处判断是我改的
+//            if (ChatClient.getInstance().isLoggedInBefore() == false) {
+//                Log.e("aa","----账号---"+hxCommonAccountHead + user.userID+"----psd----"+hxCommonPswHead + user.userID);
+//                ChatClient.getInstance().login(hxCommonAccountHead + user.userID, hxCommonPswHead + user.userID,
+//                        new Callback() {
+//                            @Override
+//                            public void onSuccess() {
+//                                // 处理模型层数据
+//                                Model.getInstance().loginSuccess(new UserInfo(hxCommonAccountHead + user.userID));
+//                                // 保存到本地数据库
+//                                Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + user.userID));
+//                                EMClient.getInstance().groupManager().loadAllGroups();
+//                                EMClient.getInstance().chatManager().loadAllConversations();
+//                                Log.e("789", "环信登陆成功");
+//                                Intent intent = new Intent(mBaseActivity, MainActivity.class);
+//                                intent.putExtra("item", "1");
+//                                intent.putExtra("goodsType", "1");
+//                                startActivity(intent);
+//                                finish();
+//                            }
+//                            @Override
+//                            public void onError(int code, String error) {
+//                                Log.e("789", "环信登陆失败" + String.valueOf(code));
+//                                Log.e("789", "环信登陆失败" + error);
+//                            }
+//                            @Override
+//                            public void onProgress(int progress, String status) {
+//                            }
+//                        });
+//            }
+//        } else {
             Intent intent = new Intent(mBaseActivity, MainActivity.class);
             intent.putExtra("item", "0");
             intent.putExtra("goodsType", "0");
             startActivity(intent);
             finish();
-        }
+//        }
     }
 
     /**

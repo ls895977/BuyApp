@@ -192,7 +192,9 @@ public class MyUtils extends Activity {
          * 133,149,153,170,173,177,180,181,189
          */
         Pattern CT = Pattern.compile("^1(3[3]|4[9]|53|7[037]|8[019])\\\\d{8}$");
-        return MB.matcher(mobiles).matches() ||CM.matcher(mobiles).matches() || CU.matcher(mobiles).matches() || CT.matcher(mobiles).matches();
+
+        Pattern MY = Pattern.compile("^(\\+?6?01){1}(([145]{1}(\\-|\\s)?\\d{7,8})|([236789]{1}(\\s|\\-)?\\d{7}))$");
+        return MB.matcher(mobiles).matches() || CM.matcher(mobiles).matches() || CU.matcher(mobiles).matches() || CT.matcher(mobiles).matches() || MY.matcher(mobiles).matches();
     }
 
     /**
@@ -342,7 +344,7 @@ public class MyUtils extends Activity {
      *
      * @return
      */
-    public static String getMiddleString(String src,String beg,String end) {
+    public static String getMiddleString(String src, String beg, String end) {
         String regex = beg + "(.*)" + end;
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(src);
@@ -359,13 +361,14 @@ public class MyUtils extends Activity {
         String result = null;
         secTotal = secTotal / 1000;
         int hour = secTotal / 3600;
-        int min = ( secTotal%3600 ) / 60;
-        int sec = ( secTotal%3600 ) % 60;
-        result = to2Str(hour)+":"+to2Str(min)+":"+to2Str(sec);
+        int min = (secTotal % 3600) / 60;
+        int sec = (secTotal % 3600) % 60;
+        result = to2Str(hour) + ":" + to2Str(min) + ":" + to2Str(sec);
         return result;
     }
+
     public static String to2Str(int i) {
-        if (i>9) {
+        if (i > 9) {
             return i + "";
         } else {
             return "0" + i;
@@ -401,8 +404,7 @@ public class MyUtils extends Activity {
             bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
             // bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             return bitmap;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }
@@ -429,10 +431,11 @@ public class MyUtils extends Activity {
 
     /**
      * 等比例缩放图片
-     * @param bm  newWidth  newHeight
+     *
+     * @param bm newWidth  newHeight
      * @return
      */
-    public static Bitmap zoomImg(Bitmap bm, int newWidth ,int newHeight){
+    public static Bitmap zoomImg(Bitmap bm, int newWidth, int newHeight) {
         // 获得图片的宽高
         int width = bm.getWidth();
         int height = bm.getHeight();
@@ -450,10 +453,11 @@ public class MyUtils extends Activity {
 
     /**
      * double转String,保留小数点后两位
+     *
      * @param num
      * @return
      */
-    public static String doubleToString(double num){
+    public static String doubleToString(double num) {
         // 使用0.00不足位补0，#.##仅保留有效位
         return new DecimalFormat("0.00").format(num);
     }
@@ -462,14 +466,14 @@ public class MyUtils extends Activity {
     public static String secondsToTime(long seconds) {
         long temp = 0;
         StringBuffer sb = new StringBuffer();
-        temp = seconds/3600;
-        sb.append((temp<10)?"0" + temp + ":":"" + temp+":");
+        temp = seconds / 3600;
+        sb.append((temp < 10) ? "0" + temp + ":" : "" + temp + ":");
 
-        temp = seconds%3600/60;
-        sb.append((temp<10)?"0" + temp + ":":"" + temp+":");
+        temp = seconds % 3600 / 60;
+        sb.append((temp < 10) ? "0" + temp + ":" : "" + temp + ":");
 
-        temp = seconds%3600%60;
-        sb.append((temp<10)?"0" + temp:"" + temp);
+        temp = seconds % 3600 % 60;
+        sb.append((temp < 10) ? "0" + temp : "" + temp);
         return sb.toString();
     }
 

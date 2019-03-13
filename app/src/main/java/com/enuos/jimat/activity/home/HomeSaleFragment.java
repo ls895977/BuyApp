@@ -172,6 +172,7 @@ public class HomeSaleFragment extends BaseFragment {
         // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
         @Override
         protected void onPostExecute(Object[] result) {
+            Log.e("aa","-------获得数据--222-"+result[2]);
             if ((boolean) result[0]) {
                 try {
                     JSONObject data = (JSONObject) result[2];

@@ -674,97 +674,157 @@ public class GoodsBuyActivity extends BaseActivity {
         }
     }
 
+
     /**
      * 计算邮费
      */
     private String getPostPrice(String area, double weight) {
+        Log.e("aa", "----area--" + area + "-----weight--" + weight);
         String strPrice;
         if (weight == 0.0) {
             strPrice = "0.00";
         } else {
             int intWeight = (int) weight + 1;
+            Log.e("aa", "----intWeight--" + intWeight);
             switch (area) {
                 case "Johor":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Kedah":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Kelantan":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Kuala Lumpur":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Labuan":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Melaka":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Negeri Sembilan":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Pahang":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Perak":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Perlis":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Pulau Pinang":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Putrajaya":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
@@ -779,6 +839,7 @@ public class GoodsBuyActivity extends BaseActivity {
                     } else if (intWeight == 3) {
                         strPrice = "17.50";
                     } else {
+                        intWeight++;
                         strPrice = String.valueOf(17.50 + (intWeight - 3) * 4.50);
                     }
                     break;
@@ -793,20 +854,31 @@ public class GoodsBuyActivity extends BaseActivity {
                     } else if (intWeight == 3) {
                         strPrice = "17.50";
                     } else {
+                        intWeight++;
                         strPrice = String.valueOf(17.50 + (intWeight - 3) * 4.50);
                     }
                     break;
                 case "Selangor":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
                 case "Terengganu":
+                    intWeight--;
                     if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
                         strPrice = "7.00";
                     } else {
+                        intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
