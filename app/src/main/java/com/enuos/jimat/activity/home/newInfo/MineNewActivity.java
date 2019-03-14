@@ -208,7 +208,7 @@ public class MineNewActivity extends BaseActivity {
         }
         mSwipe.setRefreshing(false);
     }
-
+    String phoneToast;
     /**
      * 加载页面所有的视图元素
      */
@@ -218,7 +218,18 @@ public class MineNewActivity extends BaseActivity {
                     getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
             account = dataStorage.load(User.class, "User").userAccount;
             // 隐藏手机号中间4位
-            String phoneToast = account.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+            Log.e("aa","---account----"+account);
+            if(account.length()==11) {
+                 phoneToast = account.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+            }else if(account.length()==10) {
+                phoneToast = account.replaceAll("(\\d{3})\\d{4}(\\d{3})", "$1****$2");
+            }else if(account.length()==8){
+                phoneToast = account.replaceAll("(\\d{3})\\d{3}(\\d{3})", "$1****$2");
+            }else if(account.length()==9){
+                phoneToast = account.replaceAll("(\\d{3})\\d{3}(\\d{3})", "$1****$2");
+            }else if(account.length()==12){
+                phoneToast = account.replaceAll("(\\d{4})\\d{4}(\\d{4})", "$1****$2");
+            }
             mMineNewUserAccount.setText(phoneToast);
 
             name = getJsonObject.getString("TRUE_NAME");

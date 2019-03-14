@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.enuos.jimat.R;
 import com.enuos.jimat.activity.goods.GoodsDetailsActivity;
+import com.enuos.jimat.activity.home.newInfo.HomeNewActivity;
 import com.enuos.jimat.adapter.HomeSaleAdapter;
 import com.enuos.jimat.fragment.BaseFragment;
 import com.enuos.jimat.model.User;
@@ -71,6 +72,7 @@ public class HomeSaleFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        ((HomeNewActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 1);
         return rootView;
     }
 

@@ -134,8 +134,8 @@
         <activity
             android:name=".activity.goods.GoodsDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTask"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape"
+            />
         <activity android:name=".activity.goods.GoodsBuyActivity" />
         <activity android:name=".activity.address.ChooseAddressActivity" />
         <activity android:name=".activity.order.OrderDetailsActivity" />

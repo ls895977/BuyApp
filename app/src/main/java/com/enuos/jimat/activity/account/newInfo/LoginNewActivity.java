@@ -215,7 +215,7 @@ public class LoginNewActivity extends BaseActivity {
                 break;
             // 登录
             case R.id.login_new_go_login:
-                final String userAccount = mLoginNewAccount.getText().toString();
+                String userAccount = mLoginNewAccount.getText().toString();
                 final String psw = mLoginNewPassword.getText().toString();
                 final String sms = mLoginNewSms.getText().toString();
                 if (isLoginPsw) { // 密码登录
@@ -224,14 +224,15 @@ public class LoginNewActivity extends BaseActivity {
                     } else if (psw.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Password");
                     } else {
-                        if (userAccount.length() > 11 || userAccount.length() < 10) {
+                        if (userAccount.length() > 12 || userAccount.length() < 8) {
                             ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
                         } else {
 //                            if (MyUtils.isMobileNO(userAccount)) {
 //                                ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
 //                                return;
 //                            }
-                            Log.e("aa", MyUtils.isMobileNO(userAccount)+"----验证通过---");
+                            userAccount = 6 + userAccount;
+                            Log.e("aa", MyUtils.isMobileNO(userAccount) + "----验证通过---");
                             // 登录 APP 服务器
                             HashMap<String, String> params = new HashMap<>();
                             params.put("loginAccount", userAccount);
@@ -246,10 +247,11 @@ public class LoginNewActivity extends BaseActivity {
                     } else if (sms.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Verification Code");
                     } else {
-                        if (userAccount.length() != 11) {
+                        if (userAccount.length() > 12 || userAccount.length() < 8) {
                             ToastUtils.show(mBaseActivity, "Username/ Verification Code Incorrect. Please Enter Again");
                         } else {
                             // 登录 APP 服务器
+                            userAccount = 6 + userAccount;
                             HashMap<String, String> params = new HashMap<>();
                             params.put("mobile", userAccount);
                             params.put("smsCode", sms);
@@ -435,7 +437,7 @@ public class LoginNewActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(infoString);
                     // 保存用户的基本数据
                     User user = new User();
-                    String userAccount = mLoginNewAccount.getText().toString();
+                    String userAccount ="6"+ mLoginNewAccount.getText().toString();
                     final String ID = jsonObject.getString("ID");
                     final String TOKEN = jsonObject.getString("TOKEN");
                     PrefUtils.setString(getApplication(), "UserPic",
@@ -460,9 +462,7 @@ public class LoginNewActivity extends BaseActivity {
                                     Model.getInstance().getUserAccountDao().addAccount(new UserInfo(hxCommonAccountHead + ID));
                                     EMClient.getInstance().groupManager().loadAllGroups();
                                     EMClient.getInstance().chatManager().loadAllConversations();
-
                                     Log.e("789", "环信登陆成功");
-
                                 }
 
                                 @Override
@@ -477,8 +477,6 @@ public class LoginNewActivity extends BaseActivity {
                             });
                     EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
                     ToastUtils.show(mBaseActivity, "Login Successful");
-                    //  startActivity(new Intent(mBaseActivity, MainActivity.class));
-                    Log.e("OkHttp", "111: " + from);
                     if (from.equals("home")) {
                         Intent intent = new Intent(mBaseActivity, MainActivity.class);
                         intent.putExtra("item", "0");
@@ -508,7 +506,6 @@ public class LoginNewActivity extends BaseActivity {
                         startActivity(intent);
                         finish();
                     }
-                    Log.e("OkHttp", "333: " + from);
                 } catch (Exception e) {
                     // Toast.makeText(CustomerLoginActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
                 }

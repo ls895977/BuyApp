@@ -689,7 +689,10 @@ public class GoodsBuyActivity extends BaseActivity {
             switch (area) {
                 case "Johor":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -701,7 +704,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Kedah":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -713,7 +719,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Kelantan":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -725,7 +734,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Kuala Lumpur":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -737,7 +749,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Labuan":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -749,7 +764,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Melaka":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -761,7 +779,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Negeri Sembilan":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -773,7 +794,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Pahang":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -785,7 +809,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Perak":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -797,7 +824,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Perlis":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -806,7 +836,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Pulau Pinang":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -818,7 +851,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Putrajaya":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -828,39 +864,66 @@ public class GoodsBuyActivity extends BaseActivity {
                         strPrice = String.valueOf(7.00 + (intWeight - 2) * 1.50);
                     }
                     break;
-                case "Sabah":
+                case "Sabah"://东马
                     intWeight--;
-                    if (intWeight == 0) {
+//                    if (intWeight == 0) {
+//                        strPrice = "10.00";
+//                    } else if (intWeight == 1) {
+//                        strPrice = "10.00";
+//                    } else if (intWeight == 2) {
+//                        strPrice = "13.00";
+//                    } else if (intWeight == 3) {
+//                        strPrice = "17.50";
+//                    }
+                    if (weight == 0) {
                         strPrice = "10.00";
-                    } else if (intWeight == 1) {
+                    } else if (weight <= 1) {
                         strPrice = "10.00";
-                    } else if (intWeight == 2) {
+                    } else if (weight <= 2) {
                         strPrice = "13.00";
-                    } else if (intWeight == 3) {
+                    } else if (weight <= 3) {
                         strPrice = "17.50";
                     } else {
                         intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(17.50 + (intWeight - 3) * 4.50);
                     }
                     break;
-                case "Sarawak":
+                case "Sarawak"://东马
                     intWeight--;
-                    if (intWeight == 0) {
+//                    if (intWeight == 0) {
+//                        strPrice = "10.00";
+//                    } else if (intWeight == 1) {
+//                        strPrice = "10.00";
+//                    } else if (intWeight == 2) {
+//                        strPrice = "13.00";
+//                    } else if (intWeight == 3) {
+//                        strPrice = "17.50";
+//                    }
+                    if (weight == 0) {
                         strPrice = "10.00";
-                    } else if (intWeight == 1) {
+                    } else if (weight <= 1) {
                         strPrice = "10.00";
-                    } else if (intWeight == 2) {
+                    } else if (weight <= 2) {
                         strPrice = "13.00";
-                    } else if (intWeight == 3) {
+                    } else if (weight <= 3) {
                         strPrice = "17.50";
                     } else {
                         intWeight++;
+                        if (weight % 1 == 0) {
+                            intWeight--;
+                        }
                         strPrice = String.valueOf(17.50 + (intWeight - 3) * 4.50);
                     }
                     break;
                 case "Selangor":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;
@@ -872,7 +935,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     break;
                 case "Terengganu":
                     intWeight--;
-                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                    if (intWeight == 0 || intWeight == 1 || intWeight == 2) {
+//                        strPrice = "7.00";
+//                    }
+                    if (weight < 2) {
                         strPrice = "7.00";
                     } else {
                         intWeight++;

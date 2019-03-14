@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import com.enuos.jimat.R;
 import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
 import com.enuos.jimat.activity.common.ChatActivity;
+import com.enuos.jimat.activity.common.ShowBannerActivity;
 import com.enuos.jimat.adapter.PagerSlideAdapter;
 import com.enuos.jimat.app.MyApplication;
 import com.enuos.jimat.fragment.BaseFragment;
@@ -93,78 +95,78 @@ import static com.tencent.mm.opensdk.modelmsg.SendMessageToWX.Req.WXSceneTimelin
 public class GoodsDetailsActivity extends BaseActivity {
 
     @BindView(R.id.goods_details_back)
-    ImageView   mBack;
+    ImageView mBack;
     @BindView(R.id.goods_details_banner)
-    Banner      mGoodsDetailsBanner;
+    Banner mGoodsDetailsBanner;
     @BindView(R.id.goods_details_new_price)
-    TextView    mGoodsDetailsNewPrice;
+    TextView mGoodsDetailsNewPrice;
     @BindView(R.id.goods_details_old_price)
-    TextView    mGoodsDetailsOldPrice;
+    TextView mGoodsDetailsOldPrice;
     @BindView(R.id.goods_details_progess_text)
-    TextView    mGoodsDetailsProgessText;
+    TextView mGoodsDetailsProgessText;
     @BindView(R.id.goods_details_progess)
     ProgressBar mGoodsDetailsProgess;
     @BindView(R.id.goods_details_name)
-    TextView    mGoodsDetailsName;
+    TextView mGoodsDetailsName;
     @BindView(R.id.goods_details_shop_name)
-    TextView    mGoodsDetailsShopName;
+    TextView mGoodsDetailsShopName;
     @BindView(R.id.goods_details_btn_buy)
-    Button      mGoodsDetailsBtnBuy;
+    Button mGoodsDetailsBtnBuy;
     @BindView(R.id.goods_details_go_msg)
-    ImageView   mGoodsDetailsGoMsg;
+    ImageView mGoodsDetailsGoMsg;
 
 
     @BindView(R.id.goods_details_view_pager)
-    WrapContentHeightViewPager mViewPager;
+  public   WrapContentHeightViewPager mViewPager;
     @BindView(R.id.goods_details_details_default)
-    TextView                   mGoodsDetailsDetailsDefault;
+    TextView mGoodsDetailsDetailsDefault;
     @BindView(R.id.goods_details_goods_id)
-    TextView                   mGoodsDetailsGoodsId;
+    TextView mGoodsDetailsGoodsId;
     @BindView(R.id.good_time_hour)
-    TextView                   mGoodTimeHour;
+    TextView mGoodTimeHour;
     @BindView(R.id.good_time_minute)
-    TextView                   mGoodTimeMinute;
+    TextView mGoodTimeMinute;
     @BindView(R.id.good_time_second)
-    TextView                   mGoodTimeSecond;
+    TextView mGoodTimeSecond;
     @BindView(R.id.goods_details_buy_linear)
-    LinearLayout               mGoodsDetailsBuyLinear;
+    LinearLayout mGoodsDetailsBuyLinear;
     @BindView(R.id.goods_details_goods_type)
-    TextView                   mGoodsDetailsGoodsType;
+    TextView mGoodsDetailsGoodsType;
     @BindView(R.id.jc_video)
-    JCVideoPlayerStandard      jcVideo;
+    JCVideoPlayerStandard jcVideo;
     @BindView(R.id.goods_details_share)
-    ImageView                  mGoodsDetailsShare;
+    ImageView mGoodsDetailsShare;
     @BindView(R.id.imgchange)
-    ImageView                  imgchange;
+    ImageView imgchange;
     @BindView(R.id.viewPager)
-    ViewPager                  viewPager;
+    ViewPager viewPager;
     @BindView(R.id.banner_rl)
-    RelativeLayout             mBannerRl;
+    RelativeLayout mBannerRl;
     @BindView(R.id.goods_details_transparent)
-    ImageView                  mGoodsDetailsTransparent;
+    ImageView mGoodsDetailsTransparent;
     @BindView(R.id.toolbar_tab)
-    TabLayout                  mTablayout;
+    TabLayout mTablayout;
     @BindView(R.id.toolbar)
-    Toolbar                    mToolBar;
+    Toolbar mToolBar;
     @BindView(R.id.goods_details_nested_scroll)
-    NestedScrollView           mJudgeNested;
+    NestedScrollView mJudgeNested;
     @BindView(R.id.app_bar_layout)
-    AppBarLayout               mAppBarLayout;
+    AppBarLayout mAppBarLayout;
     @BindView(R.id.lin1)
-    LinearLayout               mLin;
+    LinearLayout mLin;
     @BindView(R.id.goods_details_btn_intop)
-    ImageView                  mInTop;
+    ImageView mInTop;
 
     private SweetAlertDialog mProgressDialog;
-    private String           goodsId, goodsType, type, value, homeTime, videoUrl, img;
+    private String goodsId, goodsType, type, value, homeTime, videoUrl, img;
     private String shopName, goodsPic, goodsName, goodsPrice, clientTime, isDelete, weight;
-    private User   mUser;
+    private User mUser;
     private String nowPriceServer;
 
     private long timerTotal;
 
-    private int                page          = 0;
-    private int                screenWidth;
+    private int page = 0;
+    private int screenWidth;
     private List<BaseFragment> mFragmentList = new ArrayList<>();
 
     private SharePopupWindow mSharePopupWindow;
@@ -172,14 +174,14 @@ public class GoodsDetailsActivity extends BaseActivity {
     List<String> intentImage;
 
 
-    private static final int               UPTATE_VIEWPAGER = 0;
-    private              List<BannerModel> list;
-    private              BannerViewAdapter mAdapter;
-    private              int               autoCurrIndex    = 0;//设置当前 第几个图片 被选中
-    private              Timer             timer;
-    private              TimerTask         timerTask;
-    private              long              period           = 5000;//轮播图展示时长,默认5秒
-    private              int               bannerPosition;
+    private static final int UPTATE_VIEWPAGER = 0;
+    private List<BannerModel> list;
+    private BannerViewAdapter mAdapter;
+    private int autoCurrIndex = 0;//设置当前 第几个图片 被选中
+    private Timer timer;
+    private TimerTask timerTask;
+    private long period = 5000;//轮播图展示时长,默认5秒
+    private int bannerPosition;
 
     // 定时轮播图片，需要在主线程里面修改 UI
     @SuppressLint("HandlerLeak")
@@ -201,7 +203,6 @@ public class GoodsDetailsActivity extends BaseActivity {
             }
         }
     };
-
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -305,6 +306,33 @@ public class GoodsDetailsActivity extends BaseActivity {
     private void autoBanner() {
         viewPager.setOffscreenPageLimit(0);
         mAdapter = new BannerViewAdapter(this, list);
+        mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
+            @Override
+            public void click(View view) {
+                if (intentImageArray.length == 0) {
+                    return;
+                }
+                if (list.get(bannerPosition).getUrlType() == 0) {
+                    Intent intent = new Intent(mBaseActivity, ShowBannerActivity.class);
+                    intent.putExtra("intentImageArray", intentImageArray);
+                    startActivity(intent);
+                } else {
+//                    try {
+//                        Log.e("aa", list.get(bannerPosition).getBannerUrl() + "------------" + list.get(bannerPosition).getUrlType());
+//                        jcVideo.setVisibility(View.VISIBLE);
+//                        mGoodsDetailsBanner.setVisibility(View.GONE);
+//                        if (!videoUrl.equals("") || videoUrl != null) {
+//                            if (!img.equals("") || img != null) {
+//                                Glide.with(mBaseActivity).load(img).into(jcVideo.thumbImageView);
+//                            }
+//                            jcVideo.setUp(videoUrl, JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
+//                        }
+//                    } catch (Exception e) {
+//                    }
+                }
+
+            }
+        });
         viewPager.setAdapter(mAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -338,7 +366,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                         createTimerTask();
                     timer.schedule(timerTask, period, period);
                 }
-
+                viewPager.setOffscreenPageLimit(2);
             }
 
             @Override
@@ -525,7 +553,6 @@ public class GoodsDetailsActivity extends BaseActivity {
      */
     private void doRefresh() {
         // 获取产品详情
-
         // 取出token      params.put("token", userToken);
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
@@ -546,6 +573,8 @@ public class GoodsDetailsActivity extends BaseActivity {
     /**
      * 加载页面所有的视图元素
      */
+    public String intentImageArray[];
+
     private void loadPage(JSONObject getJsonObject) {
         try {
             goodsName = getJsonObject.getString("GOODS_NAME");
@@ -593,8 +622,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                     imageSize++;
                 }
             }
-            final String intentImageArray[] = new String[imageSize];
-
+            intentImageArray = new String[imageSize];
             for (int i = 0; i < maxImage; i++) {
                 if (!imgJsonArray.getJSONObject(i).getString(postStr[i]).equals("null")) {
                     images.add(imgJsonArray.getJSONObject(i).getString(postStr[i]));
@@ -610,6 +638,7 @@ public class GoodsDetailsActivity extends BaseActivity {
             } else {
                 intentImage.addAll(Arrays.asList(intentImageArray));
             }
+
             //            mGoodsDetailsBanner.setImages(images);
             //            mGoodsDetailsBanner.setImageLoader(new GlideImageLoader());
             //            mGoodsDetailsBanner.setBannerAnimation(Transformer.Accordion);

@@ -239,19 +239,19 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                 break;
             // 下一步
             case R.id.register_new_go_next:
-                final String codePhone = mRegisterNewAccount.getText().toString();
+                final String codePhone = "6"+mRegisterNewAccount.getText().toString();
                 myUserAccount = codePhone;
                 if (mRegisterNewContactLinear.getVisibility() == View.VISIBLE) { // 输入手机号
                     isReInput = false;
                     if (codePhone.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
-                    } else if (codePhone.length() > 11 || codePhone.length() < 10) {
+                    } else if (codePhone.length() < 8 || codePhone.length() > 12) {
                         ToastUtils.show(mBaseActivity, "Please Enter The Correct Mobile Number");
                     } else {
                         isReInput = true;
                         // 发送短信验证码
                         mTimer60.start();
-
+                        myUserAccount = 6 + myUserAccount;
                         // 取出token      params.put("token", userToken);
                         IDataStorage dataStorage = DataStorageFactory.getInstance(
                                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
@@ -510,7 +510,7 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                     ToastUtils.show(mBaseActivity, "Sign Up Successful");
                     String infoString = data.getString("data").replaceAll("\'", "\"");
                     JSONObject jsonObject = new JSONObject(infoString);
-                    myID =  jsonObject.getString("ID");
+                    myID = jsonObject.getString("ID");
                     // 登录 APP 服务器
                     HashMap<String, String> params = new HashMap<>();
                     params.put("loginAccount", myUserAccount);
@@ -560,7 +560,8 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
 
         // onProgressUpdate方法用于更新进度信息
         @Override
-        protected void onProgressUpdate(Integer... progresses) { }
+        protected void onProgressUpdate(Integer... progresses) {
+        }
 
         // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
         @Override
@@ -574,7 +575,7 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                     Log.e("TAG", "登录接口的返回结果" + data.toString());
                     String infoString = data.getString("data").replaceAll("\'", "\"");
                     JSONObject jsonObject = new JSONObject(infoString);
-                    myToken =  jsonObject.getString("TOKEN");
+                    myToken = jsonObject.getString("TOKEN");
                     // 保存用户的基本数据
                     User user = new User();
                     user.userID = myID;
@@ -611,7 +612,8 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                                 }
 
                                 @Override
-                                public void onProgress(int progress, String status) { }
+                                public void onProgress(int progress, String status) {
+                                }
                             });
                     EventBus.getDefault().post(EventConfig.EVENT_LOGIN);
                     Intent intent = new Intent(mBaseActivity, MainActivity.class);

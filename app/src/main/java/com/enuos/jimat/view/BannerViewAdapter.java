@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,7 +34,6 @@ public class BannerViewAdapter extends PagerAdapter {
     private String                homeTime;
 
     public BannerViewAdapter(Activity context, List<BannerModel> list, String id, String time) {
-        //        this.context = context.getApplicationContext();
         this.context = context;
         jcVideoPlayer = new JCVideoPlayerStandard(context);
         goodsId = id;
@@ -60,6 +60,7 @@ public class BannerViewAdapter extends PagerAdapter {
     public Object instantiateItem(final ViewGroup container, final int position) {
         if (listBean.get(position).getUrlType() == 0) {//图片
             final ImageView imageView = new ImageView(context);
+
             Glide.with(context).load(listBean.get(position).getBannerUrl())
                     //                    .skipMemoryCache(true)
                     .into(imageView);
@@ -88,17 +89,19 @@ public class BannerViewAdapter extends PagerAdapter {
             }
             return imageView;
         } else {//视频
-
             //            final VideoView videoView = new VideoView(context);
             //            videoView.setVideoURI(Uri.parse(listBean.get(position).getBannerUrl()));
             //            //开始播放
             //            videoView.start();
             //            container.addView(videoView);
-
             jcVideoPlayer.setUp(listBean.get(position).getBannerUrl()
                     , JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "");
-            //            if (context instanceof HomeNewActivity)
-            //                jcVideoPlayer.fullscreenButton.setVisibility(View.GONE);
+            jcVideoPlayer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onClick.click(view);
+                }
+            });
             Glide.with(context)
                     .load(listBean.get(position).getVideoPic())
                     .into(jcVideoPlayer.thumbImageView);
@@ -132,19 +135,10 @@ public class BannerViewAdapter extends PagerAdapter {
         this.onClick = onClick;
     }
 
-    public JCVideoPlayer getPlayer() {
-        return jcVideoPlayer;
-    }
-
     public boolean onBack() {
         return JCVideoPlayer.backPress();
     }
 
-    public void setListBean(List<BannerModel> ll) {
-        listBean.clear();
-        listBean.addAll(ll);
-        notifyDataSetChanged();
-    }
 
     @Override
     public int getItemPosition(Object object) {

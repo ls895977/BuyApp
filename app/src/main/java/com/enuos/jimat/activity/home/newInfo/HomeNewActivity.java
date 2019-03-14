@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
@@ -41,10 +43,17 @@ import com.enuos.jimat.utils.http.UrlConfig;
 import com.enuos.jimat.utils.toast.ToastUtils;
 import com.enuos.jimat.view.BannerModel;
 import com.enuos.jimat.view.BannerViewAdapter;
-import com.enuos.jimat.view.VerticalSwipeRefreshLayout;
+import com.enuos.jimat.view.WrapContentHeightViewPager;
 import com.example.myvideoplayer.JCVideoPlayer;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.RefreshState;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.listener.SimpleMultiPurposeListener;
 import com.youth.banner.Banner;
 import com.youth.banner.loader.ImageLoader;
 
@@ -74,7 +83,6 @@ import xiaofei.library.datastorage.IDataStorage;
 import static com.enuos.jimat.utils.MyUtils.secondsToTime;
 
 public class HomeNewActivity extends BaseActivity {
-
     @BindView(R.id.home_new_banner)
     Banner mBanner;
     @BindView(R.id.home_new_banner_goods_name)
@@ -88,16 +96,7 @@ public class HomeNewActivity extends BaseActivity {
     @BindView(R.id.home_new_banner_goods_btn_buy)
     Button mHomeNewBannerGoodsBtnBuy;
     @BindView(R.id.home_new_view_pager)
-    ViewPager mViewPager;
-
-    @BindView(R.id.home_new_text_desc)
-    TextView mHomeNewTextDesc;
-    @BindView(R.id.home_new_linear_desc)
-    LinearLayout mHomeNewLinearDesc;
-    @BindView(R.id.home_new_text_sale)
-    TextView mHomeNewTextSale;
-    @BindView(R.id.home_new_linear_sale)
-    LinearLayout mHomeNewLinearSale;
+   public WrapContentHeightViewPager mViewPager;
     @BindView(R.id.home_new_tab_line)
     ImageView mTabLine;
     @BindView(R.id.home_time_hour)
@@ -118,11 +117,14 @@ public class HomeNewActivity extends BaseActivity {
     LinearLayout mHomeBannerLl;
     @BindView(R.id.goods_details_transparent_home)
     ImageView mGoodsDetailsTransparentHome;
-    @BindView(R.id.home_nestedScrollView)
-    NestedScrollView mHomeNestedScrollView;
-    @BindView(R.id.home_new_swipe_refresh)
-    VerticalSwipeRefreshLayout mSwipe;
-
+    //    @BindView(R.id.home_nestedScrollView)
+//    NestedScrollView mHomeNestedScrollView;
+//    @BindView(R.id.home_new_swipe_refresh)
+//    SmartRefreshLayout mSwipe;
+    @BindView(R.id.toolbar_tab)
+    TabLayout mTablayout;
+    @BindView(R.id.goods_details_nested_scroll)
+    NestedScrollView mJudgeNested;
     private User mUser;
     private String goodsId, shopName, goodsPic, goodsName, videoUrl, img,
             goodsPrice, clientTime, startPrice, downType, downValue, isDelete, weight;
@@ -132,14 +134,10 @@ public class HomeNewActivity extends BaseActivity {
     private int page = 0;
     private int screenWidth;
     private List<BaseFragment> mFragmentList = new ArrayList<>();
-
     private CountDownTimer mTimerOne, mTimerTwo;
     private int countTimes = 0;
     private String homeTime = "0";
-
     List<String> intentImage;
-
-
     private static final int UPTATE_VIEWPAGER = 0;
     private List<BannerModel> list;
     private BannerViewAdapter mAdapter;
@@ -169,16 +167,13 @@ public class HomeNewActivity extends BaseActivity {
             }
         }
     };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_new);
         ButterKnife.bind(this);
-
         // 注册 EventBus
         EventBus.getDefault().register(this);
-
         // 进入界面之后先获取信息
         setSwipe();
         refresh();
@@ -193,7 +188,7 @@ public class HomeNewActivity extends BaseActivity {
         //            getWindow().setStatusBarColor(Color.TRANSPARENT);
         //        }
 
-        mHomeNestedScrollView.setFillViewport(true);
+//        mHomeNestedScrollView.setFillViewport(true);
         autoBanner();
     }
 
@@ -232,7 +227,6 @@ public class HomeNewActivity extends BaseActivity {
             }
         }
         period = list.get(0).getPlayTime();
-        viewPager.setOffscreenPageLimit(0);
         //        mAdapter.setListBean(list);
         mAdapter = new BannerViewAdapter(this, list, goodsId, homeTime);
         viewPager.setAdapter(mAdapter);
@@ -247,7 +241,6 @@ public class HomeNewActivity extends BaseActivity {
                 bannerPosition = position;
                 JCVideoPlayer.releaseAllVideos();
             }
-
             @Override
             public void onPageSelected(int position) {
                 autoCurrIndex = position;//动态设定轮播图每一页的停留时间
@@ -375,87 +368,42 @@ public class HomeNewActivity extends BaseActivity {
     /**
      * 初始化 Fragment 数据以及设置颜色
      */
+    PagerSlideAdapter adapter;
     private void initData() {
-        Log.e("aa", "------加载成工--------");
+        mFragmentList.clear();
         mFragmentList.add(new HomeDescFragment());
         mFragmentList.add(new HomeSaleFragment());
-        //        mFragmentList.add(new HomeSaleFragment());
-        PagerSlideAdapter adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
+        adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setAdapter(adapter);
+        mViewPager.resetHeight(0);
         mViewPager.setCurrentItem(page);
-        switch (page) {
-            case 0:
-                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-                break;
-            case 1:
-                mHomeNewTextSale.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-                break;
-        }
+        mViewPager.setOffscreenPageLimit(2);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener
+                (mTablayout));
+        mTablayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
-
     /**
      * 设置滑动监听器
      */
     private void setListener() {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            /**
-             * This method will be invoked when the current page is scrolled, either as part
-             * of a programmatically initiated smooth scroll or a user initiated touch scroll.
-             *
-             * @param position Position index of the first page currently being displayed.
-             *                 Page position+1 will be visible if positionOffset is nonzero.
-             * @param positionOffset Value from [0, 1) indicating the offset from the page at position.
-             * @param positionOffsetPixels Value in pixels indicating the offset from position.
-             *                             这个参数的使用是为了在滑动页面时有文字下方横条的滑动效果
-             */
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLine.getLayoutParams();
-                lp.leftMargin = screenWidth / 3 * position + positionOffsetPixels / 3;
-                mTabLine.setLayoutParams(lp);
+            public void onPageScrolled(int i, float v, int i1) {
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                // 在每次切换页面时重置 TextView 的颜色
-                resetTextView();
-                switch (position) {
-                    case 0:
-                        mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-                        break;
-                    case 1:
-                        mHomeNewTextSale.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-                        break;
-                }
+                Log.e("aa","-----------"+position);
+                mViewPager.resetHeight(position);
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onPageScrollStateChanged(int i) {
 
             }
         });
     }
-
-    /**
-     * 重置 Text 颜色
-     */
-    private void resetTextView() {
-        mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_9A9A9A));
-        mHomeNewTextSale.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_9A9A9A));
-    }
-
-    /**
-     * 初始化滑动横条的宽度
-     */
-    private void initWidth() {
-        DisplayMetrics dpMetrics = new DisplayMetrics();
-        getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
-        screenWidth = dpMetrics.widthPixels;
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mTabLine.getLayoutParams();
-        lp.width = screenWidth / 3;
-        mTabLine.setLayoutParams(lp);
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String message) {
         if (message.equals(EventConfig.EVENT_LOGIN)) {
@@ -481,18 +429,41 @@ public class HomeNewActivity extends BaseActivity {
      * 设置刷新
      */
     private void setSwipe() {
-        mSwipe.setColorSchemeColors(ContextCompat.getColor(mBaseActivity, R.color.blue_btn_bg_color));
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                initData(); // 初始化数据
-                initWidth(); // 初始化滑动横条的宽度
-                setListener(); // 设置监听器
-                resetTextView();
-                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-                refresh();
-            }
-        });
+        //设置 Header 为 Material风格
+//        mSwipe.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(false));
+//        //设置 Footer 为 球脉冲
+//        mSwipe.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
+//
+//        mSwipe.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
+//            @Override
+//            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+//            }
+//
+//            @Override
+//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+//                refreshLayout.finishLoadMore();
+//            }
+//
+//            @Override
+//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+//                refreshLayout.finishRefresh();
+//                initData(); // 初始化数据
+////                initWidth(); // 初始化滑动横条的宽度
+//                resetTextView();
+////                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
+//            }
+//        });
+//        mSwipe.setColorSchemeColors(ContextCompat.getColor(mBaseActivity, R.color.blue_btn_bg_color));
+//        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                initData(); // 初始化数据
+//                initWidth(); // 初始化滑动横条的宽度
+//                resetTextView();
+//                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
+//                refresh();
+//            }
+//        });
     }
 
     public void onResume() {
@@ -505,7 +476,7 @@ public class HomeNewActivity extends BaseActivity {
      * 用于获取网络数据
      */
     private void refresh() {
-        mSwipe.setRefreshing(true);
+//        mSwipe.setRefreshing(true);
 
         // 取出token      params.put("token", userToken);
         IDataStorage dataStorage = DataStorageFactory.getInstance(
@@ -522,7 +493,7 @@ public class HomeNewActivity extends BaseActivity {
         params.put("token", userToken);
         DoPostTask mDoPostTask = new DoPostTask();
         mDoPostTask.execute(params);
-        mSwipe.setRefreshing(false);
+//        mSwipe.setRefreshing(false);
         countTimes++;
         Log.e("789", "countTimes: " + String.valueOf(countTimes));
     }
@@ -569,14 +540,10 @@ public class HomeNewActivity extends BaseActivity {
             // 正在降价
             case R.id.home_new_linear_desc:
                 mViewPager.setCurrentItem(0);
-                resetTextView();
-                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
                 break;
             // 待售商品
             case R.id.home_new_linear_sale:
                 mViewPager.setCurrentItem(1);
-                resetTextView();
-                mHomeNewTextSale.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
                 break;
             // 立即购买
             case R.id.home_new_banner_goods_btn_buy:
@@ -789,10 +756,10 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
 
-                                            if (mSwipe.isRefreshing()) {
-                                                mTimerOne.cancel();
-                                                Log.e("789", "1111: ");
-                                            }
+//                                            if (mSwipe.isRefreshing()) {
+//                                                mTimerOne.cancel();
+//                                                Log.e("789", "1111: ");
+//                                            }
 
                                         }
 
@@ -819,10 +786,10 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
 
-                                            if (mSwipe.isRefreshing()) {
-                                                mTimerOne.cancel();
-                                                Log.e("789", "1111: ");
-                                            }
+//                                            if (mSwipe.isRefreshing()) {
+//                                                mTimerOne.cancel();
+//                                                Log.e("789", "1111: ");
+//                                            }
 
                                         }
 
@@ -917,10 +884,10 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
 
-                                            if (mSwipe.isRefreshing()) {
-                                                mTimerTwo.onFinish();
-                                                Log.e("789", "2222: ");
-                                            }
+//                                            if (mSwipe.isRefreshing()) {
+//                                                mTimerTwo.onFinish();
+//                                                Log.e("789", "2222: ");
+//                                            }
                                         }
 
                                         @Override
@@ -945,10 +912,10 @@ public class HomeNewActivity extends BaseActivity {
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
 
-                                            if (mSwipe.isRefreshing()) {
-                                                mTimerTwo.onFinish();
-                                                Log.e("789", "2222: ");
-                                            }
+//                                            if (mSwipe.isRefreshing()) {
+//                                                mTimerTwo.onFinish();
+//                                                Log.e("789", "2222: ");
+//                                            }
                                         }
 
                                         @Override
@@ -963,10 +930,8 @@ public class HomeNewActivity extends BaseActivity {
                                     };
                                     mTimerTwo.start();
                                 }
-
                             }
                         });
-
                     }
                 }
             } else {  // 系统时间小于服务器开始降价时间 即 还没有处于降价
@@ -1027,9 +992,7 @@ public class HomeNewActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         initData(); // 初始化数据
-        initWidth(); // 初始化滑动横条的宽度
         setListener(); // 设置监听器
     }
 
@@ -1065,7 +1028,7 @@ public class HomeNewActivity extends BaseActivity {
                     JSONObject data = (JSONObject) result[2];
                     Log.e("TAG", "首页的返回结果：" + data.toString());
                     loadPage(data);
-                    mSwipe.setRefreshing(false);
+//                    mSwipe.setRefreshing(false);
                 } catch (Exception e) {
                     //Toast.makeText(ChooseContactActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
                 }

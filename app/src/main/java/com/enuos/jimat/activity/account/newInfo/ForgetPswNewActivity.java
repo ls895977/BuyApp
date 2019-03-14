@@ -207,17 +207,17 @@ public class ForgetPswNewActivity extends BaseActivity implements TextWatcher {
                 break;
             // 下一步
             case R.id.forget_new_go_next:
-                final String codePhone = mForgetNewAccount.getText().toString();
+                final String codePhone = "6"+mForgetNewAccount.getText().toString();
                 myUserAccount = codePhone;
                 if (mForgetNewTextTopOne.getText().toString().equals("Forgot Password")) { // 输入手机号
                     if (codePhone.equals("")) {
                         ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
-                    } else if (codePhone.length() != 11 && codePhone.length() != 10) {
+                    } else if (codePhone.length() < 8 && codePhone.length() > 12) {
                         ToastUtils.show(mBaseActivity, "Please Enter The Correct Mobile Number");
                     } else {
                         // 发送短信验证码
                         mTimer60.start();
-
+                        myUserAccount = 6 + myUserAccount;
                         // 取出token      params.put("token", userToken);
                         IDataStorage dataStorage = DataStorageFactory.getInstance(
                                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);

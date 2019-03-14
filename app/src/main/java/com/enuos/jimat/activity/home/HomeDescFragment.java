@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.enuos.jimat.R;
 import com.enuos.jimat.activity.goods.GoodsDetailsActivity;
+import com.enuos.jimat.activity.home.newInfo.HomeNewActivity;
 import com.enuos.jimat.adapter.HomeDescAdapter;
 import com.enuos.jimat.fragment.BaseFragment;
 import com.enuos.jimat.model.User;
@@ -58,10 +59,8 @@ public class HomeDescFragment extends BaseFragment {
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 mContext.getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
         mUser = dataStorage.load(User.class, "User");
-
         // 刷新数据
         refresh();
-
         super.initData();
     }
 
@@ -69,6 +68,7 @@ public class HomeDescFragment extends BaseFragment {
     public View onCreateView(@Nullable LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
+        ((HomeNewActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 0);
         return rootView;
     }
 
@@ -91,7 +91,6 @@ public class HomeDescFragment extends BaseFragment {
         if (user != null && !user.userAccount.equals("")) {
             userToken = user.token;
         }
-
         HashMap<String, String> params = new HashMap<>();
         params.put("pageNum", "1");
         params.put("pageSize", "20");

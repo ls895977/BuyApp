@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
     android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.enuos.jimat.activity.account.newInfo.LoginNewActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/login_new_back"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="16dp"
-            android:src="@drawable/back_icon"/>
+            android:src="@drawable/back_icon" />
 
         <TextView
             android:id="@+id/login_new_go_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:layout_marginRight="15dp"
+            android:text="Sign Up"
             android:textColor="@color/color_4A4A4A"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
     </RelativeLayout>
 
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@drawable/login_logo_icon"/>
+        android:src="@drawable/login_logo_icon" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:layout_marginLeft="20dp"
             android:text="Mobile Number"
             android:textColor="@color/color_4A4A4A"
-            android:textSize="17sp"/>
+            android:textSize="17sp" />
 
     </LinearLayout>
 
@@ -57,28 +57,41 @@
         android:layout_height="40dp"
         android:gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/login_new_account"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="40dp"
-            android:background="@null"
-            android:inputType="number"
-            android:hint="Please Enter Your Mobile Number"
-            android:textColorHint="@color/color_9B9B9B"
-            android:textSize="15sp"/>
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="+6" />
+
+            <EditText
+                android:id="@+id/login_new_account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:background="@null"
+                android:hint="Please Enter Your Mobile Number"
+                android:inputType="number"
+                android:textColorHint="@color/color_9B9B9B"
+                android:textSize="15sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
-            android:background="@color/color_9B9B9B"/>
+            android:background="@color/color_9B9B9B" />
     </LinearLayout>
 
     <LinearLayout
@@ -87,24 +100,27 @@
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/color_4A4A4A"
             android:layout_marginLeft="20dp"
-            android:text="Password"/>
+            android:text="Password"
+            android:textColor="@color/color_4A4A4A"
+            android:textSize="17sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:visibility="invisible"
-            android:background="@color/color_9B9B9B"/>
+            android:background="@color/color_9B9B9B"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,14 +133,14 @@
             android:id="@+id/login_new_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="40dp"
+            android:layout_weight="1"
             android:background="@null"
-            android:textSize="15sp"
             android:hint="Please Enter Password"
+            android:inputType="textPassword"
             android:textColorHint="@color/color_9B9B9B"
-            android:inputType="textPassword"/>
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/login_new_password_is_hide"
@@ -136,51 +152,54 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/login_new_sms_linear_top"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="17sp"
-            android:textColor="@color/color_4A4A4A"
             android:layout_marginLeft="20dp"
-            android:text="Verification Code"/>
+            android:text="Verification Code"
+            android:textColor="@color/color_4A4A4A"
+            android:textSize="17sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:visibility="invisible"
-            android:background="@color/color_9B9B9B"/>
+            android:background="@color/color_9B9B9B"
+            android:visibility="invisible" />
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/login_new_sms_linear_bottom"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/login_new_sms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
+            android:layout_weight="1"
             android:background="@null"
-            android:textSize="14sp"
             android:hint="Please Enter The Verification Code"
+            android:inputType="textPassword"
             android:textColorHint="@color/color_9B9B9B"
-            android:inputType="textPassword"/>
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/login_new_sms_btn_get"
@@ -197,12 +216,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/color_9B9B9B"/>
+            android:background="@color/color_9B9B9B" />
     </LinearLayout>
 
     <RelativeLayout
@@ -218,7 +238,7 @@
             android:layout_marginLeft="20dp"
             android:text="Mobile Login"
             android:textColor="@color/color_4A4A4A"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/login_new_forget_password"
@@ -229,7 +249,7 @@
             android:layout_marginRight="20dp"
             android:text="Forgot Password"
             android:textColor="@color/color_4A4A4A"
-            android:textSize="13sp"/>
+            android:textSize="13sp" />
     </RelativeLayout>
 
     <Button
@@ -237,28 +257,29 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginLeft="20dp"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
+        android:layout_marginRight="20dp"
         android:background="@drawable/btn_login_selector"
         android:text="L o g i n"
-        android:textColor="@color/white"
         android:textAllCaps="false"
-        android:textSize="17sp"/>
+        android:textColor="@color/white"
+        android:textSize="17sp" />
 
     <RelativeLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
         <View
             android:layout_width="match_parent"
-            android:layout_marginLeft="128dp"
-            android:layout_marginRight="128dp"
             android:layout_height="5dp"
             android:layout_alignParentBottom="true"
+            android:layout_marginLeft="128dp"
+            android:layout_marginRight="128dp"
             android:layout_marginBottom="10dp"
-            android:background="@color/color_011D08"/>
+            android:background="@color/color_011D08" />
     </RelativeLayout>
 
 </LinearLayout>
