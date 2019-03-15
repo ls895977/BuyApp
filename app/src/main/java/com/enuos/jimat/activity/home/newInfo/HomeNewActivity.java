@@ -18,6 +18,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -96,7 +97,7 @@ public class HomeNewActivity extends BaseActivity {
     @BindView(R.id.home_new_banner_goods_btn_buy)
     Button mHomeNewBannerGoodsBtnBuy;
     @BindView(R.id.home_new_view_pager)
-   public WrapContentHeightViewPager mViewPager;
+    public WrapContentHeightViewPager mViewPager;
     @BindView(R.id.home_new_tab_line)
     ImageView mTabLine;
     @BindView(R.id.home_time_hour)
@@ -167,6 +168,7 @@ public class HomeNewActivity extends BaseActivity {
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -241,6 +243,7 @@ public class HomeNewActivity extends BaseActivity {
                 bannerPosition = position;
                 JCVideoPlayer.releaseAllVideos();
             }
+
             @Override
             public void onPageSelected(int position) {
                 autoCurrIndex = position;//动态设定轮播图每一页的停留时间
@@ -368,34 +371,30 @@ public class HomeNewActivity extends BaseActivity {
     /**
      * 初始化 Fragment 数据以及设置颜色
      */
-    PagerSlideAdapter adapter;
     private void initData() {
-        mFragmentList.clear();
         mFragmentList.add(new HomeDescFragment());
         mFragmentList.add(new HomeSaleFragment());
-        adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
+        PagerSlideAdapter adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
         mViewPager.setAdapter(adapter);
-        mViewPager.resetHeight(0);
         mViewPager.setCurrentItem(page);
-        mViewPager.setOffscreenPageLimit(2);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener
                 (mTablayout));
         mTablayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
+
     /**
      * 设置滑动监听器
      */
     private void setListener() {
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
+            public void onPageScrolled(int position, float v, int i1) {
+                mViewPager.resetHeight(position);
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.e("aa","-----------"+position);
-                mViewPager.resetHeight(position);
+
             }
 
             @Override
@@ -404,6 +403,7 @@ public class HomeNewActivity extends BaseActivity {
             }
         });
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String message) {
         if (message.equals(EventConfig.EVENT_LOGIN)) {

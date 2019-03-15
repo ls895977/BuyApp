@@ -148,8 +148,6 @@ public class GoodsDetailsActivity extends BaseActivity {
     TabLayout mTablayout;
     @BindView(R.id.toolbar)
     Toolbar mToolBar;
-    @BindView(R.id.goods_details_nested_scroll)
-    NestedScrollView mJudgeNested;
     @BindView(R.id.app_bar_layout)
     AppBarLayout mAppBarLayout;
     @BindView(R.id.lin1)
@@ -532,8 +530,8 @@ public class GoodsDetailsActivity extends BaseActivity {
         });
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                mViewPager.resetHeight(i);
+            public void onPageScrolled(int position, float v, int i1) {
+                mViewPager.resetHeight(position);
             }
 
             @Override

@@ -3,6 +3,7 @@ package com.enuos.jimat.view;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -42,9 +43,8 @@ public class WrapContentHeightViewPager extends ViewPager {
                 height = child.getMeasuredHeight();
             }
         }
-
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-
+        Log.e("aa","-----"+height+"---------");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
