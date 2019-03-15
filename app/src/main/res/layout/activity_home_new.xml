@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_height="match_parent">
     <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
         <!--android:id="@+id/home_new_swipe_refresh"-->
@@ -12,7 +14,9 @@
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            tools:context=".MainActivity"
+            android:layout_weight="1"
             android:background="@color/white">
 
             <android.support.design.widget.AppBarLayout
@@ -374,22 +378,23 @@
                         </LinearLayout>
                     </LinearLayout>
 
+
                 </android.support.design.widget.CollapsingToolbarLayout>
             </android.support.design.widget.AppBarLayout>
             <android.support.v4.widget.NestedScrollView
                 android:id="@+id/goods_details_nested_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="160dip"
+                android:layout_height="match_parent"
                 android:fillViewport="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
                 <com.enuos.jimat.view.WrapContentHeightViewPager
                     android:id="@+id/home_new_view_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     />
 
             </android.support.v4.widget.NestedScrollView>
         </android.support.design.widget.CoordinatorLayout>
     <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
-</RelativeLayout>
+</LinearLayout>
