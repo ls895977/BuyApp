@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_height="match_parent">
-    <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
-        <!--android:id="@+id/home_new_swipe_refresh"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="@color/white">-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/home_new_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
         <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -393,5 +393,5 @@
                     />
             </android.support.v4.widget.NestedScrollView>
         </android.support.design.widget.CoordinatorLayout>
-    <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

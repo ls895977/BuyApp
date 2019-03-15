@@ -120,8 +120,8 @@ public class HomeNewActivity extends BaseActivity {
     ImageView mGoodsDetailsTransparentHome;
     //    @BindView(R.id.home_nestedScrollView)
 //    NestedScrollView mHomeNestedScrollView;
-//    @BindView(R.id.home_new_swipe_refresh)
-//    SmartRefreshLayout mSwipe;
+    @BindView(R.id.home_new_swipe_refresh)
+    SmartRefreshLayout mSwipe;
     @BindView(R.id.toolbar_tab)
     TabLayout mTablayout;
     @BindView(R.id.goods_details_nested_scroll)
@@ -430,40 +430,29 @@ public class HomeNewActivity extends BaseActivity {
      */
     private void setSwipe() {
         //设置 Header 为 Material风格
-//        mSwipe.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(false));
-//        //设置 Footer 为 球脉冲
-//        mSwipe.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-//
-//        mSwipe.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
-//            @Override
-//            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
-//            }
-//
-//            @Override
-//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                refreshLayout.finishLoadMore();
-//            }
-//
-//            @Override
-//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                refreshLayout.finishRefresh();
-//                initData(); // 初始化数据
-////                initWidth(); // 初始化滑动横条的宽度
-//                resetTextView();
-////                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-//            }
-//        });
-//        mSwipe.setColorSchemeColors(ContextCompat.getColor(mBaseActivity, R.color.blue_btn_bg_color));
-//        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                initData(); // 初始化数据
+        mSwipe.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(false));
+        //设置 Footer 为 球脉冲
+        mSwipe.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
+
+        mSwipe.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
+            @Override
+            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
+            }
+
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore();
+            }
+
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishRefresh();
+                mFragmentList.clear();
+                initData(); // 初始化数据
 //                initWidth(); // 初始化滑动横条的宽度
-//                resetTextView();
 //                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-//                refresh();
-//            }
-//        });
+            }
+        });
     }
 
     public void onResume() {
