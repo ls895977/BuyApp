@@ -133,8 +133,7 @@
         <activity android:name=".activity.mine.history.HistoryBuyActivity" />
         <activity
             android:name=".activity.goods.GoodsDetailsActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:screenOrientation="landscape"
+            android:configChanges="keyboardHidden|orientation"
             />
         <activity android:name=".activity.goods.GoodsBuyActivity" />
         <activity android:name=".activity.address.ChooseAddressActivity" />
