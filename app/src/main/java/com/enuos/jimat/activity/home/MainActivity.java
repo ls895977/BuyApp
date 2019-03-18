@@ -19,7 +19,7 @@ import com.enuos.jimat.R;
 import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
 import com.enuos.jimat.activity.common.ChatActivity;
-import com.enuos.jimat.activity.home.newInfo.HomeNewActivity;
+import com.enuos.jimat.activity.home.newInfo.HomeNewActivity1;
 import com.enuos.jimat.activity.home.newInfo.MineNewActivity;
 import com.enuos.jimat.adapter.MainAdapter;
 import com.enuos.jimat.adapter.NoScrollViewPager;
@@ -51,11 +51,11 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.main_tab)
     PageNavigationView mTabLayout;
     @BindView(R.id.main_pager)
-    NoScrollViewPager  mViewPager;
-    public static final int PAGE_HOME    = 0;
+    NoScrollViewPager mViewPager;
+    public static final int PAGE_HOME = 0;
     public static final int PAGE_Message = 1;
-    public static final int PAGE_MINE    = 2;
-    public              int Last_Choose  = 0;
+    public static final int PAGE_MINE = 2;
+    public int Last_Choose = 0;
     private NavigationController mController;
     private long mPressedTime = 0;
     /**
@@ -225,7 +225,7 @@ public class MainActivity extends BaseActivity {
                         mViewPager.setCurrentItem(Last_Choose);
                         mController.setSelect(Last_Choose);
                         ChatClient.getInstance().addConnectionListener(new MyConnectionListener(mBaseActivity));
-                        Log.e("aa",ChatClient.getInstance().isLoggedInBefore()+"---判断是否已登录环信----"+isLogin());
+                        Log.e("aa", ChatClient.getInstance().isLoggedInBefore() + "---判断是否已登录环信----" + isLogin());
                         if (isLogin()) {
                             // 点击“在线客服”按钮的时候，判断是否已登录环信
                             if (ChatClient.getInstance().isLoggedInBefore() || goodsType.equals("1")) {
@@ -288,8 +288,8 @@ public class MainActivity extends BaseActivity {
 
         List<View> views = new ArrayList<>();
         Intent intent = new Intent();
-
-        intent.setClass(mBaseActivity, HomeNewActivity.class);
+//        intent.setClass(mBaseActivity, HomeNewActivity.class);//原来的
+        intent.setClass(mBaseActivity, HomeNewActivity1.class);
         views.add(getView("activity_home_new", intent));
 
         intent.setClass(mBaseActivity, MessageActivity.class);

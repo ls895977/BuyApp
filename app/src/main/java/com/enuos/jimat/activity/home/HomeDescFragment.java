@@ -68,7 +68,7 @@ public class HomeDescFragment extends BaseFragment {
     public View onCreateView(@Nullable LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         unbinder = ButterKnife.bind(this, rootView);
-        ((HomeNewActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 0);
+//        ((HomeNewActivity) getActivity()).mViewPager.setObjectForPosition(rootView, 0);
         return rootView;
     }
 
@@ -77,7 +77,6 @@ public class HomeDescFragment extends BaseFragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
     /**
      * 用户刷新后执行
      * 用于获取网络数据

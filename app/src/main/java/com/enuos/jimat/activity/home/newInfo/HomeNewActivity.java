@@ -403,14 +403,12 @@ public class HomeNewActivity extends BaseActivity {
             }
         });
     }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String message) {
         if (message.equals(EventConfig.EVENT_LOGIN)) {
             refresh();
         }
     }
-
     /**
      * 判断是否登录
      */

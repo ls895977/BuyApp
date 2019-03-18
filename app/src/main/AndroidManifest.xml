@@ -146,7 +146,7 @@
         <activity android:name=".activity.goods.PaySuccessActivity" />
         <activity android:name=".activity.goods.PayFailActivity" />
         <activity
-            android:name=".activity.home.newInfo.HomeNewActivity"
+            android:name=".activity.home.newInfo.HomeNewActivity1"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape" />
         <activity android:name=".activity.goods.WebPayActivity" />
