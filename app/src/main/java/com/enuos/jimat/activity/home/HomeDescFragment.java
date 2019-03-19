@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.enuos.jimat.R;
 import com.enuos.jimat.activity.goods.GoodsDetailsActivity;
-import com.enuos.jimat.activity.home.newInfo.HomeNewActivity;
 import com.enuos.jimat.adapter.HomeDescAdapter;
 import com.enuos.jimat.fragment.BaseFragment;
 import com.enuos.jimat.model.User;

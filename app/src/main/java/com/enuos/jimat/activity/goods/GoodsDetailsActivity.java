@@ -777,6 +777,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                                 public void onTick(long millisUntilFinished) {
                                     String allTime = secondsToTime(millisUntilFinished / 1000);
                                     homeTime = allTime;
+                                    Log.e("aa","------------商品详情-"+homeTime);
                                     mGoodTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                     mGoodTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                     mGoodTimeSecond.setText(" " + allTime.substring(6, 8) + " ");

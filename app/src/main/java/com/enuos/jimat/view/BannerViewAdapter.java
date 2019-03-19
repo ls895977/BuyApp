@@ -68,11 +68,12 @@ public class BannerViewAdapter extends PagerAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Log.e("aa","-----------goodsId-"+goodsId+"-------homeTime--"+homeTime);
                     Intent intentInfo = new Intent(context, GoodsDetailsActivity.class);
                     intentInfo.putExtra("goodsId", goodsId);
                     intentInfo.putExtra("goodsType", "base");
                     intentInfo.putExtra("type", "home");
-                    intentInfo.putExtra("value", homeTime);
+                    intentInfo.putExtra("value", homeTime+"");
                     context.startActivity(intentInfo);
                     Log.e("aa","------------点击图片");
                     if (onClick != null)
