@@ -19,6 +19,7 @@ import com.enuos.jimat.R;
 import com.enuos.jimat.activity.account.newInfo.LoginNewActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
 import com.enuos.jimat.activity.common.ChatActivity;
+import com.enuos.jimat.activity.home.newInfo.HomeNewActivity;
 import com.enuos.jimat.activity.home.newInfo.HomeNewActivity1;
 import com.enuos.jimat.activity.home.newInfo.MineNewActivity;
 import com.enuos.jimat.adapter.MainAdapter;

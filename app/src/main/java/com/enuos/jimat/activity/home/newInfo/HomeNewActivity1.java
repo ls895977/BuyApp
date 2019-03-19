@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.TabLayout;
@@ -75,40 +76,27 @@ import xiaofei.library.datastorage.IDataStorage;
 
 import static com.enuos.jimat.utils.MyUtils.secondsToTime;
 
-public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayout.OnRefreshListener {
+public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener
+        , View.OnClickListener {
     @BindView(R.id.home_new_banner)
     Banner mBanner;
-    @BindView(R.id.home_new_banner_goods_name)
-    TextView mHomeNewBannerGoodsName;
-    @BindView(R.id.home_new_banner_goods_price)
     TextView mHomeNewBannerGoodsPrice;
-    @BindView(R.id.home_new_banner_goods_price_old)
     TextView mHomeNewBannerGoodsPriceOld;
-    @BindView(R.id.home_new_banner_goods_number)
     TextView mHomeNewBannerGoodsNumber;
-    @BindView(R.id.home_new_banner_goods_btn_buy)
     Button mHomeNewBannerGoodsBtnBuy;
-    @BindView(R.id.home_new_tab_line)
     ImageView mTabLine;
-    @BindView(R.id.home_time_hour)
     TextView mHomeTimeHour;
-    @BindView(R.id.home_time_minute)
     TextView mHomeTimeMinute;
-    @BindView(R.id.home_time_second)
     TextView mHomeTimeSecond;
-    @BindView(R.id.home_new_text_sal)
     TextView mHomeNewTextSal;
-    @BindView(R.id.home_new_linear_sal)
     LinearLayout mHomeNewLinearSal;
-    @BindView(R.id.home_banner_rl)
     RelativeLayout mHomeBannerRl;
-    @BindView(R.id.home_banner_ll)
     LinearLayout mHomeBannerLl;
-    @BindView(R.id.goods_details_transparent_home)
     ImageView mGoodsDetailsTransparentHome;
     RecyclerView myRcyclerView;
     ViewPager viewPager;
     TabLayout mTablayout;
+    TextView mHomeNewBannerGoodsName;
     public ViewPager mViewPager;
     private User mUser;
     private String goodsId, shopName, goodsPic, goodsName, videoUrl, img,
@@ -158,17 +146,33 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_new1);
-//        ButterKnife.bind(this);
+        // 注册 EventBus
+        EventBus.getDefault().register(this);
         myRcyclerView = findViewById(R.id.myRecyclerView);
         mRefreshLayout = findViewById(R.id.home_new_swipe_refresh);
         mRefreshLayout.setOnRefreshListener(this);
         viewHader = LayoutInflater.from(this).inflate(R.layout.view_home, null);
+        mHomeNewBannerGoodsName = viewHader.findViewById(R.id.home_new_banner_goods_name);
+        viewHader.findViewById(R.id.home_new_linear_desc).setOnClickListener(this);
+        mHomeNewBannerGoodsName.setOnClickListener(this);
+        viewHader.findViewById(R.id.home_new_linear_sale).setOnClickListener(this);
+        mHomeNewBannerGoodsPrice = viewHader.findViewById(R.id.home_new_banner_goods_price);
+        mHomeNewBannerGoodsPriceOld = viewHader.findViewById(R.id.home_new_banner_goods_price_old);
+        mHomeNewBannerGoodsNumber = viewHader.findViewById(R.id.home_new_banner_goods_number);
+        mHomeNewBannerGoodsBtnBuy = viewHader.findViewById(R.id.home_new_banner_goods_btn_buy);
+        mHomeNewBannerGoodsBtnBuy.setOnClickListener(HomeNewActivity1.this);
+        mTabLine = viewHader.findViewById(R.id.home_new_tab_line);
+        mHomeTimeHour = viewHader.findViewById(R.id.home_time_hour);
+        mHomeTimeMinute = viewHader.findViewById(R.id.home_time_minute);
+        mHomeTimeSecond = viewHader.findViewById(R.id.home_time_second);
+        mHomeNewTextSal = viewHader.findViewById(R.id.home_new_text_sal);
+        mHomeNewLinearSal = viewHader.findViewById(R.id.home_new_linear_sal);
+        mHomeBannerRl = viewHader.findViewById(R.id.home_banner_rl);
+        mHomeBannerRl.setOnClickListener(this);
+        mHomeBannerLl = viewHader.findViewById(R.id.home_banner_ll);
+        mGoodsDetailsTransparentHome = viewHader.findViewById(R.id.goods_details_transparent_home);
         ButterKnife.bind(viewHader);
         viewPager = viewHader.findViewById(R.id.home_viewPager);
-        // 注册 EventBus
-        EventBus.getDefault().register(this);
-        // 进入界面之后先获取信息
-        setSwipe();
         refresh();
         list = new ArrayList<>();
         intentImage = new ArrayList<>();
@@ -264,11 +268,11 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
 
             }
         });
-
         createTimerTask();//创建定时器
         mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
             @Override
             public void click(View v) {
+                Log.e("aa","------------setOnClick");
                 Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
                 intentInfo.putExtra("goodsId", goodsId);
                 intentInfo.putExtra("goodsType", "base");
@@ -281,7 +285,6 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
         timer = new Timer();
         timer.schedule(timerTask, 5000, period);
     }
-
 
     public void createTimerTask() {
         timerTask = new TimerTask() {
@@ -354,12 +357,13 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
             timer = null;
         }
     }
+
     /**
      * 初始化 Fragment 数据以及设置颜色
      */
     private void initData() {
         mViewPager = viewHader.findViewById(R.id.home_new_view_pager);
-        mTablayout=viewHader.findViewById(R.id.toolbar_tab);
+        mTablayout = viewHader.findViewById(R.id.toolbar_tab);
         mFragmentList.add(new HomeDescFragment());
         mFragmentList.add(new HomeSaleFragment());
         PagerSlideAdapter adapter = new PagerSlideAdapter(getSupportFragmentManager(), mFragmentList);
@@ -369,6 +373,7 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
         mViewPager.setAdapter(adapter);
         mTablayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
     }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(String message) {
         if (message.equals(EventConfig.EVENT_LOGIN)) {
@@ -390,36 +395,6 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
         return false;
     }
 
-    /**
-     * 设置刷新
-     */
-    private void setSwipe() {
-//        //设置 Header 为 Material风格
-//        mSwipe.setRefreshHeader(new MaterialHeader(this).setShowBezierWave(false));
-//        //设置 Footer 为 球脉冲
-//        mSwipe.setRefreshFooter(new BallPulseFooter(this).setSpinnerStyle(SpinnerStyle.Scale));
-//
-//        mSwipe.setOnMultiPurposeListener(new SimpleMultiPurposeListener() {
-//            @Override
-//            public void onStateChanged(@NonNull RefreshLayout refreshLayout, @NonNull RefreshState oldState, @NonNull RefreshState newState) {
-//            }
-//
-//            @Override
-//            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-//                refreshLayout.finishLoadMore();
-//            }
-//
-//            @Override
-//            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-//                refreshLayout.finishRefresh();
-//                mFragmentList.clear();
-//                initData(); // 初始化数据
-////                initWidth(); // 初始化滑动横条的宽度
-////                mHomeNewTextDesc.setTextColor(ContextCompat.getColor(mBaseActivity, R.color.color_D02D2E));
-//            }
-//        });
-    }
-
     public void onResume() {
         refresh();
         super.onResume();
@@ -430,9 +405,6 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
      * 用于获取网络数据
      */
     private void refresh() {
-//        mSwipe.setRefreshing(true);
-
-        // 取出token      params.put("token", userToken);
         IDataStorage dataStorage = DataStorageFactory.getInstance(
                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
         User user = dataStorage.load(User.class, "User");
@@ -440,14 +412,12 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
         if (user != null && !user.userAccount.equals("")) {
             userToken = user.token;
         }
-
         HashMap<String, String> params = new HashMap<>();
         params.put("pageNum", "1");
         params.put("pageSize", "20");
         params.put("token", userToken);
         DoPostTask mDoPostTask = new DoPostTask();
         mDoPostTask.execute(params);
-//        mSwipe.setRefreshing(false);
         countTimes++;
         Log.e("789", "countTimes: " + String.valueOf(countTimes));
     }
@@ -455,13 +425,13 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
     /**
      * 点击事件
      */
-    @OnClick({R.id.home_banner_rl, R.id.home_new_banner_goods_btn_buy, R.id.home_new_banner_goods_name,
-            R.id.home_new_linear_desc, R.id.home_new_linear_sale, R.id.home_viewPager})
-    public void onViewClick(View view) {
+    @Override
+    public void onClick(View view) {
         switch (view.getId()) {
             //            // 进入详情
             case R.id.home_banner_rl:
             case R.id.home_viewPager:
+                Log.e("aa", "---------------点击事件===");
                 if (bannerPosition == 0 || bannerPosition == intentImage.size()) { // 第一张图片
                     if (videoUrl == null || videoUrl.equals("null")) { // 无视频
                         Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
@@ -555,6 +525,106 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
         }
     }
 
+//    @OnClick({R.id.home_banner_rl, R.id.home_new_banner_goods_btn_buy, R.id.home_new_banner_goods_name,
+//            R.id.home_new_linear_desc, R.id.home_new_linear_sale, R.id.home_viewPager})
+//    public void onViewClick(View view) {
+//        switch (view.getId()) {
+//            //            // 进入详情
+//            case R.id.home_banner_rl:
+//            case R.id.home_viewPager:
+//                if (bannerPosition == 0 || bannerPosition == intentImage.size()) { // 第一张图片
+//                    if (videoUrl == null || videoUrl.equals("null")) { // 无视频
+//                        Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+//                        intentInfo.putExtra("goodsId", goodsId);
+//                        intentInfo.putExtra("goodsType", "base");
+//                        intentInfo.putExtra("type", "home");
+//                        intentInfo.putExtra("value", homeTime);
+//                        startActivity(intentInfo);
+//                    } else { // 有视频
+//
+//                    }
+//                } else {
+//                    Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+//                    intentInfo.putExtra("goodsId", goodsId);
+//                    intentInfo.putExtra("goodsType", "base");
+//                    intentInfo.putExtra("type", "home");
+//                    intentInfo.putExtra("value", homeTime);
+//                    startActivity(intentInfo);
+//                }
+//                break;
+//            // 进入详情
+//            case R.id.home_new_banner_goods_name:
+//                Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
+//                intentInfo.putExtra("goodsId", goodsId);
+//                intentInfo.putExtra("goodsType", "base");
+//                intentInfo.putExtra("type", "home");
+//                intentInfo.putExtra("value", homeTime);
+//                startActivity(intentInfo);
+//                break;
+//            // 正在降价
+//            case R.id.home_new_linear_desc:
+//                mViewPager.setCurrentItem(0);
+//                break;
+//            // 待售商品
+//            case R.id.home_new_linear_sale:
+//                mViewPager.setCurrentItem(1);
+//                break;
+//            // 立即购买
+//            case R.id.home_new_banner_goods_btn_buy:
+//                if (!ClickUtils.INSTANCE.isFastDoubleClick()) {
+//                    mHomeNewBannerGoodsBtnBuy.setClickable(true);
+//                    if (isLogin()) {
+//                        if (!isDelete.equals("1")) {
+//                            mHomeNewBannerGoodsBtnBuy.setClickable(true);
+//                            ToastUtils.show(mBaseActivity, "Item has expired. Please choose again.");
+//                        } else {
+//                            // 先刷新
+//                        /*HashMap<String, String> paramsA = new HashMap<>();
+//                        paramsA.put("pageNum", "1");
+//                        paramsA.put("pageSize", "10");
+//                        DoPostTask mDoPostTask = new DoPostTask();
+//                        mDoPostTask.execute(paramsA);*/
+//                            // 获取当前时间 2018-12-25 12:12:12
+//                            mHomeNewBannerGoodsBtnBuy.setClickable(false);
+//                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+//                            Date date = new Date(System.currentTimeMillis());
+//                            String dateNow = simpleDateFormat.format(date);
+//                            String strYearNow = dateNow.substring(0, 4); // 现在的年份
+//                            String strMonthNow = dateNow.substring(5, 7); // 现在的月份
+//                            String strDayNow = dateNow.substring(8, 10); // 现在的天
+//                            String strHourNow = dateNow.substring(11, 13); // 现在的小时
+//                            String strMinuteNow = dateNow.substring(14, 16); // 现在的分钟
+//                            String strSecondNow = dateNow.substring(17, 19); // 现在的秒
+//                            clientTime = strYearNow + "-" + strMonthNow + "-" + strDayNow
+//                                    + " " + strHourNow + ":" + strMinuteNow + ":" + strSecondNow;
+//
+//                            // 获取 User 信息
+//                            IDataStorage dataStorage = DataStorageFactory.getInstance(
+//                                    getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
+//                            mUser = dataStorage.load(User.class, "User");
+//                            HashMap<String, String> params = new HashMap<>();
+//                            params.put("goodsId", goodsId);
+//                            params.put("memberId", mUser.userID);
+//                            params.put("token", mUser.token);
+//                            params.put("clientTime", clientTime);
+//                            params.put("clientPrice", nowPriceServer);
+//                            OrderTask mOrderTask = new OrderTask();
+//                            mOrderTask.execute(params);
+//                        }
+//                    } else {
+//                        ToastUtils.show(mBaseActivity, "Please Login");
+//                        Intent intent = new Intent(mBaseActivity, LoginNewActivity.class);
+//                        intent.putExtra("from", "home");
+//                        intent.putExtra("goodsId", "");
+//                        intent.putExtra("goodsType", "");
+//                        intent.putExtra("homeTime", "0");
+//                        startActivity(intent);
+//                    }
+//                }
+//                break;
+//        }
+//    }
+
     /**
      * 加载界面
      */
@@ -607,8 +677,8 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
             }
             list.clear();
             initDataA();
-
             String startSalePrice = jsonObjectFirst.getString("GOODS_START_PRICE"); // 原价
+            Log.e("aa", "-------------------加载界面==1111" + startSalePrice);
             mHomeNewBannerGoodsName.setText(jsonObjectFirst.getString("GOODS_NAME"));
             mHomeNewBannerGoodsPriceOld.setText("RM " + startSalePrice);
             mHomeNewBannerGoodsPriceOld.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -625,37 +695,37 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
             String descType = jsonObjectFirst.getString("GOODS_DOWN_TYPE"); // 降价类型
             String descValue = jsonObjectFirst.getString("GOODS_DOWN_VALUE"); // 降价数值 或 降价比例
             String miniPrice = jsonObjectFirst.getString("GOODS_MINI_PRICE"); // 最低价
-            Log.e("789", "systemTime11111: " + systemTime);
-            Log.e("789", "startTime1111: " + startTime);
-            Log.e("789", "descTime11111: " + descTime);
-            Log.e("789", "descType111: " + descType);
-            Log.e("789", "descValue1111: " + descValue);
-            Log.e("789", "miniPrice111: " + miniPrice);
+//            Log.e("aa", "-----------------" + "systemTime11111: " + systemTime);
+//            Log.e("aa", "-------------------" + "startTime1111: " + startTime);
+//            Log.e("aa", "------------------" + "descTime11111: " + descTime);
+//            Log.e("aa", "----------------------" + "descType111: " + descType);
+//            Log.e("aa", "---------------------" + "descValue1111: " + descValue);
+//            Log.e("aa", "---------------------" + "miniPrice111: " + miniPrice);
             // 系统时间大于服务器开始降价时间 即 已经处于降价
             if (Long.parseLong(systemTime) > Long.parseLong(startTime)) { // 正在降价
                 // 按金额降价：原价-（系统时间-起售时间）/降价时间*降价金额《最低价=最低价
                 if (descType.equals("1")) {
                     double secondsAll = (Long.parseLong(systemTime) - Long.parseLong(startTime)); // 距离降价开始还有多少秒
-                    Log.e("789", "secondsAll: " + String.valueOf(secondsAll));
+//                    Log.e("aa", "--------------------" + "secondsAll: " + String.valueOf(secondsAll));
                     double descTimes = secondsAll / Long.parseLong(descTime); // 得到多少个降价周期
-                    Log.e("789", "descTimes: " + String.valueOf(descTimes));
+//                    Log.e("aa", "--------------------" + "descTimes: " + String.valueOf(descTimes));
                     BigDecimal bigDecimalPayTimes = new BigDecimal(descTimes);
                     double descTimesReal = bigDecimalPayTimes.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     double descPrice = descTimesReal * Double.valueOf(descValue); // 降价周期 * 单位降价金额
-                    Log.e("789", "descTimesReal: " + String.valueOf(descTimesReal));
-                    Log.e("789", "descPrice: " + String.valueOf(descPrice));
+//                    Log.e("aa", "----------------------" + "descTimesReal: " + String.valueOf(descTimesReal));
+//                    Log.e("aa", "-------------------" + "descPrice: " + String.valueOf(descPrice));
 
                     int descTimesRealComplete = (int) descTimesReal; // 降价周期取整 表示降了多少次
                     //                    int descTimesRealComplete = (int) descTimes; // 降价周期取整 表示降了多少次
-                    Log.e("789", "descTimesRealComplete: " + String.valueOf(descTimesRealComplete));
+//                    Log.e("aa", "---------------------" + "descTimesRealComplete: " + String.valueOf(descTimesRealComplete));
                     double descPriceComplete = descTimesRealComplete * Double.valueOf(descValue);
                     // 得到降价后的具体金额A 开始价格 - 降价周期*(降价比例*原价)
-                    Log.e("789", "descPriceComplete: " + String.valueOf(descPriceComplete));
+//                    Log.e("aa", "----------------------" + "descPriceComplete: " + String.valueOf(descPriceComplete));
 
 
                     // 得到降价后的具体金额A 开始价格 - (降价周期 * 单位降价金额)
                     double nowPrice = Double.valueOf(startSalePrice) - descPrice;
-                    Log.e("789", "nowPrice: " + String.valueOf(nowPrice));
+//                    Log.e("aa", "--------------------" + "nowPrice: " + String.valueOf(nowPrice));
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -666,7 +736,7 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
                         mHomeTimeMinute.setText(" " + "00" + " ");
                         mHomeTimeSecond.setText(" " + "00" + " ");
                         mHomeNewBannerGoodsPrice.setText(nowPriceServer); // 现价
-                        Log.e("789", "nowPrice: " + String.valueOf(nowPriceServer));
+//                        Log.e("aa", "------" + "nowPrice: " + String.valueOf(nowPriceServer));
 
                     } else { // 如果大于最低价 现在的价就是最低价
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
@@ -680,20 +750,20 @@ public class HomeNewActivity1 extends BaseActivity  implements SwipeRefreshLayou
                         // 取降价周期的小数点后两位
                         //                        String timesString = descTimesReal + "";
                         String timesString = descTimes + "";
-                        Log.e("789", "timesString: " + timesString);
+//                        Log.e("aa", "------" + "timesString: " + timesString);
                         String timeCounterString = timesString.substring(timesString.indexOf("."), timesString.length());
-                        Log.e("789", "timeCounterString: " + timeCounterString);
+//                        Log.e("aa", "------" + "timeCounterString: " + timeCounterString);
                         if (timeCounterString.equals("00")) { // 数值达到降价时间区间的首尾极限
                             timerTotal = Long.parseLong(descTime);
                         } else { // 数值在降价时间区间内
                             // 得到比如【1, 110】中的某个具体数值
                             double timesCounter = (Double.valueOf(timeCounterString) * Double.valueOf(descTime)); // 单位秒
-                            Log.e("789", "timesCounter: " + String.valueOf(timesCounter));
+//                            Log.e("aa", "------" + "timesCounter: " + String.valueOf(timesCounter));
                             String timesValue = String.valueOf((int) (Double.valueOf(descTime) - timesCounter)) + "000"; // 单位转换
-                            Log.e("789", "timesValue: " + timesValue);
+//                            Log.e("aa", "------" + "timesValue: " + timesValue);
                             timerTotal = Long.parseLong(timesValue); // 单位毫秒
                         }
-                        Log.e("789", "timerTotal: " + timerTotal);
+//                        Log.e("aa", "------" + "timerTotal: " + timerTotal);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

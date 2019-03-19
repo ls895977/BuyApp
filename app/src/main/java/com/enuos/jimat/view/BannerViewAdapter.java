@@ -68,6 +68,13 @@ public class BannerViewAdapter extends PagerAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intentInfo = new Intent(context, GoodsDetailsActivity.class);
+                    intentInfo.putExtra("goodsId", goodsId);
+                    intentInfo.putExtra("goodsType", "base");
+                    intentInfo.putExtra("type", "home");
+                    intentInfo.putExtra("value", homeTime);
+                    context.startActivity(intentInfo);
+                    Log.e("aa","------------点击图片");
                     if (onClick != null)
                         onClick.click(v);
                 }
@@ -100,6 +107,7 @@ public class BannerViewAdapter extends PagerAdapter {
                 @Override
                 public void onClick(View view) {
                     onClick.click(view);
+                    Log.e("aa","------------点击视频");
                 }
             });
             Glide.with(context)

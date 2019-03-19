@@ -14,6 +14,5 @@ public class HomePageAdapter extends BaseQuickAdapter<HomeItem, BaseViewHolder> 
     }
     @Override
     protected void convert(BaseViewHolder helper, HomeItem item) {
-        Log.e("aa","------------------");
     }
 }

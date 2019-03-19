@@ -149,6 +149,10 @@
             android:name=".activity.home.newInfo.HomeNewActivity1"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.home.newInfo.HomeNewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="landscape" />
         <activity android:name=".activity.goods.WebPayActivity" />
         <activity android:name=".activity.order.OrderBuyActivity" />
         <activity android:name=".activity.common.ShowBannerActivity" />

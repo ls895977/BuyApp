@@ -118,8 +118,6 @@ public class HomeNewActivity extends BaseActivity {
     LinearLayout mHomeBannerLl;
     @BindView(R.id.goods_details_transparent_home)
     ImageView mGoodsDetailsTransparentHome;
-    //    @BindView(R.id.home_nestedScrollView)
-//    NestedScrollView mHomeNestedScrollView;
     @BindView(R.id.home_new_swipe_refresh)
     SmartRefreshLayout mSwipe;
     @BindView(R.id.toolbar_tab)
@@ -640,7 +638,6 @@ public class HomeNewActivity extends BaseActivity {
             }
             list.clear();
             initDataA();
-
             String startSalePrice = jsonObjectFirst.getString("GOODS_START_PRICE"); // 原价
             mHomeNewBannerGoodsName.setText(jsonObjectFirst.getString("GOODS_NAME"));
             mHomeNewBannerGoodsPriceOld.setText("RM " + startSalePrice);
