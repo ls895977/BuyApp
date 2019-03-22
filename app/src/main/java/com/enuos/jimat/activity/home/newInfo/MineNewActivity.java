@@ -228,7 +228,7 @@ public class MineNewActivity extends BaseActivity {
             }else if(account.length()==9){
                 phoneToast = account.replaceAll("(\\d{3})\\d{3}(\\d{3})", "$1****$2");
             }else if(account.length()==12){
-                phoneToast = account.replaceAll("(\\d{4})\\d{4}(\\d{4})", "$1****$2");
+                phoneToast = account.replaceAll("(\\d{3})\\d{5}(\\d{4})", "$1****$2");
             }
             mMineNewUserAccount.setText(phoneToast);
 

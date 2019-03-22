@@ -26,12 +26,17 @@ import java.util.List;
  * @修改历史： 2019/2/24 创建初始版本
  **********************************************************/
 public class BannerViewAdapter extends PagerAdapter {
-    private Context               context;
-    private List<BannerModel>     listBean;
-    private setOnClick            onClick;
+    private Context context;
+    private List<BannerModel> listBean;
+    private setOnClick onClick;
     private JCVideoPlayerStandard jcVideoPlayer;
-    private String                goodsId;
-    private String                homeTime;
+    private String goodsId;
+    private String homeTime;
+    private String dateTime;
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
 
     public BannerViewAdapter(Activity context, List<BannerModel> list, String id, String time) {
         this.context = context;
@@ -68,14 +73,13 @@ public class BannerViewAdapter extends PagerAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("aa","-----------goodsId-"+goodsId+"-------homeTime--"+homeTime);
+                    Log.e("aa","-----------"+dateTime);
                     Intent intentInfo = new Intent(context, GoodsDetailsActivity.class);
                     intentInfo.putExtra("goodsId", goodsId);
                     intentInfo.putExtra("goodsType", "base");
                     intentInfo.putExtra("type", "home");
-                    intentInfo.putExtra("value", homeTime+"");
+                    intentInfo.putExtra("value", dateTime);
                     context.startActivity(intentInfo);
-                    Log.e("aa","------------点击图片");
                     if (onClick != null)
                         onClick.click(v);
                 }
@@ -108,7 +112,7 @@ public class BannerViewAdapter extends PagerAdapter {
                 @Override
                 public void onClick(View view) {
                     onClick.click(view);
-                    Log.e("aa","------------点击视频");
+                    Log.e("aa", "------------点击视频");
                 }
             });
             Glide.with(context)

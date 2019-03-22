@@ -277,6 +277,7 @@ public class HomeNewActivity extends BaseActivity {
         });
 
         createTimerTask();//创建定时器
+
         mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
             @Override
             public void click(View v) {

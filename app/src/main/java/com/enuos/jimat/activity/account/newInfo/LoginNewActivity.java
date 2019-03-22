@@ -165,7 +165,8 @@ public class LoginNewActivity extends BaseActivity {
                 final String codePhone = mLoginNewAccount.getText().toString();
                 if (codePhone.equals("")) {
                     ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
-                } else if (codePhone.length() != 11) {
+                } else if (codePhone.length() > 12 || codePhone.length() < 8) {
+
                     ToastUtils.show(mBaseActivity, "Please Enter The Correct Mobile Number");
                 } else {
                     // 发送短信验证码
@@ -225,14 +226,19 @@ public class LoginNewActivity extends BaseActivity {
                         ToastUtils.show(mBaseActivity, "Please Enter Password");
                     } else {
                         if (userAccount.length() > 12 || userAccount.length() < 8) {
-                            ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
+//                            ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
+                            ToastUtils.show(mBaseActivity, "Login Failed");
                         } else {
 //                            if (MyUtils.isMobileNO(userAccount)) {
 //                                ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
 //                                return;
 //                            }
-                            userAccount = 6 + userAccount;
-                            Log.e("aa", MyUtils.isMobileNO(userAccount) + "----验证通过---");
+                            Character number6 = userAccount.charAt(0);
+                            if (number6.equals("6")) {
+
+                            } else {
+                                userAccount = 6 + userAccount;
+                            }
                             // 登录 APP 服务器
                             HashMap<String, String> params = new HashMap<>();
                             params.put("loginAccount", userAccount);
@@ -250,8 +256,13 @@ public class LoginNewActivity extends BaseActivity {
                         if (userAccount.length() > 12 || userAccount.length() < 8) {
                             ToastUtils.show(mBaseActivity, "Username/ Verification Code Incorrect. Please Enter Again");
                         } else {
+                            Character number6 = userAccount.charAt(0);
+                            if (number6.equals("6")) {
+
+                            } else {
+                                userAccount = 6 + userAccount;
+                            }
                             // 登录 APP 服务器
-                            userAccount = 6 + userAccount;
                             HashMap<String, String> params = new HashMap<>();
                             params.put("mobile", userAccount);
                             params.put("smsCode", sms);
@@ -437,7 +448,13 @@ public class LoginNewActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(infoString);
                     // 保存用户的基本数据
                     User user = new User();
-                    String userAccount ="6"+ mLoginNewAccount.getText().toString();
+                    String userAccount;
+                    Character number6 = mLoginNewAccount.getText().toString().charAt(0);
+                    if (number6.equals("6")) {
+                        userAccount = mLoginNewAccount.getText().toString();
+                    } else {
+                        userAccount = 6 + mLoginNewAccount.getText().toString();
+                    }
                     final String ID = jsonObject.getString("ID");
                     final String TOKEN = jsonObject.getString("TOKEN");
                     PrefUtils.setString(getApplication(), "UserPic",
@@ -585,14 +602,21 @@ public class LoginNewActivity extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(infoString);
                     // 保存用户的基本数据
                     User user = new User();
+//                    Character number6 = mLoginNewAccount.getText().toString().charAt(0);
+//                    if (number6.equals("6")) {
+//                        userAccount =  mLoginNewAccount.getText().toString();
+//                    } else {
+//                        userAccount = 6 +  mLoginNewAccount.getText().toString();
+//                    }
                     String userAccount = mLoginNewAccount.getText().toString();
+                    Log.e("aa", "-----------账号：" + userAccount);
                     final String ID = jsonObject.getString("ID");
                     final String TOKEN = jsonObject.getString("TOKEN");
                     user.userID = ID;
                     user.userAccount = userAccount;
                     user.isLogin = "true";
                     user.token = TOKEN;
-                    IDataStorage dataStorage = DataStorageFactory.getInstance(
+                    IDataStorage dataStorage = DataStorageFactory.getInstance(   //此处为。。缓存保存处
                             mBaseActivity.getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
                     dataStorage.storeOrUpdate(user, "User");
                     // 登录环信

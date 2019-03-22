@@ -695,12 +695,12 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
             String descType = jsonObjectFirst.getString("GOODS_DOWN_TYPE"); // 降价类型
             String descValue = jsonObjectFirst.getString("GOODS_DOWN_VALUE"); // 降价数值 或 降价比例
             String miniPrice = jsonObjectFirst.getString("GOODS_MINI_PRICE"); // 最低价
-//            Log.e("aa", "-----------------" + "systemTime11111: " + systemTime);
-//            Log.e("aa", "-------------------" + "startTime1111: " + startTime);
-//            Log.e("aa", "------------------" + "descTime11111: " + descTime);
-//            Log.e("aa", "----------------------" + "descType111: " + descType);
-//            Log.e("aa", "---------------------" + "descValue1111: " + descValue);
-//            Log.e("aa", "---------------------" + "miniPrice111: " + miniPrice);
+            Log.e("aa", "-----------------" + "systemTime11111: " + systemTime);
+            Log.e("aa", "-------------------" + "startTime1111: " + startTime);
+            Log.e("aa", "------------------" + "descTime11111: " + descTime);
+            Log.e("aa", "----------------------" + "descType111: " + descType);
+            Log.e("aa", "---------------------" + "descValue1111: " + descValue);
+            Log.e("aa", "---------------------" + "miniPrice111: " + miniPrice);
             // 系统时间大于服务器开始降价时间 即 已经处于降价
             if (Long.parseLong(systemTime) > Long.parseLong(startTime)) { // 正在降价
                 // 按金额降价：原价-（系统时间-起售时间）/降价时间*降价金额《最低价=最低价
@@ -721,8 +721,6 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                     double descPriceComplete = descTimesRealComplete * Double.valueOf(descValue);
                     // 得到降价后的具体金额A 开始价格 - 降价周期*(降价比例*原价)
 //                    Log.e("aa", "----------------------" + "descPriceComplete: " + String.valueOf(descPriceComplete));
-
-
                     // 得到降价后的具体金额A 开始价格 - (降价周期 * 单位降价金额)
                     double nowPrice = Double.valueOf(startSalePrice) - descPrice;
 //                    Log.e("aa", "--------------------" + "nowPrice: " + String.valueOf(nowPrice));
@@ -745,7 +743,6 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
 
                         mHomeNewBannerGoodsPrice.setText(String.format("%.2f", Double.valueOf(startSalePrice) - descPriceComplete)); // 四舍五入 保留2位
-
                         // 倒计时
                         // 取降价周期的小数点后两位
                         //                        String timesString = descTimesReal + "";
@@ -779,7 +776,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
-
+                                            Log.e("aa","--------1111--"+allTime);
 //                                            if (mSwipe.isRefreshing()) {
 //                                                mTimerOne.cancel();
 //                                                Log.e("789", "1111: ");
@@ -799,12 +796,12 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                     };
                                     mTimerOne.start();
                                 } else {
-
                                     // 倒计时开始
                                     mTimerOne = new CountDownTimer(timerTotal, 1000) {
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
+                                            Log.e("aa","--------222--"+allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
@@ -836,6 +833,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                     }
 
                 } else {
+
                     // 按比率降价：原价-（系统时间-起售时间）/降价时间*（原价*降价金额）《最低价=最低价
                     double secondsAll = (Long.parseLong(systemTime) - Long.parseLong(startTime)); // 距离降价开始还有多少秒
                     Log.e("789", "secondsAll: " + String.valueOf(secondsAll));
@@ -903,6 +901,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
+                                            Log.e("aa","--------3333--"+allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
@@ -930,6 +929,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                     mTimerTwo = new CountDownTimer(timerTotal, 1000) {
                                         @Override
                                         public void onTick(long millisUntilFinished) {
+                                            mAdapter.setDateTime(millisUntilFinished+"");
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
