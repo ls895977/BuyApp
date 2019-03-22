@@ -162,7 +162,13 @@ public class LoginNewActivity extends BaseActivity {
                 break;
             // 发送验证码
             case R.id.login_new_sms_btn_get:
-                final String codePhone = mLoginNewAccount.getText().toString();
+                final String codePhone;
+                Character number6 = mLoginNewAccount.getText().toString().charAt(0);
+                if (String.valueOf(number6).equals("6")) {
+                    codePhone = mLoginNewAccount.getText().toString();
+                } else {
+                    codePhone = 6 + mLoginNewAccount.getText().toString();
+                }
                 if (codePhone.equals("")) {
                     ToastUtils.show(mBaseActivity, "Please Enter Mobile Number");
                 } else if (codePhone.length() > 12 || codePhone.length() < 8) {
@@ -171,7 +177,6 @@ public class LoginNewActivity extends BaseActivity {
                 } else {
                     // 发送短信验证码
                     mTimer60.start();
-
                     // 取出token      params.put("token", userToken);
                     IDataStorage dataStorage = DataStorageFactory.getInstance(
                             getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
@@ -180,7 +185,7 @@ public class LoginNewActivity extends BaseActivity {
                     if (user != null && !user.userAccount.equals("")) {
                         userToken = user.token;
                     }
-
+                    Log.e("aa", "-----------------发送的手机号==" + codePhone);
                     HashMap<String, String> params = new HashMap<>();
                     params.put("mobile", codePhone);
                     params.put("token", userToken);
@@ -233,8 +238,8 @@ public class LoginNewActivity extends BaseActivity {
 //                                ToastUtils.show(mBaseActivity, "Username/ Password Incorrect. Please Enter Again");
 //                                return;
 //                            }
-                            Character number6 = userAccount.charAt(0);
-                            if (String.valueOf(number6).equals("6")) {
+                            Character number1 = userAccount.charAt(0);
+                            if (String.valueOf(number1).equals("6")) {
 
                             } else {
                                 userAccount = 6 + userAccount;
@@ -256,12 +261,13 @@ public class LoginNewActivity extends BaseActivity {
                         if (userAccount.length() > 12 || userAccount.length() < 8) {
                             ToastUtils.show(mBaseActivity, "Username/ Verification Code Incorrect. Please Enter Again");
                         } else {
-                            Character number6 = userAccount.charAt(0);
-                            if (String.valueOf(number6).equals("6")) {
+                            Character number2 = userAccount.charAt(0);
+                            if (String.valueOf(number2).equals("6")) {
 
                             } else {
                                 userAccount = 6 + userAccount;
                             }
+                            Log.e("aa", "-------------mobile==" + userAccount);
                             // 登录 APP 服务器
                             HashMap<String, String> params = new HashMap<>();
                             params.put("mobile", userAccount);
@@ -328,6 +334,7 @@ public class LoginNewActivity extends BaseActivity {
                 mProgressDialog.dismiss();
             }
             if ((boolean) result[0]) {
+                Log.e("aa", "-----------------onPostExecute==" + result[0]);
                 try {
                     JSONObject data = (JSONObject) result[2];
                     Log.e("TAG", "SendCodeTask" + data.toString());
@@ -336,6 +343,7 @@ public class LoginNewActivity extends BaseActivity {
                     //Toast.makeText(RegisterActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
                 }
             } else {
+                Log.e("aa", "----------------- result[1]==" + result[1]);
                 // 同一账户多个终端登录
                 String msgError = result[1].toString();
                 ToastUtils.show(mBaseActivity, msgError);
@@ -605,9 +613,9 @@ public class LoginNewActivity extends BaseActivity {
                     User user = new User();
                     Character number6 = mLoginNewAccount.getText().toString().charAt(0);
                     if (String.valueOf(number6).equals("6")) {
-                        userAccount =  mLoginNewAccount.getText().toString();
+                        userAccount = mLoginNewAccount.getText().toString();
                     } else {
-                        userAccount = 6 +  mLoginNewAccount.getText().toString();
+                        userAccount = 6 + mLoginNewAccount.getText().toString();
                     }
 //                    String userAccount = mLoginNewAccount.getText().toString();
                     Log.e("aa", "-----------账号：" + userAccount);
