@@ -75,9 +75,15 @@ public class ToastUtils {
             toast.cancel();
         }
         if (ctx == null) {
-            toast = Toast.makeText(MicCommonConfigHelper.getInstance().getContext(), msg, Toast.LENGTH_LONG);
+            try {
+                toast = Toast.makeText(MicCommonConfigHelper.getInstance().getContext(), msg, Toast.LENGTH_LONG);
+            } catch (Exception e) {
+            }
         } else {
-            toast = Toast.makeText(ctx.getApplicationContext(), msg, Toast.LENGTH_LONG);
+            try {
+                toast = Toast.makeText(ctx.getApplicationContext(), msg, Toast.LENGTH_LONG);
+            } catch (Exception e) {
+            }
         }
 
         handler.postDelayed(run, duration);
@@ -108,7 +114,7 @@ public class ToastUtils {
     /**
      * 弹出Toast
      *
-     * @param ctx 弹出Toast的上下文
+     * @param ctx   弹出Toast的上下文
      * @param resId 弹出Toast的内容
      */
     public static void showLong(Context ctx, int resId) throws NullPointerException {
