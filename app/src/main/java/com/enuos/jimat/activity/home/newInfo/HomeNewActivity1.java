@@ -222,6 +222,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
         period = list.get(0).getPlayTime();
         //        mAdapter.setListBean(list);
         mAdapter = new BannerViewAdapter(this, list, goodsId, homeTime);
+        mAdapter.setStatusActivity("home");
         viewPager.setAdapter(mAdapter);
     }
 
@@ -272,7 +273,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
         mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
             @Override
             public void click(View v) {
-                Log.e("aa","------------setOnClick");
+                Log.e("aa", "------------setOnClick");
                 Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
                 intentInfo.putExtra("goodsId", goodsId);
                 intentInfo.putExtra("goodsType", "base");
@@ -776,7 +777,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
                                             mHomeTimeSecond.setText(" " + allTime.substring(6, 8) + " ");
-                                            Log.e("aa","--------1111--"+allTime);
+                                            Log.e("aa", "--------1111--" + allTime);
 //                                            if (mSwipe.isRefreshing()) {
 //                                                mTimerOne.cancel();
 //                                                Log.e("789", "1111: ");
@@ -801,7 +802,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
-                                            Log.e("aa","--------222--"+allTime);
+                                            Log.e("aa", "--------222--" + allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
@@ -901,7 +902,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
-                                            Log.e("aa","--------3333--"+allTime);
+                                            Log.e("aa", "--------3333--" + allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
@@ -929,7 +930,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                     mTimerTwo = new CountDownTimer(timerTotal, 1000) {
                                         @Override
                                         public void onTick(long millisUntilFinished) {
-                                            mAdapter.setDateTime(millisUntilFinished+"");
+                                            mAdapter.setDateTime(millisUntilFinished + "");
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");

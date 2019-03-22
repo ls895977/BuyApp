@@ -33,6 +33,11 @@ public class BannerViewAdapter extends PagerAdapter {
     private String goodsId;
     private String homeTime;
     private String dateTime;
+    private String statusActivity;
+
+    public void setStatusActivity(String statusActivity) {
+        this.statusActivity = statusActivity;
+    }
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
@@ -73,13 +78,14 @@ public class BannerViewAdapter extends PagerAdapter {
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.e("aa","-----------"+dateTime);
-                    Intent intentInfo = new Intent(context, GoodsDetailsActivity.class);
-                    intentInfo.putExtra("goodsId", goodsId);
-                    intentInfo.putExtra("goodsType", "base");
-                    intentInfo.putExtra("type", "home");
-                    intentInfo.putExtra("value", dateTime);
-                    context.startActivity(intentInfo);
+                    if (statusActivity != null && statusActivity.equals("home")) {
+                        Intent intentInfo = new Intent(context, GoodsDetailsActivity.class);
+                        intentInfo.putExtra("goodsId", goodsId);
+                        intentInfo.putExtra("goodsType", "base");
+                        intentInfo.putExtra("type", "home");
+                        intentInfo.putExtra("value", dateTime);
+                        context.startActivity(intentInfo);
+                    }
                     if (onClick != null)
                         onClick.click(v);
                 }

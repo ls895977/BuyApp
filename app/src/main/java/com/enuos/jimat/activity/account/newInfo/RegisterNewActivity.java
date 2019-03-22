@@ -239,7 +239,13 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                 break;
             // 下一步
             case R.id.register_new_go_next:
-                final String codePhone = "6"+mRegisterNewAccount.getText().toString();
+                final String codePhone;
+                Character number6 = mRegisterNewAccount.getText().toString().charAt(0);
+                if (String.valueOf(number6).equals("6")) {
+                    codePhone = mRegisterNewAccount.getText().toString();
+                } else {
+                    codePhone = 6 + mRegisterNewAccount.getText().toString();
+                }
                 myUserAccount = codePhone;
                 if (mRegisterNewContactLinear.getVisibility() == View.VISIBLE) { // 输入手机号
                     isReInput = false;
@@ -251,7 +257,6 @@ public class RegisterNewActivity extends BaseActivity implements TextWatcher {
                         isReInput = true;
                         // 发送短信验证码
                         mTimer60.start();
-                        myUserAccount = 6 + myUserAccount;
                         // 取出token      params.put("token", userToken);
                         IDataStorage dataStorage = DataStorageFactory.getInstance(
                                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);

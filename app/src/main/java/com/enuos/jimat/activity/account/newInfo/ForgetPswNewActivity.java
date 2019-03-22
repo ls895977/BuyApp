@@ -207,7 +207,13 @@ public class ForgetPswNewActivity extends BaseActivity implements TextWatcher {
                 break;
             // 下一步
             case R.id.forget_new_go_next:
-                final String codePhone = "6"+mForgetNewAccount.getText().toString();
+                final String codePhone;
+                Character number6 = mForgetNewAccount.getText().toString().charAt(0);
+                if (String.valueOf(number6).equals("6")) {
+                    codePhone = mForgetNewAccount.getText().toString();
+                } else {
+                    codePhone = 6 + mForgetNewAccount.getText().toString();
+                }
                 myUserAccount = codePhone;
                 if (mForgetNewTextTopOne.getText().toString().equals("Forgot Password")) { // 输入手机号
                     if (codePhone.equals("")) {
@@ -217,7 +223,6 @@ public class ForgetPswNewActivity extends BaseActivity implements TextWatcher {
                     } else {
                         // 发送短信验证码
                         mTimer60.start();
-                        myUserAccount = 6 + myUserAccount;
                         // 取出token      params.put("token", userToken);
                         IDataStorage dataStorage = DataStorageFactory.getInstance(
                                 getApplicationContext(), DataStorageFactory.TYPE_DATABASE);

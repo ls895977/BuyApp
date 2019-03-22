@@ -234,7 +234,7 @@ public class LoginNewActivity extends BaseActivity {
 //                                return;
 //                            }
                             Character number6 = userAccount.charAt(0);
-                            if (number6.equals("6")) {
+                            if (String.valueOf(number6).equals("6")) {
 
                             } else {
                                 userAccount = 6 + userAccount;
@@ -257,7 +257,7 @@ public class LoginNewActivity extends BaseActivity {
                             ToastUtils.show(mBaseActivity, "Username/ Verification Code Incorrect. Please Enter Again");
                         } else {
                             Character number6 = userAccount.charAt(0);
-                            if (number6.equals("6")) {
+                            if (String.valueOf(number6).equals("6")) {
 
                             } else {
                                 userAccount = 6 + userAccount;
@@ -450,7 +450,7 @@ public class LoginNewActivity extends BaseActivity {
                     User user = new User();
                     String userAccount;
                     Character number6 = mLoginNewAccount.getText().toString().charAt(0);
-                    if (number6.equals("6")) {
+                    if (String.valueOf(number6).equals("6")) {
                         userAccount = mLoginNewAccount.getText().toString();
                     } else {
                         userAccount = 6 + mLoginNewAccount.getText().toString();
@@ -528,7 +528,7 @@ public class LoginNewActivity extends BaseActivity {
                 }
             } else {
                 ToastUtils.show(mBaseActivity, result[1].toString());
-//                startActivity(new Intent(mBaseActivity, RegisterNewActivity.class));
+                startActivity(new Intent(mBaseActivity, RegisterNewActivity.class));
             }
 
         }
@@ -601,14 +601,15 @@ public class LoginNewActivity extends BaseActivity {
                     String infoString = data.getString("data").replaceAll("\'", "\"");
                     JSONObject jsonObject = new JSONObject(infoString);
                     // 保存用户的基本数据
+                    String userAccount;
                     User user = new User();
-//                    Character number6 = mLoginNewAccount.getText().toString().charAt(0);
-//                    if (number6.equals("6")) {
-//                        userAccount =  mLoginNewAccount.getText().toString();
-//                    } else {
-//                        userAccount = 6 +  mLoginNewAccount.getText().toString();
-//                    }
-                    String userAccount = mLoginNewAccount.getText().toString();
+                    Character number6 = mLoginNewAccount.getText().toString().charAt(0);
+                    if (String.valueOf(number6).equals("6")) {
+                        userAccount =  mLoginNewAccount.getText().toString();
+                    } else {
+                        userAccount = 6 +  mLoginNewAccount.getText().toString();
+                    }
+//                    String userAccount = mLoginNewAccount.getText().toString();
                     Log.e("aa", "-----------账号：" + userAccount);
                     final String ID = jsonObject.getString("ID");
                     final String TOKEN = jsonObject.getString("TOKEN");
