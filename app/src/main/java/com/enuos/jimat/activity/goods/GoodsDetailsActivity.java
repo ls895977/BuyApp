@@ -1278,6 +1278,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                     JSONObject jsonObjectData = new JSONObject(stringData);
                     String orderId = jsonObjectData.getString("ID");
                     String orderNo = jsonObjectData.getString("ORDER_CODE");
+                    String vcode=jsonObjectData.getString("vcode");
                     final String goodsPrice = mGoodsDetailsNewPrice.getText().toString();
                     mGoodsDetailsBtnBuy.setClickable(true);
                     Intent intent = new Intent(mBaseActivity, GoodsBuyActivity.class);
@@ -1287,6 +1288,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                     //                    intent.putExtra("goodsPrice", nowPriceServer);
                     intent.putExtra("goodsPrice", goodsPrice);
                     intent.putExtra("orderId", orderId);
+                    intent.putExtra("vcode", vcode);
                     intent.putExtra("orderNo", orderNo);
                     intent.putExtra("orderTime", clientTime);
                     intent.putExtra("weight", weight);

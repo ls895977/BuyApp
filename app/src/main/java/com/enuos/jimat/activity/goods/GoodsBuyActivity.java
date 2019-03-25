@@ -103,7 +103,7 @@ public class GoodsBuyActivity extends BaseActivity {
     private User mUser;
     private JSONArray mAdressArray;
     private String addressId, addressName, addressPhone, addressArea, coinsMoney, postPrice, weight;
-    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo;
+    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo,vcode;
     private boolean isCoins = true;
     private boolean isWechat = false;
     private boolean isAli = false;
@@ -182,6 +182,7 @@ public class GoodsBuyActivity extends BaseActivity {
         goodsName = getIntent().getStringExtra("goodsName");
         goodsPrice = getIntent().getStringExtra("goodsPrice");
         orderId = getIntent().getStringExtra("orderId");
+        vcode=getIntent().getStringExtra("vcode");
         orderNo = getIntent().getStringExtra("orderNo");
         orderTime = getIntent().getStringExtra("orderTime");
         weight = getIntent().getStringExtra("weight");
@@ -609,13 +610,18 @@ public class GoodsBuyActivity extends BaseActivity {
                     Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
                     intent.putExtra("orderId", orderId);
                     intent.putExtra("title", "Order Pay");
-                    intent.putExtra("url", UrlConfig.bank_pay_head_url
-                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
+//                    intent.putExtra("url", UrlConfig.bank_pay_head_url
+//                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
+                    intent.putExtra("url","https://www.onlinepayment.com.my/MOLPay/pay/jimat/?"+ "amount=" + payPrice +
+                            "&orderid=" + orderId +"&vcode="+vcode);
+                    Log.e("aa","-----------"+"https://www.onlinepayment.com.my/MOLPay/pay/jimat/?"+ "amount=" + payPrice +
+                            "&orderid=" + orderId +"&vcode="+vcode);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
                     //Toast.makeText(ChooseContactActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
                 }
+
             } else {
                 Toast.makeText(mBaseActivity, result[1].toString(), Toast.LENGTH_SHORT).show();
             }
