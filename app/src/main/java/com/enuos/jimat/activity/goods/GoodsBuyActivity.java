@@ -612,9 +612,10 @@ public class GoodsBuyActivity extends BaseActivity {
                     intent.putExtra("title", "Order Pay");
 //                    intent.putExtra("url", UrlConfig.bank_pay_head_url
 //                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
-                    intent.putExtra("url","https://www.onlinepayment.com.my/MOLPay/pay/jimat/?"+ "amount=" + payPrice +
+                    intent.putExtra("url","https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?"+ "amount=" + payPrice +
                             "&orderid=" + orderId +"&vcode="+vcode);
-                    Log.e("aa","-----------"+"https://www.onlinepayment.com.my/MOLPay/pay/jimat/?"+ "amount=" + payPrice +
+
+                    Log.e("aa","-----------"+"https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?"+ "amount=" + payPrice +
                             "&orderid=" + orderId +"&vcode="+vcode);
                     startActivity(intent);
                     finish();

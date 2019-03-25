@@ -961,7 +961,6 @@ public class GoodsDetailsActivity extends BaseActivity {
         @Override
         protected Object[] doInBackground(HashMap<String, String>... params) {
             try {
-                Log.e("aa", "------" + UrlConfig.base_url + UrlConfig.goods_details_url);
                 return HttpUtils.postHttp(mBaseActivity,
                         UrlConfig.base_url + UrlConfig.goods_details_url, params[0],
                         HttpUtils.TYPE_FORCE_NETWORK, 0);
@@ -1279,6 +1278,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                     String orderId = jsonObjectData.getString("ID");
                     String orderNo = jsonObjectData.getString("ORDER_CODE");
                     String vcode=jsonObjectData.getString("vcode");
+                    Log.e("aa","--------------"+vcode);
                     final String goodsPrice = mGoodsDetailsNewPrice.getText().toString();
                     mGoodsDetailsBtnBuy.setClickable(true);
                     Intent intent = new Intent(mBaseActivity, GoodsBuyActivity.class);
