@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -342,21 +343,23 @@ public class GoodsBuyActivity extends BaseActivity {
                         mPayTask.execute(params);
                     } else { // 第三方银行支付
                         // 取出token      params.put("token", userToken);
-                        IDataStorage dataStorage = DataStorageFactory.getInstance(
-                                getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
-                        User user = dataStorage.load(User.class, "User");
-                        String userToken = "";
-                        if (user != null && !user.userAccount.equals("")) {
-                            userToken = user.token;
+                        try {
+                            IDataStorage dataStorage = DataStorageFactory.getInstance(
+                                    getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
+                            User user = dataStorage.load(User.class, "User");
+                            String userToken = "";
+                            if (user != null && !user.userAccount.equals("")) {
+                                userToken = user.token;
+                            }
+                            HashMap<String, String> params = new HashMap<>();
+                            params.put("orderId", orderId);
+                            params.put("addressId", addressId);
+                            params.put("payType", "4");
+                            params.put("token", userToken);
+                            PayThreeTask mPayThreeTask = new PayThreeTask();
+                            mPayThreeTask.execute(params);
+                        } catch (Exception e) {
                         }
-
-                        HashMap<String, String> params = new HashMap<>();
-                        params.put("orderId", orderId);
-                        params.put("addressId", addressId);
-                        params.put("payType", "4");
-                        params.put("token", userToken);
-                        PayThreeTask mPayThreeTask = new PayThreeTask();
-                        mPayThreeTask.execute(params);
                     }
                 }
                 break;
@@ -608,22 +611,22 @@ public class GoodsBuyActivity extends BaseActivity {
         protected void onPostExecute(Object[] result) {
             if ((boolean) result[0]) {
                 try {
-                    Gson gson = new Gson();
                     JSONObject data = (JSONObject) result[2];
-                    GoodsBuyBean buyBean = gson.fromJson(data.toString(), GoodsBuyBean.class);
+                    String stringData = data.getString("data");
+                    JSONObject jsonObjectData = new JSONObject(stringData);
+                    String vcode = jsonObjectData.getString("vcode");
                     Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
                     intent.putExtra("orderId", orderId);
                     intent.putExtra("title", "Order Pay");
 //                  intent.putExtra("url", UrlConfig.bank_pay_head_url
 //                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
                     intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                            "&orderid=" + orderId + "&vcode=" + buyBean.getData().getVcode());
+                            "&orderid=" + orderId + "&vcode=" + vcode);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
-                    //Toast.makeText(ChooseContactActivity.this, "数据解析失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "数据解析失败", Toast.LENGTH_SHORT).show();
                 }
-
             } else {
                 Toast.makeText(mBaseActivity, result[1].toString(), Toast.LENGTH_SHORT).show();
             }
