@@ -273,7 +273,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
         mAdapter.setOnClick(new BannerViewAdapter.setOnClick() {
             @Override
             public void click(View v) {
-                Log.e("aa", "------------setOnClick");
+//                Log.e("aa", "------------setOnClick");
                 Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
                 intentInfo.putExtra("goodsId", goodsId);
                 intentInfo.putExtra("goodsType", "base");
@@ -432,7 +432,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
             //            // 进入详情
             case R.id.home_banner_rl:
             case R.id.home_viewPager:
-                Log.e("aa", "---------------点击事件===");
+//                Log.e("aa", "---------------点击事件===");
                 if (bannerPosition == 0 || bannerPosition == intentImage.size()) { // 第一张图片
                     if (videoUrl == null || videoUrl.equals("null")) { // 无视频
                         Intent intentInfo = new Intent(mBaseActivity, GoodsDetailsActivity.class);
@@ -679,7 +679,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
             list.clear();
             initDataA();
             String startSalePrice = jsonObjectFirst.getString("GOODS_START_PRICE"); // 原价
-            Log.e("aa", "-------------------加载界面==1111" + startSalePrice);
+//            Log.e("aa", "-------------------加载界面==1111" + startSalePrice);
             mHomeNewBannerGoodsName.setText(jsonObjectFirst.getString("GOODS_NAME"));
             mHomeNewBannerGoodsPriceOld.setText("RM " + startSalePrice);
             mHomeNewBannerGoodsPriceOld.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -696,12 +696,12 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
             String descType = jsonObjectFirst.getString("GOODS_DOWN_TYPE"); // 降价类型
             String descValue = jsonObjectFirst.getString("GOODS_DOWN_VALUE"); // 降价数值 或 降价比例
             String miniPrice = jsonObjectFirst.getString("GOODS_MINI_PRICE"); // 最低价
-            Log.e("aa", "-----------------" + "systemTime11111: " + systemTime);
-            Log.e("aa", "-------------------" + "startTime1111: " + startTime);
-            Log.e("aa", "------------------" + "descTime11111: " + descTime);
-            Log.e("aa", "----------------------" + "descType111: " + descType);
-            Log.e("aa", "---------------------" + "descValue1111: " + descValue);
-            Log.e("aa", "---------------------" + "miniPrice111: " + miniPrice);
+//            Log.e("aa", "-----------------" + "systemTime11111: " + systemTime);
+//            Log.e("aa", "-------------------" + "startTime1111: " + startTime);
+//            Log.e("aa", "------------------" + "descTime11111: " + descTime);
+//            Log.e("aa", "----------------------" + "descType111: " + descType);
+//            Log.e("aa", "---------------------" + "descValue1111: " + descValue);
+//            Log.e("aa", "---------------------" + "miniPrice111: " + miniPrice);
             // 系统时间大于服务器开始降价时间 即 已经处于降价
             if (Long.parseLong(systemTime) > Long.parseLong(startTime)) { // 正在降价
                 // 按金额降价：原价-（系统时间-起售时间）/降价时间*降价金额《最低价=最低价
@@ -802,7 +802,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
-                                            Log.e("aa", "--------222--" + allTime);
+//                                            Log.e("aa", "--------222--" + allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");
@@ -902,7 +902,7 @@ public class HomeNewActivity1 extends BaseActivity implements SwipeRefreshLayout
                                         @Override
                                         public void onTick(long millisUntilFinished) {
                                             String allTime = secondsToTime(millisUntilFinished / 1000);
-                                            Log.e("aa", "--------3333--" + allTime);
+//                                            Log.e("aa", "--------3333--" + allTime);
                                             homeTime = String.valueOf(millisUntilFinished);
                                             mHomeTimeHour.setText(" " + allTime.substring(0, 2) + " ");
                                             mHomeTimeMinute.setText(" " + allTime.substring(3, 5) + " ");

@@ -33,6 +33,8 @@ import com.enuos.jimat.utils.toast.ToastUtils;
 import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,6 +49,7 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 import xiaofei.library.datastorage.DataStorageFactory;
 import xiaofei.library.datastorage.IDataStorage;
 
@@ -108,7 +111,7 @@ public class GoodsBuyActivity extends BaseActivity {
     private User mUser;
     private JSONArray mAdressArray;
     private String addressId, addressName, addressPhone, addressArea, coinsMoney, postPrice, weight;
-    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo, vcode;
+    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo;
     private boolean isCoins = true;
     private boolean isWechat = false;
     private boolean isAli = false;
@@ -343,23 +346,24 @@ public class GoodsBuyActivity extends BaseActivity {
                         mPayTask.execute(params);
                     } else { // 第三方银行支付
                         // 取出token      params.put("token", userToken);
-                        try {
-                            IDataStorage dataStorage = DataStorageFactory.getInstance(
-                                    getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
-                            User user = dataStorage.load(User.class, "User");
-                            String userToken = "";
-                            if (user != null && !user.userAccount.equals("")) {
-                                userToken = user.token;
-                            }
-                            HashMap<String, String> params = new HashMap<>();
-                            params.put("orderId", orderId);
-                            params.put("addressId", addressId);
-                            params.put("payType", "4");
-                            params.put("token", userToken);
-                            PayThreeTask mPayThreeTask = new PayThreeTask();
-                            mPayThreeTask.execute(params);
-                        } catch (Exception e) {
+//                        try {
+                        IDataStorage dataStorage = DataStorageFactory.getInstance(
+                                getApplicationContext(), DataStorageFactory.TYPE_DATABASE);
+                        User user = dataStorage.load(User.class, "User");
+                        String userToken = "";
+                        if (user != null && !user.userAccount.equals("")) {
+                            userToken = user.token;
                         }
+                        HashMap<String, String> params = new HashMap<>();
+                        params.put("orderId", orderId);
+                        params.put("addressId", addressId);
+                        params.put("payType", "4");
+                        params.put("token", userToken);
+                        postPay(params);
+//                            PayThreeTask mPayThreeTask = new PayThreeTask();
+//                            mPayThreeTask.execute(params);
+//                        } catch (Exception e) {
+//                        }
                     }
                 }
                 break;
@@ -586,53 +590,53 @@ public class GoodsBuyActivity extends BaseActivity {
      * 内部类
      * 支付
      */
-    private class PayThreeTask extends AsyncTask<HashMap<String, String>, Integer, Object[]> {
-
-        // doInBackground方法内部执行后台任务, 不可在此方法内修改 UI
-        @Override
-        protected Object[] doInBackground(HashMap<String, String>... params) {
-            try {
-                return HttpUtils.postHttp(mBaseActivity,
-                        UrlConfig.base_url + UrlConfig.goods_pay_url, params[0],
-                        HttpUtils.TYPE_FORCE_NETWORK, 0);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        // onProgressUpdate方法用于更新进度信息
-        @Override
-        protected void onProgressUpdate(Integer... progresses) {
-        }
-
-        // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
-        @Override
-        protected void onPostExecute(Object[] result) {
-            if ((boolean) result[0]) {
-                try {
-                    JSONObject data = (JSONObject) result[2];
-                    String stringData = data.getString("data");
-                    JSONObject jsonObjectData = new JSONObject(stringData);
-                    String vcode = jsonObjectData.getString("vcode");
-                    Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    intent.putExtra("title", "Order Pay");
-//                  intent.putExtra("url", UrlConfig.bank_pay_head_url
-//                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
-                    intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                            "&orderid=" + orderId + "&vcode=" + vcode);
-                    startActivity(intent);
-                    finish();
-                } catch (Exception e) {
-                    Toast.makeText(getBaseContext(), "数据解析失败", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(mBaseActivity, result[1].toString(), Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
+//    private class PayThreeTask extends AsyncTask<HashMap<String, String>, Integer, Object[]> {
+//
+//        // doInBackground方法内部执行后台任务, 不可在此方法内修改 UI
+//        @Override
+//        protected Object[] doInBackground(HashMap<String, String>... params) {
+//            try {
+//                return HttpUtils.postHttp(mBaseActivity,
+//                        UrlConfig.base_url + UrlConfig.goods_pay_url, params[0],
+//                        HttpUtils.TYPE_FORCE_NETWORK, 0);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        // onProgressUpdate方法用于更新进度信息
+//        @Override
+//        protected void onProgressUpdate(Integer... progresses) {
+//        }
+//
+//        // onPostExecute方法用于在执行完后台任务后更新UI,显示结果
+//        @Override
+//        protected void onPostExecute(Object[] result) {
+//            if ((boolean) result[0]) {
+//                try {
+////                    JSONObject data = (JSONObject) result[2];
+////                    String stringData = data.getString("data");
+////                    JSONObject jsonObjectData = new JSONObject(stringData);
+////                    String vcode = jsonObjectData.getString("vcode");
+//                    Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
+//                    intent.putExtra("orderId", orderId);
+//                    intent.putExtra("title", "Order Pay");
+////                  intent.putExtra("url", UrlConfig.bank_pay_head_url
+////                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
+//                    intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+//                            "&orderid=" + orderId + "&vcode=" + "");
+//                    startActivity(intent);
+//                    finish();
+//                } catch (Exception e) {
+////                    Toast.makeText(mBaseActivity, "数据解析失败", Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                Toast.makeText(mBaseActivity, result[1].toString(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//    }
 
     /**
      * 获取用户余额内部类
@@ -976,5 +980,37 @@ public class GoodsBuyActivity extends BaseActivity {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
         return bd.toString();
+    }
+
+    public void postPay(HashMap<String, String> params) {
+        OkHttpUtils.post().url(UrlConfig.base_url + UrlConfig.goods_pay_url)
+                .params(params)
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                JSONObject jsonObjectData = null;
+                try {
+                    JSONObject data = new JSONObject(response);
+                    String stringData = data.getString("data");
+                    jsonObjectData = new JSONObject(stringData);
+                    String vcode = jsonObjectData.getString("vcode");
+                    Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
+                    intent.putExtra("orderId", orderId);
+                    intent.putExtra("title", "Order Pay");
+//                  intent.putExtra("url", UrlConfig.bank_pay_head_url
+//                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
+                    intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+                            "&orderid=" + orderId + "&vcode=" + vcode);
+                    startActivity(intent);
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

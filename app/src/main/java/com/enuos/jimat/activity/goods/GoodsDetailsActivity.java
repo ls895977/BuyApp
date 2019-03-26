@@ -223,7 +223,6 @@ public class GoodsDetailsActivity extends BaseActivity {
         goodsType = getIntent().getStringExtra("goodsType");
         type = getIntent().getStringExtra("type");
         value = getIntent().getStringExtra("value");
-        Log.e("aa", "---------value====" + value);
         homeTime = value;
 
         mGoodsDetailsGoodsId.setText(goodsId);
@@ -317,7 +316,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                     startActivity(intent);
                 } else {
 //                    try {
-//                        Log.e("aa", list.get(bannerPosition).getBannerUrl() + "------------" + list.get(bannerPosition).getUrlType());
 //                        jcVideo.setVisibility(View.VISIBLE);
 //                        mGoodsDetailsBanner.setVisibility(View.GONE);
 //                        if (!videoUrl.equals("") || videoUrl != null) {
@@ -563,7 +561,6 @@ public class GoodsDetailsActivity extends BaseActivity {
 
         DoPostTask task = new DoPostTask();
         HashMap<String, String> params = new HashMap<>();
-        Log.e("aa", "-------memberId---" + "------goodsId--" + goodsId + "-------token--" + userToken);
         params.put("memberId", "");
         params.put("goodsId", goodsId);
         params.put("token", userToken);
@@ -650,42 +647,42 @@ public class GoodsDetailsActivity extends BaseActivity {
             String descType = getJsonObject.getString("GOODS_DOWN_TYPE"); // 降价类型
             String descValue = getJsonObject.getString("GOODS_DOWN_VALUE"); // 降价数值 或 降价比例
             String miniPrice = getJsonObject.getString("GOODS_MINI_PRICE"); // 最低价
-            Log.e("aa", "---------降价类型: " + descType);
-            Log.e("aa", "---------降价数值或降价比例: " + descValue);
-            Log.e("aa", "---------最低价: " + miniPrice);
-            Log.e("aa", "---------降价时间: " + descTime);
-            Log.e("aa", "---------系统时间: " + systemTime);
-            Log.e("aa", "---------起售时间: " + startTime);
+//            Log.e("aa", "---------降价类型: " + descType);
+//            Log.e("aa", "---------降价数值或降价比例: " + descValue);
+//            Log.e("aa", "---------最低价: " + miniPrice);
+//            Log.e("aa", "---------降价时间: " + descTime);
+//            Log.e("aa", "---------系统时间: " + systemTime);
+//            Log.e("aa", "---------起售时间: " + startTime);
             // 系统时间大于服务器开始降价时间 即 已经处于降价
             if (Long.parseLong(systemTime) > Long.parseLong(startTime)) { // 正在降价
                 // 按金额降价：原价-（系统时间-起售时间）/降价时间*降价金额《最低价=最低价
                 if (descType.equals("1")) {
                     double secondsAll = (Long.parseLong(systemTime) - Long.parseLong(startTime)); // 距离降价开始还有多少秒
-                    Log.e("aa", "---------系统时间与起售时间的差值A: " + String.valueOf(secondsAll));
+//                    Log.e("aa", "---------系统时间与起售时间的差值A: " + String.valueOf(secondsAll));
                     double descTimes = secondsAll / Long.parseLong(descTime); // 得到多少个降价周期
-                    Log.e("aa", "---------差值A除以降价时间得到多少个降价区间值: " + String.valueOf(descTimes));
+//                    Log.e("aa", "---------差值A除以降价时间得到多少个降价区间值: " + String.valueOf(descTimes));
                     BigDecimal bigDecimalPayTimes = new BigDecimal(descTimes);
                     double descTimesReal = bigDecimalPayTimes.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     double descPrice = descTimesReal * Double.valueOf(descValue); // 降价周期 * 单位降价金额
-                    Log.e("aa", "---------降价区间值保留两位小数: " + String.valueOf(descTimesReal));
-                    Log.e("aa", "---------降价具体数值: " + String.valueOf(descPrice));
+//                    Log.e("aa", "---------降价区间值保留两位小数: " + String.valueOf(descTimesReal));
+//                    Log.e("aa", "---------降价具体数值: " + String.valueOf(descPrice));
 
 
                     int descTimesRealComplete = (int) descTimesReal; // 降价周期取整 表示降了多少次
-                    Log.e("aa", "---------descTimesRealComplete: " + String.valueOf(descTimesRealComplete));
+//                    Log.e("aa", "---------descTimesRealComplete: " + String.valueOf(descTimesRealComplete));
                     double descPriceComplete = descTimesRealComplete * Double.valueOf(descValue);
                     // 得到降价后的具体金额A 开始价格 - 降价周期*(降价比例*原价)
-                    Log.e("aa", "---------descPriceComplete: " + String.valueOf(descPriceComplete));
+//                    Log.e("aa", "---------descPriceComplete: " + String.valueOf(descPriceComplete));
 
                     // 得到降价后的具体金额A 开始价格 - (降价周期 * 单位降价金额)
                     double nowPrice = Double.valueOf(startSalePrice) - descPrice;
-                    Log.e("aa", "---------现在的价格: " + String.valueOf(nowPrice));
+//                    Log.e("aa", "---------现在的价格: " + String.valueOf(nowPrice));
 
                     // 得到降价后的具体金额A 开始价格 - 单位降价金额 降价周期到了才降价
                     //                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
 
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
-                        Log.e("aa", "--------走计时器");
+//                        Log.e("aa", "--------走计时器");
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
@@ -697,7 +694,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                         mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
 
                     } else { // 如果大于最低价 现在的价就是最低价
-                        Log.e("aa", "--------如果大于最低价");
+//                        Log.e("aa", "--------如果大于最低价");
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
@@ -721,7 +718,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                                 String timesValue = String.valueOf((int) (Double.valueOf(descTime) - timesCounter)) + "000"; // 单位转换
                                 timerTotal = Long.parseLong(timesValue); // 单位毫秒
                             }
-                            Log.e("aa", "---------倒计时的总时间: " + timerTotal);
+//                            Log.e("aa", "---------倒计时的总时间: " + timerTotal);
                             // 倒计时开始
                            /* long timeStartTime;
                             Log.e("OkHttp", "11111: " + timerTotal);
@@ -769,7 +766,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                     }
 
                 } else {
-                    Log.e("aa", "--------------==========");
                     // 按比率降价：原价-（系统时间-起售时间）/降价时间*（原价*降价金额）《最低价=最低价
                     double secondsAll = (Long.parseLong(systemTime) - Long.parseLong(startTime)); // 距离降价开始还有多少秒
                     Log.e("789", "系统时间与起售时间的差值A: " + String.valueOf(secondsAll));
@@ -798,7 +794,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                     //                    double nowPrice = Double.valueOf(startSalePrice) - Double.valueOf(descValue);
 
                     if (nowPrice < Double.valueOf(miniPrice) || nowPrice < 0) { // 如果小于等于最低价 现在的价就是计算得到的价A
-                        Log.e("aa", "-------------傻逼-");
                         BigDecimal bigDecimalPay = new BigDecimal(miniPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
@@ -809,7 +804,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                         mGoodTimeSecond.setText(" " + "00" + " ");
                         mGoodsDetailsNewPrice.setText(nowPriceServer); // 现价
                     } else { // 如果大于最低价 现在的价就是最低价
-                        Log.e("aa", "-------------傻逼1111-");
                         BigDecimal bigDecimalPay = new BigDecimal(nowPrice);
                         double payPriceReal = bigDecimalPay.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                         nowPriceServer = String.format("%.2f", payPriceReal); // 保留2位
@@ -822,7 +816,6 @@ public class GoodsDetailsActivity extends BaseActivity {
 
                         // 代售商品无倒计时 首页和正在降价有倒计时
                         if (goodsType.equals("base")) {
-                            Log.e("aa", "-------------222222-");
                             // 倒计时
                             // 取降价周期的小数点后两位
                             String timesString = descTimesReal + "";
@@ -835,7 +828,7 @@ public class GoodsDetailsActivity extends BaseActivity {
                                 String timesValue = String.valueOf((int) (Double.valueOf(descTime) - timesCounter)) + "000"; // 单位转换
                                 timerTotal = Long.parseLong(timesValue); // 单位毫秒
                             }
-                            Log.e("789", "倒计时的总时间: " + timerTotal);
+//                            Log.e("789", "倒计时的总时间: " + timerTotal);
                             // 倒计时开始
                             long timeStartTime;
                             Log.e("OkHttp", "111112: " + timerTotal);
@@ -843,10 +836,10 @@ public class GoodsDetailsActivity extends BaseActivity {
                             Log.e("OkHttp", "222269697: " + value);
                             if (type.equals("home")) { // 首页第一个商品点击进入
                                 timeStartTime = Long.parseLong(value);
-                                Log.e("OkHttp", "22224: " + timeStartTime);
+//                                Log.e("OkHttp", "22224: " + timeStartTime);
                             } else {
                                 timeStartTime = timerTotal;
-                                Log.e("OkHttp", "33332: " + timeStartTime);
+//                                Log.e("OkHttp", "33332: " + timeStartTime);
                             }
                             if (timeStartTime == 0) {//开始即使kwkf
                                 homeTime = "0";
@@ -856,7 +849,7 @@ public class GoodsDetailsActivity extends BaseActivity {
 
 
                             } else {
-                                Log.e("OkHttp", "444442: " + timeStartTime);
+//                                Log.e("OkHttp", "444442: " + timeStartTime);
                                 CountDownTimer mTimer = new CountDownTimer(timeStartTime, 1000) {
                                     @Override
                                     public void onTick(long millisUntilFinished) {
@@ -881,7 +874,6 @@ public class GoodsDetailsActivity extends BaseActivity {
                             }
 
                         } else {
-                            Log.e("aa", "-------------333-");
                             homeTime = "0";
                             mGoodTimeHour.setText(" " + "00" + " ");
                             mGoodTimeMinute.setText(" " + "00" + " ");
@@ -938,7 +930,6 @@ public class GoodsDetailsActivity extends BaseActivity {
 //                mGoodTimeHour.setText(" " + "00" + " ");
 //                mGoodTimeMinute.setText(" " + "00" + " ");
 //                mGoodTimeSecond.setText(" " + "00" + " ");
-                Log.e("aa", "------------走这");
             }
             mGoodsDetailsDetailsDefault.setText(getJsonObject.getString("GOODS_DETAIL"));
             //            Log.e("789", "loadPage: " + getJsonObject.getString("GOODS_DETAIL"));
