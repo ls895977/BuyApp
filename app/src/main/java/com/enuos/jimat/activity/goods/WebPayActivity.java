@@ -40,12 +40,9 @@ public class WebPayActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_pay);
-        ButterKnife.bind(this);
-
-        customDialog = new CustomDialog(this, R.style.CustomDialog);
-
+        ButterKnife.bind(WebPayActivity.this);
+        customDialog = new CustomDialog(WebPayActivity.this, R.style.CustomDialog);
         initWebView();
-
         orderId = getIntent().getStringExtra("orderId");
         // 加载标题
         mWebTextTitle.setText(getIntent().getStringExtra("title"));

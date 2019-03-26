@@ -975,7 +975,7 @@ public class GoodsBuyActivity extends BaseActivity {
         return strPrice;
     }
 
-    public static String format1(double value) {
+    public String format1(double value) {
 
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(2, RoundingMode.HALF_UP);
@@ -993,23 +993,27 @@ public class GoodsBuyActivity extends BaseActivity {
             @Override
             public void onResponse(String response, int id) {
                 JSONObject jsonObjectData = null;
+                String vcode = "";
                 try {
                     JSONObject data = new JSONObject(response);
                     String stringData = data.getString("data");
                     jsonObjectData = new JSONObject(stringData);
-                    String vcode = jsonObjectData.getString("vcode");
-                    Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    intent.putExtra("title", "Order Pay");
-//                  intent.putExtra("url", UrlConfig.bank_pay_head_url
-//                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
-                    intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                            "&orderid=" + orderId + "&vcode=" + vcode);
-                    startActivity(intent);
-                    finish();
+                    vcode = jsonObjectData.getString("vcode");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                Intent intent = new Intent();
+                intent.setClass(GoodsBuyActivity.this, WebPayActivity.class);
+                intent.putExtra("orderId", orderId);
+                intent.putExtra("title", "Order Pay");
+//                  intent.putExtra("url", UrlConfig.bank_pay_head_url
+//                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
+                intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+                        "&orderid=" + orderId + "&vcode=" + vcode);
+                Log.e("aa", "----------" + "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+                        "&orderid=" + orderId + "&vcode=" + vcode);
+                startActivity(intent);
+                finish();
             }
         });
     }
