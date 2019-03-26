@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.enuos.jimat.R;
 import com.enuos.jimat.activity.address.ChooseAddressActivity;
 import com.enuos.jimat.activity.common.BaseActivity;
+import com.enuos.jimat.activity.goods.bean.GoodsBuyBean;
 import com.enuos.jimat.activity.order.OrderDetailsActivity;
 import com.enuos.jimat.model.Model;
 import com.enuos.jimat.model.User;
@@ -28,6 +29,7 @@ import com.enuos.jimat.utils.event.EventConfig;
 import com.enuos.jimat.utils.http.HttpUtils;
 import com.enuos.jimat.utils.http.UrlConfig;
 import com.enuos.jimat.utils.toast.ToastUtils;
+import com.google.gson.Gson;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
 
@@ -37,6 +39,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 
 import butterknife.BindView;
@@ -103,7 +107,7 @@ public class GoodsBuyActivity extends BaseActivity {
     private User mUser;
     private JSONArray mAdressArray;
     private String addressId, addressName, addressPhone, addressArea, coinsMoney, postPrice, weight;
-    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo,vcode;
+    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo, vcode;
     private boolean isCoins = true;
     private boolean isWechat = false;
     private boolean isAli = false;
@@ -182,7 +186,6 @@ public class GoodsBuyActivity extends BaseActivity {
         goodsName = getIntent().getStringExtra("goodsName");
         goodsPrice = getIntent().getStringExtra("goodsPrice");
         orderId = getIntent().getStringExtra("orderId");
-        vcode=getIntent().getStringExtra("vcode");
         orderNo = getIntent().getStringExtra("orderNo");
         orderTime = getIntent().getStringExtra("orderTime");
         weight = getIntent().getStringExtra("weight");
@@ -605,18 +608,16 @@ public class GoodsBuyActivity extends BaseActivity {
         protected void onPostExecute(Object[] result) {
             if ((boolean) result[0]) {
                 try {
+                    Gson gson = new Gson();
                     JSONObject data = (JSONObject) result[2];
-                    Log.e("TAG", "支付的返回结果：" + data.toString());
+                    GoodsBuyBean buyBean = gson.fromJson(data.toString(), GoodsBuyBean.class);
                     Intent intent = new Intent(mBaseActivity, WebPayActivity.class);
                     intent.putExtra("orderId", orderId);
                     intent.putExtra("title", "Order Pay");
-//                    intent.putExtra("url", UrlConfig.bank_pay_head_url
+//                  intent.putExtra("url", UrlConfig.bank_pay_head_url
 //                            + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
-                    intent.putExtra("url","https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?"+ "amount=" + payPrice +
-                            "&orderid=" + orderId +"&vcode="+vcode);
-
-                    Log.e("aa","-----------"+"https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?"+ "amount=" + payPrice +
-                            "&orderid=" + orderId +"&vcode="+vcode);
+                    intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+                            "&orderid=" + orderId + "&vcode=" + buyBean.getData().getVcode());
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
@@ -967,4 +968,10 @@ public class GoodsBuyActivity extends BaseActivity {
         return strPrice;
     }
 
+    public static String format1(double value) {
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.toString();
+    }
 }

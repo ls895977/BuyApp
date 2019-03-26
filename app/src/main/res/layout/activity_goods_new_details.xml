@@ -418,7 +418,7 @@
             android:text="B u y  N o w"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ImageView
