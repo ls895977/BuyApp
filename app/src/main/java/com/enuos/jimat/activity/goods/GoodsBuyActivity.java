@@ -111,7 +111,7 @@ public class GoodsBuyActivity extends BaseActivity {
     private User mUser;
     private JSONArray mAdressArray;
     private String addressId, addressName, addressPhone, addressArea, coinsMoney, postPrice, weight;
-    private String shopName, goodsPic, goodsName, goodsPrice, orderId, orderTime, payPrice, orderNo;
+    private String shopName, goodsPic, goodsName, goodsPrice, orderId="", orderTime, payPrice, orderNo;
     private boolean isCoins = true;
     private boolean isWechat = false;
     private boolean isAli = false;
@@ -353,17 +353,12 @@ public class GoodsBuyActivity extends BaseActivity {
                         if (user != null && !user.userAccount.equals("")) {
                             userToken = user.token;
                         }
-
                         HashMap<String, String> params = new HashMap<>();
                         params.put("orderId", orderId);
                         params.put("addressId", addressId);
                         params.put("payType", "4");
                         params.put("token", userToken);
-                        PayThreeTask mPayThreeTask = new PayThreeTask();
-                        mPayThreeTask.execute(params);
                         postPay(params);
-//                        Intent intent = new Intent(mBaseActivity, MyWebActvity.class);
-//                        startActivity(intent);
                     }
                 }
                 break;
@@ -1004,8 +999,6 @@ public class GoodsBuyActivity extends BaseActivity {
                 intent.putExtra("url", UrlConfig.bank_pay_head_url
                         + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
                 intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                        "&orderid=" + orderId + "&vcode=" + vcode);
-                Log.e("aa", "----------" + "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
                         "&orderid=" + orderId + "&vcode=" + vcode);
                 startActivity(intent);
                 finish();
