@@ -111,7 +111,7 @@ public class GoodsBuyActivity extends BaseActivity {
     private User mUser;
     private JSONArray mAdressArray;
     private String addressId, addressName, addressPhone, addressArea, coinsMoney, postPrice, weight;
-    private String shopName, goodsPic, goodsName, goodsPrice, orderId="", orderTime, payPrice, orderNo;
+    private String shopName, goodsPic, goodsName, goodsPrice, orderId = "", orderTime, payPrice, orderNo;
     private boolean isCoins = true;
     private boolean isWechat = false;
     private boolean isAli = false;
@@ -984,6 +984,11 @@ public class GoodsBuyActivity extends BaseActivity {
             public void onResponse(String response, int id) {
                 JSONObject jsonObjectData = null;
                 String vcode = "";
+                if (response.contains("3232")) {
+                    Toast.makeText(mBaseActivity, "Each user can only purchase one same item each day.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.e("aa", "----------" + response);
                 try {
                     JSONObject data = new JSONObject(response);
                     String stringData = data.getString("data");
@@ -992,14 +997,17 @@ public class GoodsBuyActivity extends BaseActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                String url = "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
+                        "&orderid=" + orderId + "&vcode=" + vcode
+                        + "&cancelurl=http://47.254.192.108:8080/jimatInterface/molpay/cancelurl.do&callbackurl=http://47.254.192.108:8080/jimatInterface/molpay/notifyUrl.do";
                 Intent intent = new Intent();
                 intent.setClass(mBaseActivity, MyWebActvity.class);
                 intent.putExtra("orderId", orderId);
                 intent.putExtra("title", "Order Pay");
                 intent.putExtra("url", UrlConfig.bank_pay_head_url
                         + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
-                intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                        "&orderid=" + orderId + "&vcode=" + vcode+"&cancelurl=http://47.254.192.108:8080/jimatInterface/molpay/cancelurl.do&callbackurl=http://47.254.192.108:8080/jimatInterface/molpay/notifyUrl.do");
+                intent.putExtra("url", url);
+                Log.e("aa", "-----------url==" + url);
                 startActivity(intent);
                 finish();
             }
