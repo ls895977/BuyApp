@@ -999,7 +999,7 @@ public class GoodsBuyActivity extends BaseActivity {
                 intent.putExtra("url", UrlConfig.bank_pay_head_url
                         + "amount=" + payPrice + "&orderid=" + orderId + UrlConfig.bank_pay_tail_url);
                 intent.putExtra("url", "https://www.onlinepayment.com.my/MOLPay/pay/jimat/index.php?" + "amount=" + format1(Double.valueOf(payPrice)) +
-                        "&orderid=" + orderId + "&vcode=" + vcode);
+                        "&orderid=" + orderId + "&vcode=" + vcode+"&cancelurl=http://47.254.192.108:8080/jimatInterface/molpay/cancelurl.do&callbackurl=http://47.254.192.108:8080/jimatInterface/molpay/notifyUrl.do");
                 startActivity(intent);
                 finish();
             }
