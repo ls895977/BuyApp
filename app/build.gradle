@@ -35,6 +35,20 @@ android {
         baseline file("lint-baseline.xml")
     }
 
+    signingConfigs {
+        release {
+            storeFile file('buyapp')
+            storePassword '895977'
+            keyAlias 'key0'
+            keyPassword '895977'
+        }
+        debug {
+            storeFile file('buyapp')
+            storePassword '895977'
+            keyAlias 'key0'
+            keyPassword '895977'
+        }
+    }
 }
 
 dependencies {
